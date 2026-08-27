@@ -9,8 +9,8 @@ import {
 const initialState: InquiryFormState = { status: "idle" };
 
 const inputClass =
-  "w-full rounded-md border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-neutral-500";
-const labelClass = "text-sm font-medium text-neutral-700";
+  "w-full rounded-md border border-border px-3 py-2 text-sm outline-none transition-colors focus:border-accent";
+const labelClass = "text-sm font-medium text-secondary";
 
 type InquiryFormProps = {
   type?: "general" | "quote" | "product";
@@ -116,7 +116,7 @@ export function InquiryForm({
       </div>
 
       {state.status === "error" && (
-        <p className="text-sm text-red-600" role="alert">
+        <p className="text-sm text-destructive" role="alert" aria-live="polite">
           {state.message}
         </p>
       )}
@@ -124,7 +124,7 @@ export function InquiryForm({
       <button
         type="submit"
         disabled={pending}
-        className="rounded-md bg-brand px-5 py-2.5 text-sm font-medium text-brand-foreground transition hover:opacity-90 disabled:opacity-50"
+        className="cursor-pointer rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary disabled:cursor-not-allowed disabled:opacity-50"
       >
         {pending ? "Enviando..." : "Enviar consulta"}
       </button>

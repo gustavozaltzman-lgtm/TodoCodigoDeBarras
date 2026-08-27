@@ -23,17 +23,17 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50">
-      <header className="flex items-center justify-between border-b border-neutral-200 bg-white px-6 py-3">
-        <span className="text-sm font-medium text-neutral-900">
+    <div className="min-h-screen bg-muted">
+      <header className="flex items-center justify-between border-b border-border bg-white px-6 py-3">
+        <span className="text-sm font-medium text-primary">
           Panel de administración
         </span>
         <div className="flex items-center gap-4">
-          <span className="text-sm text-neutral-500">{session?.email}</span>
+          <span className="text-sm text-secondary">{session?.email}</span>
           <form action={logoutAction}>
             <button
               type="submit"
-              className="text-sm text-neutral-600 hover:text-neutral-900"
+              className="cursor-pointer text-sm text-secondary transition-colors hover:text-primary"
             >
               Salir
             </button>

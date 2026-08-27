@@ -12,17 +12,17 @@ export default function LoginPage() {
   );
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-50 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-muted px-4">
       <form
         action={formAction}
-        className="w-full max-w-sm space-y-4 rounded-lg border border-neutral-200 bg-white p-8 shadow-sm"
+        className="w-full max-w-sm space-y-4 rounded-lg border border-border bg-white p-8 shadow-sm"
       >
-        <h1 className="text-xl font-semibold text-neutral-900">
+        <h1 className="text-xl font-semibold text-primary">
           Panel de administración
         </h1>
 
         <div className="space-y-1">
-          <label htmlFor="email" className="text-sm font-medium text-neutral-700">
+          <label htmlFor="email" className="text-sm font-medium text-secondary">
             Email
           </label>
           <input
@@ -31,14 +31,14 @@ export default function LoginPage() {
             type="email"
             required
             autoComplete="username"
-            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-neutral-500"
+            className="w-full rounded-md border border-border px-3 py-2 text-sm outline-none transition-colors focus:border-accent"
           />
         </div>
 
         <div className="space-y-1">
           <label
             htmlFor="password"
-            className="text-sm font-medium text-neutral-700"
+            className="text-sm font-medium text-secondary"
           >
             Contraseña
           </label>
@@ -48,12 +48,12 @@ export default function LoginPage() {
             type="password"
             required
             autoComplete="current-password"
-            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-neutral-500"
+            className="w-full rounded-md border border-border px-3 py-2 text-sm outline-none transition-colors focus:border-accent"
           />
         </div>
 
         {state.error && (
-          <p className="text-sm text-red-600" role="alert">
+          <p className="text-sm text-destructive" role="alert" aria-live="polite">
             {state.error}
           </p>
         )}
@@ -61,7 +61,7 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={pending}
-          className="w-full rounded-md bg-neutral-900 px-3 py-2 text-sm font-medium text-white transition hover:bg-neutral-700 disabled:opacity-50"
+          className="w-full cursor-pointer rounded-md bg-primary px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
         >
           {pending ? "Ingresando..." : "Ingresar"}
         </button>
