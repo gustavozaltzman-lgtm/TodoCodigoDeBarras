@@ -61,7 +61,7 @@ export default async function Home() {
         <div className="relative mx-auto max-w-6xl px-4 pt-28 pb-24 text-center">
           <span className="eyebrow inline-flex items-center gap-2 text-orange-400">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-current" />
-            Hardware AIDC &amp; RFID
+            Hardware para código de barras, QR, RFID y etiquetas inteligentes
           </span>
           <h1 className="mx-auto mt-4 max-w-3xl text-balance text-3xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
             Tecnología que impulsa tu operación
