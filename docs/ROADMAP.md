@@ -122,6 +122,26 @@ Information Architect + CRO). El roadmap completo (con archivos afectados)
 vive en el informe; acá el resumen para no tener que reabrirlo:
 
 **Hecho:**
+- **Carga masiva desde Excel (piloto):** modelo de producto extendido con
+  `sku`, `price`, `cost_price` (interno, no se muestra en ningún lado
+  público todavía) y `currency` (default `USD`, confirmado con el usuario)
+  — migración `drizzle/0005_redundant_stranger.sql` aplicada en Neon, con
+  índice único en `sku`. Se cargó un piloto de 14 SKUs desde
+  `tcb-280826.xlsx` (157 filas totales, resto pendiente hasta validar este
+  piloto): los 5 productos ya existentes se actualizaron con su sku/precio/
+  disponibilidad real, y se sumaron 9 productos nuevos — 3 insumos
+  genéricos sin marca (rollo de etiquetas OPP, ribbon de resina, etiqueta
+  RFID — specs parseadas del título, sin foto por no tener marca) y 6
+  productos de marca con specs, foto y ficha técnica reales investigadas en
+  la web oficial del fabricante (Epson TM-T20III, Topaz T-LBK750-BHSB-R,
+  Zebra ZC100, Honeywell EDA52, Bluebird RFR901). El repuesto Zebra ZT420
+  (cabezal térmico) se cargó sin foto ni ficha — no se encontró una fuente
+  oficial de Zebra para ninguna de las dos, incluida a propósito la debilidad
+  del dato en vez de usar una imagen de un reseller. Marcas nuevas creadas:
+  Epson, Topaz, Honeywell, Bluebird. Categorías nuevas: Impresoras >
+  Tarjetas, Insumos y Consumibles > Etiquetas RFID e Insumos y Consumibles >
+  Repuestos y Accesorios. Precio cargado pero sin mostrar en ninguna página
+  pública (decisión del usuario, ver P1 de `Offer` en JSON-LD abajo).
 - Catálogo real cargado (contenido, no código — vía scripts puntuales
   contra Neon, no viven en el repo): marcas **Zebra** y **TSC** (publicadas);
   5 categorías top-level — **Impresoras** (con subcategorías Escritorio e
@@ -187,10 +207,12 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
 - Definir NAP real (dirección, teléfono, horario) y agregar `LocalBusiness`
   junto al `Organization` existente — hoy no hay ningún dato de contacto
   físico en el sitio.
-- Seguir completando el catálogo: subcategorías dentro de Computadoras
-  móviles/Escáneres/RFID, más SKUs por categoría, al menos una etiqueta
-  sintética compatible con transferencia térmica (para poder cargar la
-  relación `compatible` con los ribbons ya cargados).
+- Seguir completando el catálogo: validar el piloto de 14 SKUs con el
+  usuario y, si está bien, seguir con el resto de las ~143 filas restantes
+  de `tcb-280826.xlsx`; subcategorías dentro de Computadoras móviles/
+  Escáneres, más SKUs por categoría, al menos una etiqueta sintética
+  compatible con transferencia térmica (para poder cargar la relación
+  `compatible` con los ribbons ya cargados).
 
 **Pendiente — P1:**
 - `Offer` en el JSON-LD de producto (requiere antes decidir política de

@@ -5,6 +5,7 @@ import {
   varchar,
   integer,
   boolean,
+  numeric,
   timestamp,
   pgEnum,
   index,
@@ -127,6 +128,13 @@ export const products = pgTable(
     categoryId: integer("category_id").references(() => categories.id),
     model: varchar("model", { length: 255 }),
     mpn: varchar("mpn", { length: 100 }),
+    sku: varchar("sku", { length: 50 }),
+    // Precio interno: se carga desde ahora para tenerlo listo, pero no se
+    // muestra en ninguna pagina publica ni en JSON-LD hasta decidir vender
+    // online (ver docs/ROADMAP.md).
+    price: numeric("price", { precision: 12, scale: 2 }),
+    costPrice: numeric("cost_price", { precision: 12, scale: 2 }),
+    currency: varchar("currency", { length: 3 }).notNull().default("USD"),
     condition: productCondition("condition").notNull().default("new"),
     availability: productAvailability("availability")
       .notNull()
@@ -146,6 +154,7 @@ export const products = pgTable(
     index("products_status_category_idx").on(table.status, table.categoryId),
     index("products_status_featured_idx").on(table.status, table.isFeatured),
     index("products_brand_id_idx").on(table.brandId),
+    uniqueIndex("products_sku_idx").on(table.sku),
   ]
 );
 
