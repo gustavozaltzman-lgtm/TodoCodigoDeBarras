@@ -142,10 +142,10 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
   se prefirió no usar una imagen que pudiera representar mal el producto.
   `BLOB_READ_WRITE_TOKEN` estaba vacío en `.env.local` (store de Vercel
   Blob nunca conectado) — se configuró con el store real del proyecto
-  (`store_TQOXSBd82945TTXP`). **Falta confirmar que esa misma variable
-  esté cargada en Settings → Environment Variables del proyecto en
-  Vercel** (production), no solo en el `.env.local` local — si no, el
-  admin no podrá subir imágenes nuevas desde el sitio desplegado.
+  (`store_TQOXSBd82945TTXP`) y el usuario confirmó que la misma variable
+  ya está cargada en Settings → Environment Variables del proyecto en
+  Vercel (production) — el admin puede subir imágenes nuevas desde el
+  sitio desplegado.
   No se cargó ninguna relación `compatible` ribbon↔etiqueta todavía: la
   Z-Select 4000D es térmica directa (no usa ribbon), así que vincularla
   con los ribbons sería una afirmación técnica incorrecta. Falta cargar
