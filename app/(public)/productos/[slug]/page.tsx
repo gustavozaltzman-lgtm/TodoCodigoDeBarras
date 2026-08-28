@@ -127,10 +127,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {product.name}
           </h1>
           {(product.model || product.mpn) && (
-            <p className="mt-1 text-sm text-secondary">
-              {product.model && <>Modelo: {product.model}</>}
-              {product.model && product.mpn && " · "}
-              {product.mpn && <>MPN: {product.mpn}</>}
+            <p className="font-mono-data mt-2 text-xs text-secondary">
+              {product.model && (
+                <span className="mr-2 inline-block rounded border border-border bg-muted px-2 py-1">
+                  MODELO {product.model}
+                </span>
+              )}
+              {product.mpn && (
+                <span className="inline-block rounded border border-border bg-muted px-2 py-1">
+                  MPN {product.mpn}
+                </span>
+              )}
             </p>
           )}
           {product.shortDescription && (

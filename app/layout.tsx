@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Lexend, Source_Sans_3 } from "next/font/google";
+import { Lexend, Source_Sans_3, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/lib/config/site";
 import { organizationJsonLd, jsonLdToScript } from "@/lib/seo/jsonld";
@@ -11,6 +11,11 @@ const lexend = Lexend({
 
 const sourceSans = Source_Sans_3({
   variable: "--font-body",
+  subsets: ["latin"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
 });
 
@@ -30,7 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es"
-      className={`${lexend.variable} ${sourceSans.variable} h-full antialiased`}
+      className={`${lexend.variable} ${sourceSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <script

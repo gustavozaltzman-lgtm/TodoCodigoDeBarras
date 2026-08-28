@@ -19,36 +19,40 @@ export default async function Home() {
   return (
     <main>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-muted">
+      <section className="relative overflow-hidden bg-primary">
         <div
           aria-hidden="true"
-          className="absolute inset-0 opacity-[0.4] [background-image:radial-gradient(var(--color-border)_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_0%,black_40%,transparent_100%)]"
+          className="absolute inset-0 opacity-[0.15] [background-image:linear-gradient(rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.6)_1px,transparent_1px)] [background-size:40px_40px] [mask-image:radial-gradient(ellipse_70%_70%_at_50%_0%,black_30%,transparent_100%)]"
         />
         <div className="relative mx-auto max-w-6xl px-4 py-24 text-center">
-          <h1 className="mx-auto max-w-2xl text-4xl font-semibold tracking-tight text-balance text-primary sm:text-5xl">
+          <span className="eyebrow inline-flex items-center gap-2 text-orange-400">
+            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-current" />
+            Hardware AIDC &amp; RFID
+          </span>
+          <h1 className="mx-auto mt-4 max-w-2xl text-balance text-4xl font-semibold tracking-tight text-white sm:text-6xl">
             {/* TODO: propuesta de valor real del cliente */}
             Soluciones de código de barras para tu operación
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-secondary">
+          <p className="mx-auto mt-4 max-w-xl text-slate-300">
             Productos y tecnología de identificación y captura de datos, con
             asesoramiento técnico especializado.
           </p>
           <div className="mt-8 flex justify-center gap-4">
             <Link
               href="/catalogo"
-              className="cursor-pointer rounded-md bg-accent px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-primary"
+              className="cursor-pointer rounded-md bg-accent px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/20 transition-colors hover:bg-orange-600"
             >
               Ver catálogo
             </Link>
             <Link
               href="/contacto"
-              className="cursor-pointer rounded-md border border-border bg-white px-6 py-3 text-sm font-medium text-secondary transition-colors hover:border-primary hover:text-primary"
+              className="cursor-pointer rounded-md border border-white/20 bg-white/5 px-6 py-3 text-sm font-medium text-white backdrop-blur transition-colors hover:bg-white/10"
             >
               Solicitar información
             </Link>
           </div>
 
-          <TrustBadges />
+          <TrustBadges variant="dark" />
         </div>
       </section>
 

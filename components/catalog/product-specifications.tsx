@@ -23,9 +23,7 @@ export function ProductSpecifications({ specifications }: { specifications: Spec
         {[...groups.entries()].map(([groupName, specs]) => (
           <div key={groupName}>
             {groups.size > 1 && (
-              <h3 className="mb-2 text-sm font-medium text-secondary">
-                {groupName}
-              </h3>
+              <h3 className="eyebrow mb-2">{groupName}</h3>
             )}
             <div className="overflow-hidden rounded-lg border border-border">
               <table className="w-full text-sm">
@@ -41,7 +39,9 @@ export function ProductSpecifications({ specifications }: { specifications: Spec
                       >
                         {spec.label}
                       </th>
-                      <td className="px-4 py-2 text-primary">{spec.value}</td>
+                      <td className="font-mono-data px-4 py-2 text-primary">
+                        {spec.value}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

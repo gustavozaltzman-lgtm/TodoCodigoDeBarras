@@ -31,7 +31,11 @@ const BADGES = [
   },
 ];
 
-export function TrustBadges() {
+export function TrustBadges({
+  variant = "light",
+}: {
+  variant?: "light" | "dark";
+}) {
   return (
     <div className="mt-10 grid gap-6 sm:grid-cols-3">
       {BADGES.map((badge) => (
@@ -51,7 +55,13 @@ export function TrustBadges() {
               {badge.icon}
             </svg>
           </span>
-          <p className="text-sm font-medium text-secondary">{badge.title}</p>
+          <p
+            className={`text-sm font-medium ${
+              variant === "dark" ? "text-slate-300" : "text-secondary"
+            }`}
+          >
+            {badge.title}
+          </p>
         </div>
       ))}
     </div>
