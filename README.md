@@ -45,8 +45,11 @@ Se hizo una auditoría de seguridad completa. Estado:
   entorno de desarrollo local, no producción).
 - Sesión de admin sin mecanismo de revocación server-side antes de su
   expiración (7 días).
-- `style-src 'unsafe-inline'` en la CSP sin confirmar si es estrictamente
-  necesario.
+- CSP usa `'unsafe-inline'` en `script-src` y `style-src` (decisión
+  deliberada: un nonce dinámico por request rompía la hidratación en
+  páginas con ISR/cache — ver `docs/FICHA-TECNICA.md`). Alternativa futura
+  si hace falta más dureza: excluir del caché las rutas que necesiten
+  nonce, o usar CSP basada en hash.
 - Nombre de archivo sin sanitizar en la key de Vercel Blob.
 
 Detalle completo de cada punto (archivo, línea, riesgo, cómo corregirlo) en

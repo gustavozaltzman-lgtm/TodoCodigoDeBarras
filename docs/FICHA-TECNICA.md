@@ -53,7 +53,7 @@ lib/db/           cliente Drizzle, schema, migraciones (carpeta drizzle/), seed
 lib/seo/          helpers de JSON-LD
 lib/storage/      subida/borrado de archivos a Vercel Blob
 lib/validation/   schemas Zod por dominio
-proxy.ts          middleware: CSP con nonce + x-pathname para el admin
+proxy.ts          middleware: x-pathname para el admin (login vs. resto)
 ```
 
 ## Modelo de datos (Neon / Drizzle)
@@ -98,13 +98,23 @@ a producción** — generar una nueva.
   - Login de admin: bloquea después de 5 intentos fallidos por IP en 15
     min (`login_attempts`).
   - Ambos se suman a un honeypot anti-bot en el formulario de leads.
-- **CSP (Content-Security-Policy):** generada por request en `proxy.ts` con
-  nonce dinámico + `strict-dynamic` para `script-src` (sin `unsafe-inline`
-  en scripts). Necesario porque Next.js inyecta scripts inline para
-  hidratar React — una CSP estática sin nonce rompe la app por completo
-  (verificado en build de producción). Headers adicionales en
-  `next.config.ts`: `X-Content-Type-Options`, `X-Frame-Options`,
-  `Referrer-Policy`, `Permissions-Policy`.
+- **CSP (Content-Security-Policy):** estática, definida una sola vez en
+  `next.config.ts` (misma en toda respuesta). Se probó primero con nonce
+  dinámico por request en `proxy.ts`, pero **rompía la hidratación en
+  cualquier página con ISR/cache estático** (Home, producto, marca,
+  institucionales): el HTML cacheado queda con el nonce de cuando se generó
+  grabado en los scripts inline, pero cada respuesta nueva servida desde
+  caché pasa igual por el middleware, que generaba un nonce distinto para
+  el header — nonce del HTML ≠ nonce del header, el navegador bloqueaba
+  todos los scripts de hidratación y el sitio dejaba de responder (menú,
+  formulario de leads, todo lo que dependa de JS) aunque se viera bien.
+  Se volvió a CSP estática con `script-src 'self' 'unsafe-inline'` —
+  se pierde el bloqueo estricto de scripts inline arbitrarios, pero el
+  resto de la política se mantiene (`object-src 'none'`,
+  `frame-ancestors 'none'`, `connect-src 'self'`, etc.) y es compatible con
+  cualquier estrategia de caché. Headers adicionales en `next.config.ts`:
+  `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
+  `Permissions-Policy`.
 - **JSON-LD seguro:** todo dato inyectado vía `dangerouslySetInnerHTML` pasa
   por `jsonLdToScript()` (`lib/seo/jsonld.ts`), que escapa `<` para que un
   valor con `</script>` no pueda cerrar el tag e inyectar HTML/JS.
