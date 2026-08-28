@@ -106,27 +106,39 @@ categoría/general), notificaciones de leads nuevos, honeypot anti-spam.
 CAPTCHA (honeypot + rate limiting alcanza), cambios al modelo de datos de
 producto (eso quedó documentado como P0 de Fase 1H, abajo).
 
-### Fase 1H — Auditoría AIDC (SEO/AEO/GEO + arquitectura de catálogo) — 📋 Diagnóstico entregado, pendiente de ejecución
+### Fase 1H — Auditoría AIDC (SEO/AEO/GEO + arquitectura de catálogo) — 🔄 En curso
 
 Auditoría completa entregada como artifact (equipo Technical SEO + AEO/GEO +
-Information Architect + CRO). Hallazgo central: la arquitectura está bien
-encaminada pero **el catálogo en Neon está vacío** (0 productos/categorías/
-marcas) y Home/Empresa tienen copy placeholder con `TODO` literal en el
-código. El roadmap completo (con archivos afectados) vive en el informe; acá
-el resumen para no tener que reabrirlo:
+Information Architect + CRO). El roadmap completo (con archivos afectados)
+vive en el informe; acá el resumen para no tener que reabrirlo:
 
-**P0 — antes de cargar el catálogo real:**
+**Hecho:**
+- Primer lote de catálogo real cargado (contenido, no código — vía script
+  puntual contra Neon, no vive en el repo): marca **Zebra** (publicada);
+  categorías top-level **Impresoras** (con subcategoría Industriales),
+  **Computadoras móviles**, **Escáneres de códigos de barras** y **RFID**
+  (las 4 primeras replican la navegación real de zebra.com); 4 productos
+  publicados con specs técnicas reales tomadas de datasheets oficiales de
+  Zebra y la ficha técnica oficial enlazada como documento descargable:
+  **ZT411** (impresora industrial), **TC22** (cómputo móvil), **DS2208**
+  (escáner) y **FX9600** (lector RFID fijo). Ninguno tiene fotos propias
+  todavía — no se pueden usar imágenes de Zebra/terceros sin derechos; hay
+  que subir fotos reales desde `/admin/productos` cuando estén disponibles.
+- Tarjetas de categoría con ícono en Home (`components/layout/category-icon.tsx`),
+  idea tomada de barcodesinc.com — reemplaza las tarjetas de solo texto.
+
+**Pendiente — P0 (antes de seguir cargando catálogo):**
 - Extender `products` con `mpn`, `condition`, `availability`, y tipar
   `productRelationships.type` con un valor `compatible` (hoy solo admite
-  `related`/`accessory`) — migración trivial ahora que la tabla está vacía,
-  cara de hacer después con SKUs cargados.
+  `related`/`accessory`) — migración trivial ahora que hay pocos SKUs,
+  cara de hacer después con el catálogo grande.
 - Reemplazar el copy placeholder de Home (`app/(public)/page.tsx`) y Empresa
   (`app/(public)/empresa/page.tsx`) — hay `TODO` literales en el código.
 - Definir NAP real (dirección, teléfono, horario) y agregar `LocalBusiness`
   junto al `Organization` existente — hoy no hay ningún dato de contacto
   físico en el sitio.
-- Cargar primer lote real vía `/admin`: 1 marca, 4–6 categorías (Impresoras,
-  Lectores, Colectores, RFID, Ribbons, Etiquetas), 15–20 SKUs con specs.
+- Seguir completando el catálogo (subcategorías dentro de Computadoras
+  móviles/Escáneres/RFID, más SKUs por categoría, insumos/consumibles).
 
 **P1 — alto impacto:**
 - `Offer` en el JSON-LD de producto (requiere antes decidir política de
