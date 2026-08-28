@@ -95,10 +95,10 @@ export default async function Home() {
           src="/brand/warehouse-hero.jpg"
           alt=""
           fill
-          className="object-cover opacity-[0.16]"
+          className="object-cover opacity-45"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/95 to-primary/70" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary from-10% via-primary/70 to-primary/40" />
         <div className="relative mx-auto max-w-3xl px-4 text-center">
           <span className="eyebrow text-orange-400">En operación</span>
           <h2 className="mx-auto mt-3 max-w-xl text-balance text-2xl font-semibold tracking-tight text-white sm:text-3xl">
