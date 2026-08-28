@@ -10,12 +10,11 @@ export const metadata: Metadata = {
   },
 };
 
-// TODO: reemplazar por copy institucional real del cliente
 const DIFERENCIALES = [
   {
     title: "Trayectoria comprobada",
     description:
-      "Años de experiencia acompañando a empresas en la implementación de soluciones de identificación y captura de datos.",
+      "Desde 1992 acompañando a empresas en la implementación de soluciones de identificación y captura de datos.",
     icon: (
       <path
         strokeLinecap="round"
@@ -61,12 +60,11 @@ export default function EmpresaPage() {
           </h1>
           <div className="mt-6 space-y-4 text-secondary">
             <p>
-              {/* TODO: copy institucional real */}
-              Somos una empresa especializada en la comercialización de
-              productos y soluciones tecnológicas para identificación,
-              captura de datos y código de barras, acompañando a nuestros
-              clientes en la elección e implementación de la tecnología
-              adecuada para cada operación.
+              Desde 1992 somos una empresa especializada en la
+              comercialización de productos y soluciones tecnológicas para
+              identificación, captura de datos y código de barras,
+              acompañando a nuestros clientes en la elección e
+              implementación de la tecnología adecuada para cada operación.
             </p>
             <p>
               Trabajamos con una amplia variedad de industrias, ofreciendo

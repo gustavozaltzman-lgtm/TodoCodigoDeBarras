@@ -51,10 +51,20 @@ Campos: Nombre, Slug, Categoría padre (opcional — dejalo vacío para que
 sea una categoría de primer nivel, o elegí una para que sea subcategoría),
 Descripción, Imagen, Estado, Orden, SEO Title, SEO Description.
 
-Hoy el catálogo tiene 5 categorías de primer nivel: **Impresoras**
-(con subcategorías Escritorio e Industriales), **Computadoras móviles**,
-**Escáneres de códigos de barras**, **RFID** e **Insumos y Consumibles**
-(con subcategorías Ribbons y Etiquetas).
+Hoy el catálogo tiene 6 categorías de primer nivel: **Impresión** (con
+subcategorías Escritorio, Industriales, Tarjetas e Impresoras RFID),
+**Movilidad**, **Captura de Datos**, **RFID**, **Consumibles** (con
+subcategorías Ribbons, Etiquetas, Etiquetas RFID y Repuestos y Accesorios)
+e **Identificación / Biometría**.
+
+> ⚠️ **Una categoría "Publicada" sin productos publicados no se muestra en
+> el sitio** (ni en Home, ni en el menú, ni en las pills de categorías del
+> catálogo) — aunque su Estado diga Publicado. Esto es automático: apenas
+> cargues y publiques el primer producto de esa categoría, va a aparecer
+> sola. Es intencional, para no mostrar secciones vacías al público (ej.
+> "Identificación / Biometría" hoy está oculta por esto). Si necesitás
+> verla igual, entrá directo por su URL (`/catalogo/<slug>`) — solo no
+> aparece en la navegación.
 
 ## Productos
 

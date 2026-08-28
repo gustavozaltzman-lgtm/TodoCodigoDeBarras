@@ -243,11 +243,12 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
     que el header sigue usando el `LogoMark` SVG hecho a mano que ya había.
 
 **Pendiente — P0:**
-- Reemplazar el copy placeholder de Home (`app/(public)/page.tsx`) y Empresa
-  (`app/(public)/empresa/page.tsx`) — hay `TODO` literales en el código.
-  No se redactó todavía porque requeriría inventar trayectoria,
-  certificaciones o diferenciales que no están confirmados — dato de
-  negocio que falta, no una tarea técnica.
+- ~~Reemplazar el copy placeholder de Home y Empresa~~ — **hecho
+  parcialmente**: el usuario confirmó que la empresa opera desde 1992, así
+  que el párrafo institucional (Home teaser, Empresa y la tarjeta
+  "Trayectoria comprobada") ya menciona ese dato real en vez del genérico
+  anterior. Sigue sin certificaciones ni diferenciales adicionales
+  verificables — el usuario confirmó que por ahora no hay más para agregar.
 - Definir NAP real (dirección, teléfono, horario) y agregar `LocalBusiness`
   junto al `Organization` existente — hoy no hay ningún dato de contacto
   físico en el sitio.
@@ -261,6 +262,13 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
 **Pendiente — P1:**
 - `Offer` en el JSON-LD de producto (requiere antes decidir política de
   precios: ¿mostrar precio o siempre "consultar"?).
+- Las 5 páginas de `/soluciones/[slug]` (`lib/content/industry-solutions.ts`)
+  hoy son muy flacas (título + una línea + 2 botones). Decisión del usuario:
+  no es prioridad ahora, pero cuando se retome **no** desarrollarlas como
+  "soluciones" genéricas — el sitio vende hardware, no servicios de
+  consultoría. Reencuadrarlas como casos de éxito/uso concretos (ej. "así
+  resolvimos trazabilidad de depósito con RFID", con el hardware real
+  involucrado), no como propuesta de solución abstracta.
 - Ruta "Servicio Técnico" — sigue sin existir ni como página ni como
   categoría especial (a diferencia de "Soluciones por Industria", esto
   todavía requiere confirmar qué servicio técnico ofrece realmente el

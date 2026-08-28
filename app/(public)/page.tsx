@@ -358,10 +358,8 @@ export default async function Home() {
             {siteConfig.name}
           </h2>
           <p className="mt-3 text-secondary">
-            {/* TODO: copy institucional real */}
-            Contamos con experiencia acompañando a nuestros clientes en la
-            elección e implementación de soluciones tecnológicas para sus
-            operaciones.
+            Desde 1992 acompañamos a nuestros clientes en la elección e
+            implementación de soluciones tecnológicas para sus operaciones.
           </p>
           <Link
             href="/empresa"

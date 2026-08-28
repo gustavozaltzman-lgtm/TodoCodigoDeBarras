@@ -22,6 +22,23 @@
 No se usa CMS headless (panel de administración propio) ni Render (sin
 necesidad técnica todavía — ver `ROADMAP.md`).
 
+### Notas de catálogo
+
+- **Categorías con 0 productos publicados no se muestran en la navegación
+  pública** (`features/categories/queries.ts` — `getPublishedTopCategories`,
+  `getPublishedSubcategories`, `getAllPublishedCategorySlugs`). Para una
+  categoría top-level esto cuenta productos propios + de sus subcategorías,
+  así una categoría "contenedora" sigue apareciendo si alguna hija tiene
+  stock. La categoría sigue siendo accesible por URL directa, solo no se
+  linkea desde ningún lado.
+- **`getCatalogProducts` filtra por categoría + sus subcategorías**, no por
+  igualdad exacta de slug — los productos siempre cuelgan de una
+  subcategoría, nunca de la categoría top-level directamente.
+- **Redirects 301** en `next.config.ts` (`redirects()`) para slugs de
+  categoría que cambiaron de nombre — necesario cada vez que se renombra
+  una categoría existente, para no romper links compartidos ni duplicar
+  URLs indexadas.
+
 ## Arquitectura de código
 
 Feature-based. Cada dominio de negocio vive en `features/<dominio>/`:
