@@ -1,8 +1,13 @@
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
 export const siteConfig = {
   name: "TodoCodigoDeBarras",
   description:
     "Productos y soluciones de identificacion, captura de datos y codigo de barras.",
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "",
+  url: siteUrl,
 };
 
 export function buildWhatsAppUrl(message: string): string {

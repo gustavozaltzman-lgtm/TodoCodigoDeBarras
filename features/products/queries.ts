@@ -1,6 +1,12 @@
 import { and, asc, desc, eq, ilike, inArray, or, sql } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { brands, categories, productImages, products } from "@/lib/db/schema";
+import {
+  brands,
+  categories,
+  productImages,
+  productRelationships,
+  products,
+} from "@/lib/db/schema";
 
 export async function getFeaturedProducts(limit = 8) {
   return db.query.products.findMany({
@@ -119,4 +125,42 @@ export async function getCatalogProducts(filters: CatalogFilters) {
     pageSize,
     totalPages: Math.max(Math.ceil(count / pageSize), 1),
   };
+}
+
+export async function getProductBySlug(slug: string) {
+  return db.query.products.findFirst({
+    where: and(eq(products.slug, slug), eq(products.status, "published")),
+    with: {
+      brand: true,
+      category: true,
+      images: {
+        orderBy: (image, { desc: descOrder }) => [descOrder(image.isPrimary), asc(image.sortOrder)],
+      },
+      specifications: {
+        orderBy: (spec, { asc: ascOrder }) => [ascOrder(spec.sortOrder)],
+      },
+      documents: true,
+    },
+  });
+}
+
+export async function getRelatedProducts(productId: number) {
+  const relations = await db
+    .select({ relatedProductId: productRelationships.relatedProductId })
+    .from(productRelationships)
+    .where(eq(productRelationships.productId, productId));
+
+  const relatedIds = relations.map((r) => r.relatedProductId);
+  if (relatedIds.length === 0) return [];
+
+  return db.query.products.findMany({
+    where: and(inArray(products.id, relatedIds), eq(products.status, "published")),
+    with: {
+      brand: true,
+      images: {
+        orderBy: (image, { desc: descOrder }) => [descOrder(image.isPrimary)],
+        limit: 1,
+      },
+    },
+  });
 }
