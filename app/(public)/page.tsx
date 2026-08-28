@@ -19,9 +19,13 @@ export default async function Home() {
   return (
     <main>
       {/* Hero */}
-      <section className="bg-muted">
-        <div className="mx-auto max-w-6xl px-4 py-24 text-center">
-          <h1 className="mx-auto max-w-2xl text-4xl font-semibold tracking-tight text-primary sm:text-5xl">
+      <section className="relative overflow-hidden bg-muted">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 opacity-[0.4] [background-image:radial-gradient(var(--color-border)_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_0%,black_40%,transparent_100%)]"
+        />
+        <div className="relative mx-auto max-w-6xl px-4 py-24 text-center">
+          <h1 className="mx-auto max-w-2xl text-4xl font-semibold tracking-tight text-balance text-primary sm:text-5xl">
             {/* TODO: propuesta de valor real del cliente */}
             Soluciones de código de barras para tu operación
           </h1>
@@ -57,11 +61,11 @@ export default async function Home() {
               <Link
                 key={category.id}
                 href={`/catalogo/${category.slug}`}
-                className="cursor-pointer rounded-lg border border-border p-5 text-center transition-colors hover:border-accent hover:shadow-sm"
+                className="group cursor-pointer rounded-lg border border-border bg-white p-5 text-center transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-md"
               >
                 <CategoryIcon
                   slug={category.slug}
-                  className="mx-auto h-8 w-8 text-accent"
+                  className="mx-auto h-8 w-8 text-accent transition-transform duration-200 group-hover:scale-110"
                 />
                 <span className="mt-3 block font-medium text-primary">
                   {category.name}
@@ -100,12 +104,12 @@ export default async function Home() {
       {brands.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 py-16">
           <h2 className="text-2xl font-semibold text-primary">Marcas</h2>
-          <div className="mt-6 flex flex-wrap items-center gap-8">
+          <div className="mt-6 flex flex-wrap gap-3">
             {brands.map((brand) => (
               <Link
                 key={brand.id}
                 href={`/marcas/${brand.slug}`}
-                className="cursor-pointer text-lg font-medium text-secondary transition-colors hover:text-primary"
+                className="cursor-pointer rounded-lg border border-border bg-white px-6 py-4 text-lg font-semibold text-secondary transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/40 hover:text-primary hover:shadow-md"
               >
                 {brand.name}
               </Link>
@@ -116,24 +120,22 @@ export default async function Home() {
 
       {/* Empresa (teaser) */}
       <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="grid gap-8 sm:grid-cols-2 sm:items-center">
-          <div>
-            <h2 className="text-2xl font-semibold text-primary">
-              {siteConfig.name}
-            </h2>
-            <p className="mt-3 text-secondary">
-              {/* TODO: copy institucional real */}
-              Contamos con experiencia acompañando a nuestros clientes en la
-              elección e implementación de soluciones tecnológicas para sus
-              operaciones.
-            </p>
-            <Link
-              href="/empresa"
-              className="mt-4 inline-block cursor-pointer text-sm font-medium text-accent transition-colors hover:text-primary hover:underline"
-            >
-              Conocé más sobre nosotros →
-            </Link>
-          </div>
+        <div className="max-w-2xl">
+          <h2 className="text-2xl font-semibold text-primary">
+            {siteConfig.name}
+          </h2>
+          <p className="mt-3 text-secondary">
+            {/* TODO: copy institucional real */}
+            Contamos con experiencia acompañando a nuestros clientes en la
+            elección e implementación de soluciones tecnológicas para sus
+            operaciones.
+          </p>
+          <Link
+            href="/empresa"
+            className="mt-4 inline-block cursor-pointer text-sm font-medium text-accent transition-colors hover:text-primary hover:underline"
+          >
+            Conocé más sobre nosotros →
+          </Link>
         </div>
       </section>
 

@@ -9,12 +9,16 @@ const NAV_LINKS = [
 
 export function Header() {
   return (
-    <header className="border-b border-border bg-white">
+    <header className="sticky top-0 z-40 border-b border-border bg-white/95 shadow-sm backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link
           href="/"
-          className="font-[family-name:var(--font-heading)] text-lg font-semibold text-primary transition-colors hover:text-accent"
+          className="flex items-center gap-2 font-[family-name:var(--font-heading)] text-lg font-semibold text-primary transition-colors hover:text-accent"
         >
+          <span
+            aria-hidden="true"
+            className="inline-block h-2.5 w-2.5 rounded-full bg-accent"
+          />
           {siteConfig.name}
         </Link>
         <nav className="flex items-center gap-4 sm:gap-6">

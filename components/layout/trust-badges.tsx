@@ -37,18 +37,20 @@ export function TrustBadges() {
       {BADGES.map((badge) => (
         <div
           key={badge.title}
-          className="flex flex-col items-center gap-2 text-center"
+          className="flex flex-col items-center gap-3 text-center"
         >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.5}
-            className="h-8 w-8 text-accent"
-            aria-hidden="true"
-          >
-            {badge.icon}
-          </svg>
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-border">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              className="h-7 w-7 text-accent"
+              aria-hidden="true"
+            >
+              {badge.icon}
+            </svg>
+          </span>
           <p className="text-sm font-medium text-secondary">{badge.title}</p>
         </div>
       ))}
