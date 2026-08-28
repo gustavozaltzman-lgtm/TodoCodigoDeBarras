@@ -170,22 +170,33 @@ export default async function Home() {
 
       {/* Empresa (teaser) */}
       <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="max-w-2xl">
-          <h2 className="text-2xl font-semibold text-primary">
-            {siteConfig.name}
-          </h2>
-          <p className="mt-3 text-secondary">
-            {/* TODO: copy institucional real */}
-            Contamos con experiencia acompañando a nuestros clientes en la
-            elección e implementación de soluciones tecnológicas para sus
-            operaciones.
-          </p>
-          <Link
-            href="/empresa"
-            className="mt-4 inline-block cursor-pointer text-sm font-medium text-accent transition-colors hover:text-primary hover:underline"
-          >
-            Conocé más sobre nosotros →
-          </Link>
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+          <div>
+            <h2 className="text-2xl font-semibold text-primary">
+              {siteConfig.name}
+            </h2>
+            <p className="mt-3 text-secondary">
+              {/* TODO: copy institucional real */}
+              Contamos con experiencia acompañando a nuestros clientes en la
+              elección e implementación de soluciones tecnológicas para sus
+              operaciones.
+            </p>
+            <Link
+              href="/empresa"
+              className="mt-4 inline-block cursor-pointer text-sm font-medium text-accent transition-colors hover:text-primary hover:underline"
+            >
+              Conocé más sobre nosotros →
+            </Link>
+          </div>
+          <div className="overflow-hidden rounded-xl border border-border">
+            <Image
+              src="/brand/tcb-hero.png"
+              alt={siteConfig.name}
+              width={1600}
+              height={900}
+              className="h-auto w-full object-cover"
+            />
+          </div>
         </div>
       </section>
 
