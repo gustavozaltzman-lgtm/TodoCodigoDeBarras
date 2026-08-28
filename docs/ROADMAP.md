@@ -71,12 +71,13 @@ categoría/general), notificaciones de leads nuevos, honeypot anti-spam.
 - `canonical` en: home (default del layout raíz), empresa, contacto,
   catálogo (canonicaliza sin query params), categoría, marca, producto.
 - `noindex, nofollow` en todo `/admin` (`app/admin/layout.tsx`).
+- JSON-LD `Organization` global (`app/layout.tsx`) y `BreadcrumbList` en
+  producto y categoría, vía helpers en `lib/seo/jsonld.ts`. `Organization`
+  no tiene logo todavía (falta asset real del cliente, queda TODO en el
+  código).
 
 **Pendiente (en este orden sugerido):**
-1. JSON-LD `Organization` global (en `app/layout.tsx`) y `BreadcrumbList` en
-   producto/categoría (reutilizando el breadcrumb visual que ya existe).
-   Ya existe JSON-LD `Product` en `app/(public)/productos/[slug]/page.tsx`.
-2. Estrategia de `revalidate` (ISR) por tipo de página — hoy todo el
+1. Estrategia de `revalidate` (ISR) por tipo de página — hoy todo el
    catálogo/producto corre dinámico (SSR por request) sin caché declarada:
    - Home / institucionales: revalidate largo (~3600s)
    - Catálogo / categoría: revalidate corto (~60s)

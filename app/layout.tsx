@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Lexend, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/lib/config/site";
+import { organizationJsonLd } from "@/lib/seo/jsonld";
 
 const lexend = Lexend({
   variable: "--font-heading",
@@ -31,7 +32,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="es"
       className={`${lexend.variable} ${sourceSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

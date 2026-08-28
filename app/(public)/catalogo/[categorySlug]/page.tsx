@@ -11,6 +11,7 @@ import { ProductCard } from "@/components/catalog/product-card";
 import { CatalogFilters } from "@/components/catalog/catalog-filters";
 import { Pagination } from "@/components/catalog/pagination";
 import { buildWhatsAppUrl, siteConfig, whatsappMessages } from "@/lib/config/site";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
 
 const VALID_SORTS: CatalogSort[] = ["relevance", "name-asc", "newest"];
 
@@ -71,8 +72,18 @@ export default async function CategoryPage({
     return `/catalogo/${categorySlug}${query ? `?${query}` : ""}`;
   };
 
+  const breadcrumb = breadcrumbJsonLd([
+    { name: "Catálogo", url: `${siteConfig.url}/catalogo` },
+    { name: category.name, url: `${siteConfig.url}/catalogo/${category.slug}` },
+  ]);
+
   return (
     <main className="mx-auto max-w-6xl px-4 py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+
       <nav className="text-sm text-secondary">
         <Link href="/catalogo" className="cursor-pointer hover:text-primary">
           Catálogo

@@ -15,6 +15,7 @@ import {
   siteConfig,
   whatsappMessages,
 } from "@/lib/config/site";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
@@ -63,11 +64,28 @@ export default async function ProductPage({ params }: ProductPageProps) {
     url: `${siteConfig.url}/productos/${product.slug}`,
   };
 
+  const breadcrumb = breadcrumbJsonLd([
+    { name: "Catálogo", url: `${siteConfig.url}/catalogo` },
+    ...(product.category
+      ? [
+          {
+            name: product.category.name,
+            url: `${siteConfig.url}/catalogo/${product.category.slug}`,
+          },
+        ]
+      : []),
+    { name: product.name, url: `${siteConfig.url}/productos/${product.slug}` },
+  ]);
+
   return (
     <main className="mx-auto max-w-6xl px-4 py-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
 
       <nav className="text-sm text-secondary">
