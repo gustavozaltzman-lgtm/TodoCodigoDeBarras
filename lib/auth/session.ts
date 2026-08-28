@@ -79,3 +79,9 @@ export async function destroySession() {
   const cookieStore = await cookies();
   cookieStore.delete(COOKIE_NAME);
 }
+
+export async function requireAdminSession(): Promise<SessionPayload> {
+  const session = await getSession();
+  if (!session) throw new Error("No autorizado");
+  return session;
+}
