@@ -96,11 +96,20 @@ categoría/general), notificaciones de leads nuevos, honeypot anti-spam.
   Quedan placeholders `[Completar: ...]` para razón social, CUIT, domicilio y
   jurisdicción — dato de negocio que falta.
 
+- **Headers de seguridad:** CSP estricta con nonce dinámico por request
+  (`proxy.ts` — necesario porque Next.js inyecta scripts inline para
+  hidratar RSC; una CSP estática sin nonce rompe la app por completo,
+  verificado en `npm run start`) + `X-Content-Type-Options`,
+  `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` en
+  `next.config.ts`.
+- **OG image fallback:** `app/opengraph-image.tsx`, generada con
+  `next/og` (sin assets externos), se usa automáticamente cuando una
+  página no define su propia imagen (ej. producto sin fotos).
+
 **Pendiente:**
-1. Revisión de headers de seguridad básicos (CSP, `X-Frame-Options` en admin).
-2. Checklist de producción: confirmar `NEXT_PUBLIC_SITE_URL` en Vercel
-   (prod vs preview — hoy cae al fallback de `VERCEL_URL` si no está seteada),
-   fallback de OG image cuando el producto no tiene imagen.
+1. Checklist de producción: confirmar `NEXT_PUBLIC_SITE_URL` en Vercel
+   (prod vs preview — hoy cae al fallback de `VERCEL_URL` si no está
+   seteada). Necesita el dominio real, no se puede resolver sin ese dato.
 
 **Explícitamente fuera de alcance en 1G:** Render (sigue sin razón técnica),
 CAPTCHA (honeypot + rate limiting alcanza), cambios al modelo de datos de
@@ -113,72 +122,98 @@ Information Architect + CRO). El roadmap completo (con archivos afectados)
 vive en el informe; acá el resumen para no tener que reabrirlo:
 
 **Hecho:**
-- Primer lote de catálogo real cargado (contenido, no código — vía scripts
-  puntuales contra Neon, no viven en el repo): marcas **Zebra** y **TSC**
-  (publicadas); categorías top-level **Impresoras** (con subcategorías
-  Escritorio e Industriales), **Computadoras móviles**, **Escáneres de
-  códigos de barras** y **RFID**. 8 productos publicados con specs técnicas
-  reales tomadas de datasheets oficiales y ficha técnica enlazada como
-  documento descargable:
+- Catálogo real cargado (contenido, no código — vía scripts puntuales
+  contra Neon, no viven en el repo): marcas **Zebra** y **TSC** (publicadas);
+  5 categorías top-level — **Impresoras** (con subcategorías Escritorio e
+  Industriales), **Computadoras móviles**, **Escáneres de códigos de
+  barras**, **RFID** e **Insumos y Consumibles** (con subcategorías Ribbons
+  y Etiquetas). **11 productos publicados**, todos con specs técnicas reales
+  de datasheets oficiales y ficha técnica enlazada como documento
+  descargable:
   - Zebra: **ZT411** (impresora industrial), **TC22** (cómputo móvil),
-    **DS2208** (escáner), **FX9600** (lector RFID fijo)
+    **DS2208** (escáner), **FX9600** (lector RFID fijo), **2300 Wax** y
+    **5095 Resin** (ribbons), **Z-Select 4000D** (etiqueta térmica directa)
   - TSC: **TE200**, **TE210** (impresoras de escritorio), **MB241T**,
     **MH241T** (impresoras industriales)
-  Los 8 tienen foto real del fabricante (autorización del usuario: partner
-  de Zebra y empleado de TSC). `BLOB_READ_WRITE_TOKEN` estaba vacío en
-  `.env.local` (store de Vercel Blob nunca conectado) — se configuró con
-  el store real del proyecto (`store_TQOXSBd82945TTXP`) y ya está subiendo
-  archivos. **Falta confirmar que esa misma variable esté cargada en
-  Settings → Environment Variables del proyecto en Vercel** (production),
-  no solo en el `.env.local` local — si no, el admin no podrá subir
-  imágenes nuevas desde el sitio desplegado.
+  10 de los 11 tienen foto real del fabricante (autorización del usuario:
+  partner de Zebra y empleado de TSC) subida a Vercel Blob. La Z-Select
+  4000D quedó **sin foto a propósito** — no se pudo confirmar con certeza
+  la URL de imagen del SKU exacto (rollo de etiqueta, no el de recibo) y
+  se prefirió no usar una imagen que pudiera representar mal el producto.
+  `BLOB_READ_WRITE_TOKEN` estaba vacío en `.env.local` (store de Vercel
+  Blob nunca conectado) — se configuró con el store real del proyecto
+  (`store_TQOXSBd82945TTXP`). **Falta confirmar que esa misma variable
+  esté cargada en Settings → Environment Variables del proyecto en
+  Vercel** (production), no solo en el `.env.local` local — si no, el
+  admin no podrá subir imágenes nuevas desde el sitio desplegado.
+  No se cargó ninguna relación `compatible` ribbon↔etiqueta todavía: la
+  Z-Select 4000D es térmica directa (no usa ribbon), así que vincularla
+  con los ribbons sería una afirmación técnica incorrecta. Falta cargar
+  una etiqueta sintética apta para transferencia térmica para poder armar
+  esa relación de verdad.
 - Tarjetas de categoría con ícono en Home (`components/layout/category-icon.tsx`),
   idea tomada de barcodesinc.com — reemplaza las tarjetas de solo texto.
 - Fix de contraste: `--color-border` era casi idéntico a `--color-muted`,
   los inputs de formulario eran invisibles hasta el foco. Corregido en
   `app/globals.css` + `bg-white` explícito en inputs
   (`components/forms/inquiry-form.tsx`, `components/admin/form-styles.ts`).
+- **P0 — modelo de producto extendido:** `mpn`, `condition`
+  (new/refurbished/used), `availability` (in_stock/out_of_stock/preorder/
+  discontinued) en `products`, y valor `compatible` agregado a
+  `relationship_type` (antes solo `related`/`accessory`). Migración
+  aplicada en Neon, conectado a formulario admin, validación Zod y JSON-LD
+  de producto (`mpn`). Sin `Offer` todavía — sigue bloqueado por la
+  decisión de política de precios (ver P1 abajo).
+- **P1 — cantidad/volumen en leads:** columna `inquiries.quantity`
+  (texto libre: "2 cajas", "500 unidades"), conectada a formulario público,
+  validación, notificación por email y tabla de admin.
+- **P1 — `FAQPage` técnico:** helper `faqPageJsonLd` en `lib/seo/jsonld.ts`
+  + componente `CategoryFaq`, aplicado en las 6 categorías con contenido.
+  Contenido factual sobre estándares de la industria (dpi, térmica directa
+  vs. transferencia, ribbon cera/cera-resina/resina, IP rating,
+  MIL-STD-810H, lector 1D vs. 2D, RFID UHF vs. HF, EPC Gen2) — deliberadamente
+  sin afirmaciones sobre el negocio, solo definiciones técnicas verificables.
+- **P1 — hub de Recursos Técnicos** (`/recursos`): lista fichas técnicas y
+  manuales de productos publicados, agrupados por marca, derivado de
+  `product_documents` (dato real ya cargado, no fabricado). Enlazado desde
+  el footer y el sitemap.
 
-**Pendiente — P0 (antes de seguir cargando catálogo):**
-- Extender `products` con `mpn`, `condition`, `availability`, y tipar
-  `productRelationships.type` con un valor `compatible` (hoy solo admite
-  `related`/`accessory`) — migración trivial ahora que hay pocos SKUs,
-  cara de hacer después con el catálogo grande.
+**Pendiente — P0:**
 - Reemplazar el copy placeholder de Home (`app/(public)/page.tsx`) y Empresa
   (`app/(public)/empresa/page.tsx`) — hay `TODO` literales en el código.
+  No se redactó todavía porque requeriría inventar trayectoria,
+  certificaciones o diferenciales que no están confirmados — dato de
+  negocio que falta, no una tarea técnica.
 - Definir NAP real (dirección, teléfono, horario) y agregar `LocalBusiness`
   junto al `Organization` existente — hoy no hay ningún dato de contacto
   físico en el sitio.
-- Seguir completando el catálogo (subcategorías dentro de Computadoras
-  móviles/Escáneres/RFID, más SKUs por categoría, insumos/consumibles).
+- Seguir completando el catálogo: subcategorías dentro de Computadoras
+  móviles/Escáneres/RFID, más SKUs por categoría, al menos una etiqueta
+  sintética compatible con transferencia térmica (para poder cargar la
+  relación `compatible` con los ribbons ya cargados).
 
-**P1 — alto impacto:**
+**Pendiente — P1:**
 - `Offer` en el JSON-LD de producto (requiere antes decidir política de
   precios: ¿mostrar precio o siempre "consultar"?).
-- Campo cantidad/volumen en el formulario de leads (para cotizar insumos por
-  caja/rollo — `lib/db/schema.ts`, `lib/validation/inquiry.ts`,
-  `inquiry-form.tsx`).
-- Rutas nuevas: Servicio Técnico, Soluciones por Industria, Recursos Técnicos
-  — hoy no existen ni como página ni como categoría especial.
-- `FAQPage` reutilizable (helper en `lib/seo/jsonld.ts` + componente).
+- Rutas nuevas: Servicio Técnico, Soluciones por Industria — hoy no existen
+  ni como página ni como categoría especial. No se crearon todavía porque
+  requieren afirmar qué servicios/industrias atiende realmente el negocio;
+  publicar contenido sin confirmar sería inventar capacidades.
 
 **P2/P3:** guías técnicas (TechArticle/HowTo), página de aterrizaje por
-datasheet (hoy los PDF cuelgan sueltos, link directo al blob), buscador de
+datasheet (hoy los PDF cuelgan sueltos, link directo al blob — el hub de
+`/recursos` es un paso intermedio, no reemplaza esto), buscador de
 compatibilidad insumo↔impresora, comparador de specs.
 
 **Ideas de diseño (referencia: barcodesinc.com, competidor de referencia en
-hardware AIDC B2B)** — para aplicar cuando se rediseñe Home/catálogo, no
-implementadas todavía:
-- Grilla de categorías con ícono por tipo de hardware (impresoras, lectores,
-  colectores, RFID...) en vez de solo texto — hoy las categorías en Home son
-  tarjetas de texto plano (`app/(public)/page.tsx`).
+hardware AIDC B2B)** — para aplicar cuando se rediseñe Home/catálogo:
+- Grilla de categorías con ícono — **ya implementado** (ver arriba).
 - Sellos de garantía/confianza arriba del fold — **ya lo tenemos** vía
   `components/layout/trust-badges.tsx`, solo falta contenido real.
 - "Buscador de compatibilidad" (insumo↔impresora) como herramienta destacada,
   no solo un filtro más — coincide con el P3 de arriba.
-- Centro de recursos en el footer (generador de códigos, guías de selección,
-  drivers) — refuerza posicionamiento técnico, no solo transaccional; encaja
-  con el pilar "Recursos Técnicos" del P1.
+- Centro de recursos en el footer — **ya lo tenemos** vía `/recursos`
+  (queda como P2 sumar generador de códigos y guías de selección).
 - Teléfono/WhatsApp de ventas visible en el header, no solo en Contacto —
   hoy el WhatsApp flotante ya cumple ese rol, evaluar si conviene además en
   el header para desktop.
