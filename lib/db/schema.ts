@@ -273,3 +273,19 @@ export const inquiriesRelations = relations(inquiries, ({ one }) => ({
     references: [products.id],
   }),
 }));
+
+export const productRelationshipsRelations = relations(
+  productRelationships,
+  ({ one }) => ({
+    product: one(products, {
+      fields: [productRelationships.productId],
+      references: [products.id],
+      relationName: "productRelationshipsFromProduct",
+    }),
+    relatedProduct: one(products, {
+      fields: [productRelationships.relatedProductId],
+      references: [products.id],
+      relationName: "productRelationshipsToProduct",
+    }),
+  })
+);
