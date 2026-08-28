@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getPublishedTopCategories } from "@/features/categories/queries";
 import { getPublishedBrands } from "@/features/brands/queries";
 import { getFeaturedProducts } from "@/features/products/queries";
+import { ProductCard } from "@/components/catalog/product-card";
 import { siteConfig } from "@/lib/config/site";
 
 export default async function Home() {
@@ -70,21 +71,14 @@ export default async function Home() {
             </h2>
             <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {featuredProducts.map((product) => (
-                <Link
+                <ProductCard
                   key={product.id}
-                  href={`/productos/${product.slug}`}
-                  className="cursor-pointer rounded-lg border border-border bg-white p-4 transition-shadow hover:shadow-sm"
-                >
-                  <div className="aspect-square rounded-md bg-muted" />
-                  <p className="mt-3 text-sm font-medium text-primary">
-                    {product.name}
-                  </p>
-                  {product.brand && (
-                    <p className="text-xs text-secondary">
-                      {product.brand.name}
-                    </p>
-                  )}
-                </Link>
+                  slug={product.slug}
+                  name={product.name}
+                  brandName={product.brand?.name}
+                  imageUrl={product.images[0]?.url}
+                  imageAlt={product.images[0]?.alt}
+                />
               ))}
             </div>
           </div>
@@ -97,9 +91,13 @@ export default async function Home() {
           <h2 className="text-2xl font-semibold text-primary">Marcas</h2>
           <div className="mt-6 flex flex-wrap items-center gap-8">
             {brands.map((brand) => (
-              <span key={brand.id} className="text-lg font-medium text-secondary">
+              <Link
+                key={brand.id}
+                href={`/marcas/${brand.slug}`}
+                className="cursor-pointer text-lg font-medium text-secondary transition-colors hover:text-primary"
+              >
                 {brand.name}
-              </span>
+              </Link>
             ))}
           </div>
         </section>
