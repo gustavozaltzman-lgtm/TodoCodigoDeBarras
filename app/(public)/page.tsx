@@ -3,6 +3,7 @@ import { getPublishedTopCategories } from "@/features/categories/queries";
 import { getPublishedBrands } from "@/features/brands/queries";
 import { getFeaturedProducts } from "@/features/products/queries";
 import { ProductCard } from "@/components/catalog/product-card";
+import { TrustBadges } from "@/components/layout/trust-badges";
 import { siteConfig } from "@/lib/config/site";
 
 export default async function Home() {
@@ -39,6 +40,8 @@ export default async function Home() {
               Solicitar información
             </Link>
           </div>
+
+          <TrustBadges />
         </div>
       </section>
 
