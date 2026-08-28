@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TodoCodigoDeBarras
 
-## Getting Started
+Sitio web corporativo + catálogo + generación de leads para una empresa que
+comercializa hardware de captura automática de datos (códigos de barras,
+RFID) e insumos asociados. Fase 1: sin venta online. El modelo de datos y la
+arquitectura están preparados para evolucionar a e-commerce en Fase 2.
 
-First, run the development server:
+## Documentación del proyecto
+
+- **[docs/ROADMAP.md](docs/ROADMAP.md)** — fuente de verdad del estado del
+  proyecto: qué fase está en curso, qué está hecho y qué falta. Leer esto
+  primero si se retoma el proyecto después de un corte.
+- **[docs/FICHA-TECNICA.md](docs/FICHA-TECNICA.md)** — stack, arquitectura,
+  modelo de datos, seguridad, variables de entorno y despliegue.
+- **[docs/MANUAL-USUARIO.md](docs/MANUAL-USUARIO.md)** — cómo usar el panel
+  de administración (`/admin`) para cargar productos, categorías, marcas y
+  gestionar consultas, sin tocar código.
+
+## Empezar en local
 
 ```bash
+npm install
+cp .env.example .env.local   # completar las variables (ver ficha técnica)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abrir [http://localhost:3000](http://localhost:3000). El panel de
+administración vive en `/admin`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Seguridad
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Se hizo una auditoría de seguridad completa. Estado:
 
-## Learn More
+**Corregido:**
+- Rate limiting en `/admin/login` (bloquea después de 5 intentos fallidos
+  por IP en 15 minutos).
+- JSON-LD escapado antes de inyectarse en el HTML (evita que un valor con
+  `</script>` rompa la página).
 
-To learn more about Next.js, take a look at the following resources:
+**Pendiente (severidad media/baja, no bloqueante para uso normal):**
+- Login sin protección contra enumeración de usuarios por timing.
+- Subida de imágenes/documentos sin validar tipo de archivo ni tamaño
+  máximo explícito.
+- Vulnerabilidad moderada de `esbuild` vía `drizzle-kit` (solo afecta el
+  entorno de desarrollo local, no producción).
+- Sesión de admin sin mecanismo de revocación server-side antes de su
+  expiración (7 días).
+- `style-src 'unsafe-inline'` en la CSP sin confirmar si es estrictamente
+  necesario.
+- Nombre de archivo sin sanitizar en la key de Vercel Blob.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Detalle completo de cada punto (archivo, línea, riesgo, cómo corregirlo) en
+`docs/FICHA-TECNICA.md`.
