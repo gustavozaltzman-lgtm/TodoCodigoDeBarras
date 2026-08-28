@@ -125,6 +125,8 @@ export default async function Home() {
         />
         {/* Overlay oscuro para contraste de texto (40-50%) */}
         <div className="absolute inset-0 bg-primary/[.45]" />
+        {/* Refuerzo de contraste sobre la columna de texto (izquierda) */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/85 via-primary/50 to-transparent" />
         <div
           aria-hidden="true"
           className="absolute inset-0 opacity-[0.1] [background-image:linear-gradient(rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.6)_1px,transparent_1px)] [background-size:40px_40px] [mask-image:radial-gradient(ellipse_70%_70%_at_50%_0%,black_30%,transparent_100%)]"
@@ -157,7 +159,7 @@ export default async function Home() {
 
         <div className="relative mx-auto grid max-w-6xl gap-12 px-4 pt-24 pb-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:pt-28 lg:pb-24">
           <div className="text-center lg:text-left">
-            <span className="eyebrow inline-flex items-center gap-2 text-orange-400">
+            <span className="eyebrow inline-flex items-center gap-2 text-orange-400 [text-shadow:0_1px_3px_rgba(0,0,0,0.8)]">
               <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-current" />
               Hardware para código de barras, QR, RFID y etiquetas inteligentes
             </span>
@@ -185,25 +187,30 @@ export default async function Home() {
           </div>
 
           {/* Composicion de hardware real: impresora, escaner, movilidad, RFID */}
-          <div className="mx-auto grid w-full max-w-sm grid-cols-2 gap-3 sm:gap-4">
-            {HERO_HARDWARE.map((item) => (
-              <Link
-                key={item.slug}
-                href={`/productos/${item.slug}`}
-                className="group relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-white/95 shadow-xl ring-1 ring-white/10 transition-transform duration-200 hover:-translate-y-1"
-              >
-                <Image
-                  src={item.url}
-                  alt={item.name}
-                  fill
-                  className="object-contain p-4 transition-transform duration-200 group-hover:scale-105"
-                  sizes="(min-width: 1024px) 20vw, 40vw"
-                />
-                <span className="font-mono-data absolute inset-x-0 bottom-0 bg-primary/85 px-2 py-1.5 text-center text-[10px] uppercase tracking-wide text-white">
-                  {item.name}
-                </span>
-              </Link>
-            ))}
+          <div className="mx-auto w-full max-w-sm">
+            <span className="eyebrow mb-3 block text-center text-slate-300 lg:text-left">
+              Destacados
+            </span>
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              {HERO_HARDWARE.map((item) => (
+                <Link
+                  key={item.slug}
+                  href={`/productos/${item.slug}`}
+                  className="group relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-white/95 shadow-xl ring-1 ring-white/10 transition-transform duration-200 hover:-translate-y-1"
+                >
+                  <Image
+                    src={item.url}
+                    alt={item.name}
+                    fill
+                    className="object-contain p-4 transition-transform duration-200 group-hover:scale-105"
+                    sizes="(min-width: 1024px) 20vw, 40vw"
+                  />
+                  <span className="font-mono-data absolute inset-x-0 bottom-0 bg-primary/85 px-2 py-1.5 text-center text-[10px] uppercase tracking-wide text-white">
+                    {item.name}
+                  </span>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
