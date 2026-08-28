@@ -62,11 +62,13 @@ export default async function Home() {
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-current" />
             Hardware AIDC &amp; RFID
           </span>
-          <h1 className="mx-auto mt-4 max-w-3xl text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">
-            Soluciones de código de barras, RFID, movilidad, biometría,
-            identificación y captura de datos para mejorar la eficiencia,
-            trazabilidad y control de tu negocio.
+          <h1 className="mx-auto mt-4 max-w-3xl text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            Tecnología que impulsa tu operación
           </h1>
+          <p className="mx-auto mt-4 max-w-xl text-balance text-lg text-slate-300 sm:text-xl">
+            Equipos y soluciones para identificar, capturar, imprimir y
+            controlar.
+          </p>
           <div className="mt-8 flex justify-center gap-4">
             <Link
               href="/catalogo"
