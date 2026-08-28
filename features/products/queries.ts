@@ -72,7 +72,25 @@ export async function getCatalogProducts(filters: CatalogFilters) {
   }
 
   if (filters.categorySlug) {
-    conditions.push(eq(categories.slug, filters.categorySlug));
+    // Una categoria top-level (ej. "Impresoras") no tiene productos
+    // asignados directamente -- los productos cuelgan de sus subcategorias
+    // (ej. "Industriales"). Filtrar solo por igualdad de slug deja afuera
+    // todo lo que esta en una subcategoria. Incluimos la categoria pedida
+    // + sus hijas directas.
+    const category = await db.query.categories.findFirst({
+      where: eq(categories.slug, filters.categorySlug),
+      columns: { id: true },
+    });
+    if (!category) {
+      conditions.push(sql`false`);
+    } else {
+      const children = await db
+        .select({ id: categories.id })
+        .from(categories)
+        .where(eq(categories.parentId, category.id));
+      const categoryIds = [category.id, ...children.map((c) => c.id)];
+      conditions.push(inArray(products.categoryId, categoryIds));
+    }
   }
 
   if (filters.brandSlug) {

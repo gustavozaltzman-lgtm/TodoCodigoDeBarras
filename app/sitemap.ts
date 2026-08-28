@@ -3,6 +3,7 @@ import { siteConfig } from "@/lib/config/site";
 import { getAllPublishedCategorySlugs } from "@/features/categories/queries";
 import { getAllPublishedProductSlugs } from "@/features/products/queries";
 import { getPublishedBrands } from "@/features/brands/queries";
+import { INDUSTRY_SOLUTIONS } from "@/lib/content/industry-solutions";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [categories, products, brands] = await Promise.all([
@@ -42,5 +43,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...categoryEntries, ...brandEntries, ...productEntries];
+  const solutionEntries: MetadataRoute.Sitemap = INDUSTRY_SOLUTIONS.map((s) => ({
+    url: `${siteConfig.url}/soluciones/${s.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  return [
+    ...staticEntries,
+    ...categoryEntries,
+    ...brandEntries,
+    ...productEntries,
+    ...solutionEntries,
+  ];
 }

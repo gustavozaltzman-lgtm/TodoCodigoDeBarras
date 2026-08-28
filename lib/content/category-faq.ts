@@ -4,7 +4,7 @@ import type { FaqItem } from "@/lib/seo/jsonld";
 // afirmaciones sobre el negocio. Pensado para AEO/GEO: respuestas directas
 // que un motor de busqueda o una IA pueda citar.
 export const CATEGORY_FAQ: Record<string, FaqItem[]> = {
-  impresoras: [
+  impresion: [
     {
       question: "¿Qué significa la resolución (dpi) de una impresora de etiquetas?",
       answer:
@@ -48,7 +48,7 @@ export const CATEGORY_FAQ: Record<string, FaqItem[]> = {
         "La impresión térmica directa usa papel químicamente tratado que se oscurece con el calor del cabezal, sin necesidad de ribbon, pero la imagen se degrada con el tiempo. La transferencia térmica usa un ribbon cuya tinta se transfiere a la etiqueta con calor, produciendo etiquetas más durables y resistentes a la abrasión y los químicos — la opción habitual en entornos industriales.",
     },
   ],
-  "computadoras-moviles": [
+  movilidad: [
     {
       question:
         "¿Qué significa el rating IP (por ejemplo IP65 o IP68) en un equipo móvil?",
@@ -61,7 +61,7 @@ export const CATEGORY_FAQ: Record<string, FaqItem[]> = {
         "Es un estándar militar estadounidense de pruebas ambientales (caídas, vibración, temperatura extrema, humedad) que fabricantes como Zebra usan para certificar la resistencia de sus equipos rugerizados. No garantiza indestructibilidad, pero sí un nivel de resistencia muy superior al de un dispositivo de consumo estándar.",
     },
   ],
-  "escaneres-codigos-de-barras": [
+  "captura-de-datos": [
     {
       question: "¿Cuál es la diferencia entre un lector 1D y uno 2D (imager)?",
       answer:

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { siteConfig } from "@/lib/config/site";
+import { INDUSTRY_SOLUTIONS } from "@/lib/content/industry-solutions";
 import { LogoMark } from "./logo-mark";
 
 const NAV_LINKS = [
@@ -13,6 +14,7 @@ const NAV_LINKS = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [solucionesOpen, setSolucionesOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-white/95 shadow-sm backdrop-blur">
@@ -28,15 +30,57 @@ export function Header() {
 
         {/* Nav de escritorio */}
         <nav className="hidden items-center gap-6 md:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-secondary transition-colors hover:text-primary"
+          <Link
+            href="/catalogo"
+            className="text-sm font-medium text-secondary transition-colors hover:text-primary"
+          >
+            Catálogo
+          </Link>
+
+          <div
+            className="relative"
+            onMouseEnter={() => setSolucionesOpen(true)}
+            onMouseLeave={() => setSolucionesOpen(false)}
+          >
+            <button
+              type="button"
+              className="flex cursor-pointer items-center gap-1 text-sm font-medium text-secondary transition-colors hover:text-primary"
+              aria-expanded={solucionesOpen}
             >
-              {link.label}
-            </Link>
-          ))}
+              Soluciones
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-3.5 w-3.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+              </svg>
+            </button>
+            {solucionesOpen && (
+              <div className="absolute left-1/2 top-full w-64 -translate-x-1/2 pt-3">
+                <div className="rounded-lg border border-border bg-white p-2 shadow-lg">
+                  {INDUSTRY_SOLUTIONS.map((s) => (
+                    <Link
+                      key={s.slug}
+                      href={`/soluciones/${s.slug}`}
+                      className="block cursor-pointer rounded-md px-3 py-2 text-sm text-secondary transition-colors hover:bg-muted hover:text-primary"
+                    >
+                      {s.title}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <Link
+            href="/empresa"
+            className="text-sm font-medium text-secondary transition-colors hover:text-primary"
+          >
+            Empresa
+          </Link>
+          <Link
+            href="/contacto"
+            className="text-sm font-medium text-secondary transition-colors hover:text-primary"
+          >
+            Contacto
+          </Link>
           <Link
             href="/contacto"
             className="cursor-pointer rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary"
@@ -80,6 +124,21 @@ export function Header() {
                 >
                   {link.label}
                 </Link>
+                {link.href === "/catalogo" && (
+                  <ul className="ml-3 flex flex-col gap-0.5 border-l border-border pl-3">
+                    {INDUSTRY_SOLUTIONS.map((s) => (
+                      <li key={s.slug}>
+                        <Link
+                          href={`/soluciones/${s.slug}`}
+                          onClick={() => setOpen(false)}
+                          className="block rounded-md px-2 py-1.5 text-sm text-secondary transition-colors hover:bg-muted hover:text-primary"
+                        >
+                          {s.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>

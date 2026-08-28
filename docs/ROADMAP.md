@@ -198,6 +198,50 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
   `product_documents` (dato real ya cargado, no fabricado). Enlazado desde
   el footer y el sitemap.
 
+- **Sprint de optimización B2B (pre-publicación):**
+  - **Fix crítico de catálogo:** `getCatalogProducts` (`features/products/queries.ts`)
+    filtraba por igualdad exacta de `categories.slug`, pero los productos
+    cuelgan de la *subcategoría* (ej. "Industriales"), no de la categoría
+    top-level ("Impresión") — por eso `/catalogo/impresion` devolvía 0
+    resultados aunque hubiera productos. Ahora resuelve la categoría pedida
+    + sus hijas directas y filtra por `inArray(categoryId, [...])`.
+  - **Rediseño de Hero (Home):** mismo título/subtítulo, pero ahora con
+    fondo real (`warehouse-hero.jpg`) + overlay oscuro (45%) y una
+    composición 2×2 con fotos reales de producto (impresora ZT411, escáner
+    DS2208, cómputo móvil TC22, lector RFID FX9600) en vez de solo texto —
+    sin generar imágenes nuevas, reusa fotos ya cargadas del catálogo.
+  - **Categorías reestructuradas** para escalar: Impresoras→**Impresión**,
+    Escáneres→**Captura de Datos**, Computadoras móviles→**Movilidad**,
+    Insumos y Consumibles→**Consumibles**, RFID sin cambios. Se agregó
+    **Identificación / Biometría** (categoría nueva, vacía, para cuando haya
+    productos de esa línea) y la subcategoría **Impresoras RFID** dentro de
+    Impresión (también vacía, para impresoras/codificadoras RFID a futuro).
+    Slugs cambiaron — sin problema porque el sitio no está publicado
+    todavía; si ya estuviera indexado habría que agregar redirects.
+  - **Diferencial B2B** (asesoramiento técnico, stock y disponibilidad,
+    soporte post-venta) pasó de ser un detalle chico dentro del hero oscuro
+    a su propia sección en tarjetas, inmediatamente debajo del hero.
+    Reemplaza a `components/layout/trust-badges.tsx` (eliminado, quedó sin
+    uso).
+  - **"Soluciones por Industria":** bloque nuevo en Home + dropdown
+    "Soluciones" en el header (desktop con hover, mobile como submenú) +
+    5 páginas nuevas `/soluciones/[slug]` (Logística y Depósitos, Retail y
+    Punto de Venta, Manufactura e Industria, Salud y Laboratorios, Control
+    de Activos) con `generateStaticParams`, breadcrumb JSON-LD y entrada en
+    el sitemap. Contenido (título + descripción corta) provisto
+    directamente por el cliente en `lib/content/industry-solutions.ts` — no
+    inventado, así que no aplica la reserva de "inventar capacidades" que
+    tenía este ítem antes.
+  - **CTAs de producto:** "Solicitar cotización" / "Consultar por
+    WhatsApp" pasaron a ser 3 botones — "Solicitar cotización por volumen",
+    "Consultar asesoramiento técnico" (ambos scrollean al formulario) y
+    "Contactar por WhatsApp" — más explícitos para B2B. El selector de
+    Cantidad/Volumen en el formulario de consulta ya existía de antes.
+  - **Pendiente de este sprint:** reemplazar el logo del header por un
+    archivo `public/logo.svg` (monograma TCB circuito/RFID) — el usuario lo
+    mencionó como "ya cargado" pero el archivo no existe en el repo, así
+    que el header sigue usando el `LogoMark` SVG hecho a mano que ya había.
+
 **Pendiente — P0:**
 - Reemplazar el copy placeholder de Home (`app/(public)/page.tsx`) y Empresa
   (`app/(public)/empresa/page.tsx`) — hay `TODO` literales en el código.
@@ -209,18 +253,18 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
   físico en el sitio.
 - Seguir completando el catálogo: validar el piloto de 14 SKUs con el
   usuario y, si está bien, seguir con el resto de las ~143 filas restantes
-  de `tcb-280826.xlsx`; subcategorías dentro de Computadoras móviles/
-  Escáneres, más SKUs por categoría, al menos una etiqueta sintética
-  compatible con transferencia térmica (para poder cargar la relación
-  `compatible` con los ribbons ya cargados).
+  de `tcb-280826.xlsx`; cargar productos reales en Identificación/Biometría
+  e Impresoras RFID (hoy vacías), más SKUs por categoría, al menos una
+  etiqueta sintética compatible con transferencia térmica (para poder
+  cargar la relación `compatible` con los ribbons ya cargados).
 
 **Pendiente — P1:**
 - `Offer` en el JSON-LD de producto (requiere antes decidir política de
   precios: ¿mostrar precio o siempre "consultar"?).
-- Rutas nuevas: Servicio Técnico, Soluciones por Industria — hoy no existen
-  ni como página ni como categoría especial. No se crearon todavía porque
-  requieren afirmar qué servicios/industrias atiende realmente el negocio;
-  publicar contenido sin confirmar sería inventar capacidades.
+- Ruta "Servicio Técnico" — sigue sin existir ni como página ni como
+  categoría especial (a diferencia de "Soluciones por Industria", esto
+  todavía requiere confirmar qué servicio técnico ofrece realmente el
+  negocio).
 
 **P2/P3:** guías técnicas (TechArticle/HowTo), página de aterrizaje por
 datasheet (hoy los PDF cuelgan sueltos, link directo al blob — el hub de
@@ -230,8 +274,9 @@ compatibilidad insumo↔impresora, comparador de specs.
 **Ideas de diseño (referencia: barcodesinc.com, competidor de referencia en
 hardware AIDC B2B)** — para aplicar cuando se rediseñe Home/catálogo:
 - Grilla de categorías con ícono — **ya implementado** (ver arriba).
-- Sellos de garantía/confianza arriba del fold — **ya lo tenemos** vía
-  `components/layout/trust-badges.tsx`, solo falta contenido real.
+- Sellos de garantía/confianza arriba del fold — **ya lo tenemos** vía la
+  sección de Diferencial B2B en Home, solo falta contenido 100% confirmado
+  (hoy es genérico, no cifras/certificaciones reales).
 - "Buscador de compatibilidad" (insumo↔impresora) como herramienta destacada,
   no solo un filtro más — coincide con el P3 de arriba.
 - Centro de recursos en el footer — **ya lo tenemos** vía `/recursos`

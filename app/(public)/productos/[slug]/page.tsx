@@ -153,7 +153,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
               href="#consulta"
               className="cursor-pointer rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary"
             >
-              Solicitar cotización
+              Solicitar cotización por volumen
+            </a>
+            <a
+              href="#consulta"
+              className="cursor-pointer rounded-md border border-border bg-white px-5 py-2.5 text-sm font-medium text-primary transition-colors hover:border-accent"
+            >
+              Consultar asesoramiento técnico
             </a>
             {siteConfig.whatsappNumber && (
               <a
@@ -162,7 +168,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 rel="noopener noreferrer"
                 className="flex cursor-pointer items-center gap-2 rounded-md bg-green-500 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-600"
               >
-                Consultar por WhatsApp
+                Contactar por WhatsApp
               </a>
             )}
           </div>
