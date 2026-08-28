@@ -2,6 +2,7 @@ import { getAllInquiries } from "@/features/inquiries/admin-queries";
 import { deleteInquiryAction } from "@/features/inquiries/actions";
 import { InquiryStatusSelect } from "@/components/admin/inquiry-status-select";
 import { DeleteButton } from "@/components/admin/delete-button";
+import { INTEREST_LABELS, SECTOR_LABELS } from "@/lib/content/lead-scoring";
 
 const TYPE_LABELS: Record<string, string> = {
   general: "General",
@@ -53,6 +54,20 @@ export default async function AdminInquiriesPage() {
                   {inquiry.quantity && (
                     <div className="mt-1 text-xs text-secondary">
                       Cantidad: {inquiry.quantity}
+                    </div>
+                  )}
+                  {(inquiry.interest || inquiry.sector) && (
+                    <div className="mt-1 flex flex-wrap gap-1">
+                      {inquiry.interest && (
+                        <span className="rounded-full bg-accent-soft px-2 py-0.5 text-xs text-accent">
+                          {INTEREST_LABELS[inquiry.interest] ?? inquiry.interest}
+                        </span>
+                      )}
+                      {inquiry.sector && (
+                        <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-secondary">
+                          {SECTOR_LABELS[inquiry.sector] ?? inquiry.sector}
+                        </span>
+                      )}
                     </div>
                   )}
                 </td>

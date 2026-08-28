@@ -85,7 +85,7 @@ export function Header() {
             href="/contacto"
             className="cursor-pointer rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary"
           >
-            Solicitar cotización
+            Pedí tu Cotización
           </Link>
         </nav>
 
@@ -147,7 +147,7 @@ export function Header() {
             onClick={() => setOpen(false)}
             className="mt-3 block cursor-pointer rounded-md bg-accent px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-primary"
           >
-            Solicitar cotización
+            Pedí tu Cotización
           </Link>
         </nav>
       )}

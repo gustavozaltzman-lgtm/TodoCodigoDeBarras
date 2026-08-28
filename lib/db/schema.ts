@@ -245,6 +245,12 @@ export const inquiries = pgTable(
     phone: varchar("phone", { length: 50 }),
     country: varchar("country", { length: 100 }),
     quantity: varchar("quantity", { length: 100 }),
+    // Lead scoring: que busca y para que sector, para priorizar/derivar
+    // consultas sin depender solo del mensaje libre. Valores controlados
+    // desde el formulario (ver lib/validation/inquiry.ts), varchar en vez
+    // de enum porque son categorias de marketing, no de dominio del negocio.
+    interest: varchar("interest", { length: 50 }),
+    sector: varchar("sector", { length: 50 }),
     message: text("message").notNull(),
     sourceUrl: text("source_url"),
     ipAddress: varchar("ip_address", { length: 64 }),

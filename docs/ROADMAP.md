@@ -242,6 +242,33 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
     mencionó como "ya cargado" pero el archivo no existe en el repo, así
     que el header sigue usando el `LogoMark` SVG hecho a mano que ya había.
 
+- **Sprint de conversión B2B (lead scoring + calidad de contenido):**
+  - **Pasada ortográfica/lingüística:** varios specs y descripciones del
+    piloto de productos cargado en el sprint anterior tenían acentos
+    faltantes (`identificacion`, `termica`, `bateria`, etc. — bug propio,
+    no del usuario) y un término en inglés sin traducir ("corded" en la
+    ficha del Zebra DS2208). Corregido en Neon (specs y descripciones) y en
+    `lib/config/site.ts` (meta description del sitio).
+  - **WhatsApp contextual y CTAs:** el mensaje de WhatsApp por producto
+    (`whatsappMessages.product` en `lib/config/site.ts`, también usado como
+    default del formulario en `components/forms/inquiry-form.tsx`) ahora
+    dice explícitamente "consultar disponibilidad y cotización por volumen
+    del equipo [nombre]" en vez de un genérico "quisiera más información".
+    CTAs pasivos renombrados: header "Solicitar cotización" →
+    **"Pedí tu Cotización"**, hero secundario "Solicitar información" →
+    **"Solicitar Asesoramiento B2B"**.
+  - **Lead scoring en el formulario de consulta:** dos campos nuevos —
+    "¿Qué estás buscando?" y "¿Para qué sector o aplicación?" — con
+    opciones fijas (no texto libre) definidas en
+    `lib/content/lead-scoring.ts`, migración `0006_confused_toxin.sql`
+    (`inquiries.interest`, `inquiries.sector`). Se ven en el admin
+    (`/admin/consultas`, como badges) y en el email de notificación de
+    lead nuevo.
+  - **Pendiente — bloqueado, necesita dato real del usuario:** los
+    placeholders `[Completar: razón social, CUIT y domicilio legal]` en
+    `/privacidad` y `/terminos` siguen sin reemplazar — no se puede
+    inventar razón social/CUIT/domicilio.
+
 **Pendiente — P0:**
 - ~~Reemplazar el copy placeholder de Home y Empresa~~ — **hecho
   parcialmente**: el usuario confirmó que la empresa opera desde 1992, así

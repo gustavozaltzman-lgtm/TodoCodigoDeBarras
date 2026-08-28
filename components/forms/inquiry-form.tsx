@@ -5,11 +5,13 @@ import {
   submitInquiryAction,
   type InquiryFormState,
 } from "@/features/inquiries/actions";
+import { INTEREST_OPTIONS, SECTOR_OPTIONS } from "@/lib/content/lead-scoring";
 
 const initialState: InquiryFormState = { status: "idle" };
 
 const inputClass =
   "w-full rounded-md border border-border bg-white px-3 py-2 text-sm outline-none transition-colors focus:border-accent";
+const selectClass = `${inputClass} cursor-pointer`;
 const labelClass = "text-sm font-medium text-secondary";
 
 type InquiryFormProps = {
@@ -106,6 +108,32 @@ export function InquiryForm({
             className={inputClass}
           />
         </div>
+        <div className="space-y-1">
+          <label htmlFor="interest" className={labelClass}>
+            ¿Qué estás buscando?
+          </label>
+          <select id="interest" name="interest" defaultValue="" className={selectClass}>
+            <option value="">Elegí una opción</option>
+            {INTEREST_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="space-y-1">
+          <label htmlFor="sector" className={labelClass}>
+            ¿Para qué sector o aplicación?
+          </label>
+          <select id="sector" name="sector" defaultValue="" className={selectClass}>
+            <option value="">Elegí una opción</option>
+            {SECTOR_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div className="space-y-1">
@@ -119,7 +147,7 @@ export function InquiryForm({
           rows={4}
           defaultValue={
             productName
-              ? `Hola, estoy interesado en el producto ${productName}. Quisiera recibir más información.`
+              ? `Hola, estoy interesado en consultar disponibilidad y cotización por volumen del equipo ${productName}.`
               : undefined
           }
           className={inputClass}

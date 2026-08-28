@@ -181,7 +181,7 @@ export default async function Home() {
                 href="/contacto"
                 className="w-full cursor-pointer rounded-md border border-white/20 bg-white/5 px-6 py-3 text-center text-sm font-medium text-white backdrop-blur transition-colors hover:bg-white/10 sm:w-auto"
               >
-                Solicitar información
+                Solicitar Asesoramiento B2B
               </Link>
             </div>
           </div>

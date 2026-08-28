@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { INTEREST_LABELS, SECTOR_LABELS } from "@/lib/content/lead-scoring";
 
 const TYPE_LABELS: Record<string, string> = {
   general: "Consulta general",
@@ -15,6 +16,8 @@ export type LeadNotificationPayload = {
   phone: string | null;
   country: string | null;
   quantity: string | null;
+  interest: string | null;
+  sector: string | null;
   message: string;
   sourceUrl: string | null;
 };
@@ -48,6 +51,8 @@ async function sendEmailNotification(payload: LeadNotificationPayload) {
         payload.phone ? `Teléfono: ${payload.phone}` : null,
         payload.country ? `País: ${payload.country}` : null,
         payload.quantity ? `Cantidad/volumen: ${payload.quantity}` : null,
+        payload.interest ? `Busca: ${INTEREST_LABELS[payload.interest] ?? payload.interest}` : null,
+        payload.sector ? `Sector: ${SECTOR_LABELS[payload.sector] ?? payload.sector}` : null,
         payload.sourceUrl ? `Origen: ${payload.sourceUrl}` : null,
         "",
         "Mensaje:",

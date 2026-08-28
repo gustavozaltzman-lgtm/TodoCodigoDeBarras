@@ -5,7 +5,7 @@ const siteUrl =
 export const siteConfig = {
   name: "TodoCodigoDeBarras",
   description:
-    "Productos y soluciones de identificacion, captura de datos y codigo de barras.",
+    "Productos y soluciones de identificación, captura de datos y código de barras.",
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "",
   url: siteUrl,
 };
@@ -18,7 +18,7 @@ export function buildWhatsAppUrl(message: string): string {
 export const whatsappMessages = {
   general: () => "Hola, quisiera realizar una consulta.",
   category: (categoryName: string) =>
-    `Hola, quisiera recibir informacion sobre los productos de ${categoryName}.`,
+    `Hola, quisiera recibir información sobre los productos de ${categoryName}.`,
   product: (productName: string) =>
-    `Hola, estoy interesado en el producto ${productName}. Quisiera recibir mas informacion.`,
+    `Hola, estoy interesado en consultar disponibilidad y cotización por volumen del equipo ${productName}.`,
 };
