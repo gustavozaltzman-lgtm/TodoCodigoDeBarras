@@ -3,10 +3,29 @@ import { db } from "@/lib/db/client";
 import {
   brands,
   categories,
+  productDocuments,
   productImages,
   productRelationships,
   products,
 } from "@/lib/db/schema";
+
+export async function getAllPublicDocuments() {
+  return db
+    .select({
+      id: productDocuments.id,
+      type: productDocuments.type,
+      title: productDocuments.title,
+      url: productDocuments.url,
+      productName: products.name,
+      productSlug: products.slug,
+      brandName: brands.name,
+    })
+    .from(productDocuments)
+    .innerJoin(products, eq(productDocuments.productId, products.id))
+    .leftJoin(brands, eq(products.brandId, brands.id))
+    .where(eq(products.status, "published"))
+    .orderBy(asc(brands.name), asc(products.name));
+}
 
 export async function getFeaturedProducts(limit = 8) {
   return db.query.products.findMany({
