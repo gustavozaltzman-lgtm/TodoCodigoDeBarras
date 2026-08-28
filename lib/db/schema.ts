@@ -221,6 +221,7 @@ export const inquiries = pgTable(
     email: varchar("email", { length: 255 }).notNull(),
     phone: varchar("phone", { length: 50 }),
     country: varchar("country", { length: 100 }),
+    quantity: varchar("quantity", { length: 100 }),
     message: text("message").notNull(),
     sourceUrl: text("source_url"),
     ipAddress: varchar("ip_address", { length: 64 }),

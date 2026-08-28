@@ -89,11 +89,22 @@ export function InquiryForm({
           </label>
           <input id="phone" name="phone" className={inputClass} />
         </div>
-        <div className="space-y-1 sm:col-span-2">
+        <div className="space-y-1">
           <label htmlFor="country" className={labelClass}>
             País
           </label>
           <input id="country" name="country" className={inputClass} />
+        </div>
+        <div className="space-y-1">
+          <label htmlFor="quantity" className={labelClass}>
+            Cantidad / volumen
+          </label>
+          <input
+            id="quantity"
+            name="quantity"
+            placeholder="Ej: 2 cajas, 500 unidades"
+            className={inputClass}
+          />
         </div>
       </div>
 

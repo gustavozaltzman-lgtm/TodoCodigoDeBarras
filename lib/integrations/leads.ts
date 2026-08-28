@@ -14,6 +14,7 @@ export type LeadNotificationPayload = {
   email: string;
   phone: string | null;
   country: string | null;
+  quantity: string | null;
   message: string;
   sourceUrl: string | null;
 };
@@ -46,6 +47,7 @@ async function sendEmailNotification(payload: LeadNotificationPayload) {
         `Email: ${payload.email}`,
         payload.phone ? `Teléfono: ${payload.phone}` : null,
         payload.country ? `País: ${payload.country}` : null,
+        payload.quantity ? `Cantidad/volumen: ${payload.quantity}` : null,
         payload.sourceUrl ? `Origen: ${payload.sourceUrl}` : null,
         "",
         "Mensaje:",

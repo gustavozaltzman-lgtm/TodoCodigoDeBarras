@@ -6,6 +6,7 @@ export const inquirySchema = z.object({
   email: z.email("Email invalido"),
   phone: z.string().trim().optional(),
   country: z.string().trim().optional(),
+  quantity: z.string().trim().optional(),
   message: z.string().trim().min(5, "Contanos tu consulta"),
   type: z.enum(["general", "quote", "product"]).default("general"),
   productId: z.coerce.number().int().positive().optional(),

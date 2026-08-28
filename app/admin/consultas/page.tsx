@@ -48,7 +48,14 @@ export default async function AdminInquiriesPage() {
                   <div>{inquiry.email}</div>
                   {inquiry.phone && <div>{inquiry.phone}</div>}
                 </td>
-                <td className="max-w-xs px-4 py-2 text-primary">{inquiry.message}</td>
+                <td className="max-w-xs px-4 py-2 text-primary">
+                  {inquiry.message}
+                  {inquiry.quantity && (
+                    <div className="mt-1 text-xs text-secondary">
+                      Cantidad: {inquiry.quantity}
+                    </div>
+                  )}
+                </td>
                 <td className="px-4 py-2">
                   <InquiryStatusSelect id={inquiry.id} status={inquiry.status} />
                 </td>

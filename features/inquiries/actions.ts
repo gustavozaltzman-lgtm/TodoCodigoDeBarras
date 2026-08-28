@@ -34,6 +34,7 @@ export async function submitInquiryAction(
     email: formData.get("email"),
     phone: formData.get("phone") || undefined,
     country: formData.get("country") || undefined,
+    quantity: formData.get("quantity") || undefined,
     message: formData.get("message"),
     type: formData.get("type") || "general",
     productId: formData.get("productId") || undefined,
@@ -83,6 +84,7 @@ export async function submitInquiryAction(
       email: data.email,
       phone: data.phone ?? null,
       country: data.country ?? null,
+      quantity: data.quantity ?? null,
       message: data.message,
       sourceUrl: data.sourceUrl ?? null,
       ipAddress,
@@ -97,6 +99,7 @@ export async function submitInquiryAction(
     email: inquiry.email,
     phone: inquiry.phone,
     country: inquiry.country,
+    quantity: inquiry.quantity,
     message: inquiry.message,
     sourceUrl: inquiry.sourceUrl,
   });
