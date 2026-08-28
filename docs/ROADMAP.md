@@ -113,19 +113,31 @@ Information Architect + CRO). El roadmap completo (con archivos afectados)
 vive en el informe; acá el resumen para no tener que reabrirlo:
 
 **Hecho:**
-- Primer lote de catálogo real cargado (contenido, no código — vía script
-  puntual contra Neon, no vive en el repo): marca **Zebra** (publicada);
-  categorías top-level **Impresoras** (con subcategoría Industriales),
-  **Computadoras móviles**, **Escáneres de códigos de barras** y **RFID**
-  (las 4 primeras replican la navegación real de zebra.com); 4 productos
-  publicados con specs técnicas reales tomadas de datasheets oficiales de
-  Zebra y la ficha técnica oficial enlazada como documento descargable:
-  **ZT411** (impresora industrial), **TC22** (cómputo móvil), **DS2208**
-  (escáner) y **FX9600** (lector RFID fijo). Ninguno tiene fotos propias
-  todavía — no se pueden usar imágenes de Zebra/terceros sin derechos; hay
-  que subir fotos reales desde `/admin/productos` cuando estén disponibles.
+- Primer lote de catálogo real cargado (contenido, no código — vía scripts
+  puntuales contra Neon, no viven en el repo): marcas **Zebra** y **TSC**
+  (publicadas); categorías top-level **Impresoras** (con subcategorías
+  Escritorio e Industriales), **Computadoras móviles**, **Escáneres de
+  códigos de barras** y **RFID**. 8 productos publicados con specs técnicas
+  reales tomadas de datasheets oficiales y ficha técnica enlazada como
+  documento descargable:
+  - Zebra: **ZT411** (impresora industrial), **TC22** (cómputo móvil),
+    **DS2208** (escáner), **FX9600** (lector RFID fijo)
+  - TSC: **TE200**, **TE210** (impresoras de escritorio), **MB241T**,
+    **MH241T** (impresoras industriales)
+  Los 8 tienen foto real del fabricante (autorización del usuario: partner
+  de Zebra y empleado de TSC). `BLOB_READ_WRITE_TOKEN` estaba vacío en
+  `.env.local` (store de Vercel Blob nunca conectado) — se configuró con
+  el store real del proyecto (`store_TQOXSBd82945TTXP`) y ya está subiendo
+  archivos. **Falta confirmar que esa misma variable esté cargada en
+  Settings → Environment Variables del proyecto en Vercel** (production),
+  no solo en el `.env.local` local — si no, el admin no podrá subir
+  imágenes nuevas desde el sitio desplegado.
 - Tarjetas de categoría con ícono en Home (`components/layout/category-icon.tsx`),
   idea tomada de barcodesinc.com — reemplaza las tarjetas de solo texto.
+- Fix de contraste: `--color-border` era casi idéntico a `--color-muted`,
+  los inputs de formulario eran invisibles hasta el foco. Corregido en
+  `app/globals.css` + `bg-white` explícito en inputs
+  (`components/forms/inquiry-form.tsx`, `components/admin/form-styles.ts`).
 
 **Pendiente — P0 (antes de seguir cargando catálogo):**
 - Extender `products` con `mpn`, `condition`, `availability`, y tipar
