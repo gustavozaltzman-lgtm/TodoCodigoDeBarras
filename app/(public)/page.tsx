@@ -89,6 +89,20 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Foto: equipos en uso */}
+      <section className="mx-auto max-w-6xl px-4 py-16">
+        <div className="overflow-hidden rounded-xl border border-border">
+          <Image
+            src="/brand/warehouse-hero.jpg"
+            alt="Impresoras y lectores en uso en un depósito"
+            width={1600}
+            height={1200}
+            className="h-auto w-full object-cover"
+            priority
+          />
+        </div>
+      </section>
+
       {/* Categorías */}
       {categories.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 py-16">
