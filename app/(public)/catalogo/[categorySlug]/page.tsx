@@ -12,6 +12,8 @@ import { CatalogFilters } from "@/components/catalog/catalog-filters";
 import { Pagination } from "@/components/catalog/pagination";
 import { buildWhatsAppUrl, siteConfig, whatsappMessages } from "@/lib/config/site";
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { CategoryFaq } from "@/components/catalog/category-faq";
+import { CATEGORY_FAQ } from "@/lib/content/category-faq";
 
 const VALID_SORTS: CatalogSort[] = ["relevance", "name-asc", "newest"];
 
@@ -158,6 +160,8 @@ export default async function CategoryPage({
       )}
 
       <Pagination page={currentPage} totalPages={totalPages} buildHref={buildHref} />
+
+      <CategoryFaq items={CATEGORY_FAQ[category.slug] ?? []} />
     </main>
   );
 }
