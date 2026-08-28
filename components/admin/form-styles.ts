@@ -1,5 +1,5 @@
 export const inputClass =
-  "w-full rounded-md border border-border px-3 py-2 text-sm outline-none transition-colors focus:border-accent";
+  "w-full rounded-md border border-border bg-white px-3 py-2 text-sm outline-none transition-colors focus:border-accent";
 export const labelClass = "text-sm font-medium text-secondary";
 export const primaryButtonClass =
   "cursor-pointer rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary disabled:cursor-not-allowed disabled:opacity-50";

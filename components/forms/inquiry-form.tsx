@@ -9,7 +9,7 @@ import {
 const initialState: InquiryFormState = { status: "idle" };
 
 const inputClass =
-  "w-full rounded-md border border-border px-3 py-2 text-sm outline-none transition-colors focus:border-accent";
+  "w-full rounded-md border border-border bg-white px-3 py-2 text-sm outline-none transition-colors focus:border-accent";
 const labelClass = "text-sm font-medium text-secondary";
 
 type InquiryFormProps = {
