@@ -11,7 +11,7 @@ import { ProductCard } from "@/components/catalog/product-card";
 import { CatalogFilters } from "@/components/catalog/catalog-filters";
 import { Pagination } from "@/components/catalog/pagination";
 import { buildWhatsAppUrl, siteConfig, whatsappMessages } from "@/lib/config/site";
-import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { breadcrumbJsonLd, jsonLdToScript } from "@/lib/seo/jsonld";
 import { CategoryFaq } from "@/components/catalog/category-faq";
 import { CATEGORY_FAQ } from "@/lib/content/category-faq";
 
@@ -83,7 +83,7 @@ export default async function CategoryPage({
     <main className="mx-auto max-w-6xl px-4 py-16">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdToScript(breadcrumb) }}
       />
 
       <nav className="text-sm text-secondary">

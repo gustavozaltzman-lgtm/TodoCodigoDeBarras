@@ -1,5 +1,12 @@
 import { siteConfig } from "@/lib/config/site";
 
+// Serializa un objeto para inyectarlo en <script type="application/ld+json">.
+// Escapa "<" para que un valor con "</script>" (ej. nombre o descripcion de
+// un producto) no pueda cerrar el tag prematuramente e inyectar HTML/JS.
+export function jsonLdToScript(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
 export function organizationJsonLd() {
   return {
     "@context": "https://schema.org",

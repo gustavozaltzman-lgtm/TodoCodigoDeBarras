@@ -1,4 +1,4 @@
-import { faqPageJsonLd, type FaqItem } from "@/lib/seo/jsonld";
+import { faqPageJsonLd, jsonLdToScript, type FaqItem } from "@/lib/seo/jsonld";
 
 export function CategoryFaq({ items }: { items: FaqItem[] }) {
   if (items.length === 0) return null;
@@ -7,7 +7,7 @@ export function CategoryFaq({ items }: { items: FaqItem[] }) {
     <section className="mt-14">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd(items)) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdToScript(faqPageJsonLd(items)) }}
       />
       <h2 className="text-xl font-semibold text-primary">Preguntas frecuentes</h2>
       <div className="mt-4 space-y-2">

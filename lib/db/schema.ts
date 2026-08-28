@@ -69,6 +69,20 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+// ---------- login attempts (rate limiting de /admin/login) ----------
+export const loginAttempts = pgTable(
+  "login_attempts",
+  {
+    id: serial("id").primaryKey(),
+    ipAddress: varchar("ip_address", { length: 64 }).notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => [
+    index("login_attempts_ip_created_idx").on(table.ipAddress, table.createdAt),
+  ]
+);
+
 // ---------- brands ----------
 export const brands = pgTable("brands", {
   id: serial("id").primaryKey(),
