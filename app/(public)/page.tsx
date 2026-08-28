@@ -89,17 +89,25 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Foto: equipos en uso */}
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="overflow-hidden rounded-xl border border-border">
-          <Image
-            src="/brand/warehouse-hero.jpg"
-            alt="Impresoras y lectores en uso en un depósito"
-            width={1600}
-            height={1200}
-            className="h-auto w-full object-cover"
-            priority
-          />
+      {/* Foto: equipos en uso (marca de agua) */}
+      <section className="relative isolate flex min-h-[22rem] items-center overflow-hidden bg-primary py-20 sm:min-h-[26rem]">
+        <Image
+          src="/brand/warehouse-hero.jpg"
+          alt=""
+          fill
+          className="object-cover opacity-[0.16]"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/95 to-primary/70" />
+        <div className="relative mx-auto max-w-3xl px-4 text-center">
+          <span className="eyebrow text-orange-400">En operación</span>
+          <h2 className="mx-auto mt-3 max-w-xl text-balance text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            Equipos pensados para el trabajo diario en depósito y planta
+          </h2>
+          <p className="mx-auto mt-3 max-w-lg text-slate-300">
+            Impresoras, lectores y terminales que acompañan la operación,
+            todos los días.
+          </p>
         </div>
       </section>
 
