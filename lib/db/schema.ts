@@ -40,9 +40,23 @@ export const documentType = pgEnum("document_type", [
 export const relationshipType = pgEnum("relationship_type", [
   "related",
   "accessory",
+  "compatible",
 ]);
 
 export const adminRole = pgEnum("admin_role", ["admin", "editor"]);
+
+export const productCondition = pgEnum("product_condition", [
+  "new",
+  "refurbished",
+  "used",
+]);
+
+export const productAvailability = pgEnum("product_availability", [
+  "in_stock",
+  "out_of_stock",
+  "preorder",
+  "discontinued",
+]);
 
 // ---------- users (admin) ----------
 export const users = pgTable("users", {
@@ -98,6 +112,11 @@ export const products = pgTable(
     brandId: integer("brand_id").references(() => brands.id),
     categoryId: integer("category_id").references(() => categories.id),
     model: varchar("model", { length: 255 }),
+    mpn: varchar("mpn", { length: 100 }),
+    condition: productCondition("condition").notNull().default("new"),
+    availability: productAvailability("availability")
+      .notNull()
+      .default("in_stock"),
     shortDescription: text("short_description"),
     description: text("description"),
     status: publicationStatus("status").notNull().default("draft"),

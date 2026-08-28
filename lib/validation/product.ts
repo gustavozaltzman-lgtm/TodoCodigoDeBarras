@@ -6,6 +6,11 @@ export const productSchema = z.object({
   brandId: z.coerce.number().int().positive().optional(),
   categoryId: z.coerce.number().int().positive().optional(),
   model: z.string().trim().optional(),
+  mpn: z.string().trim().optional(),
+  condition: z.enum(["new", "refurbished", "used"]).default("new"),
+  availability: z
+    .enum(["in_stock", "out_of_stock", "preorder", "discontinued"])
+    .default("in_stock"),
   shortDescription: z.string().trim().optional(),
   description: z.string().trim().optional(),
   status: z.enum(["draft", "published", "hidden", "archived"]),

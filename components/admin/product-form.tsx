@@ -13,6 +13,9 @@ type Product = {
   brandId: number | null;
   categoryId: number | null;
   model: string | null;
+  mpn: string | null;
+  condition: "new" | "refurbished" | "used";
+  availability: "in_stock" | "out_of_stock" | "preorder" | "discontinued";
   shortDescription: string | null;
   description: string | null;
   status: "draft" | "published" | "hidden" | "archived";
@@ -116,16 +119,63 @@ export function ProductForm({
         </div>
       </div>
 
-      <div className="space-y-1">
-        <label htmlFor="model" className={labelClass}>
-          Modelo
-        </label>
-        <input
-          id="model"
-          name="model"
-          defaultValue={product?.model ?? ""}
-          className={inputClass}
-        />
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-1">
+          <label htmlFor="model" className={labelClass}>
+            Modelo
+          </label>
+          <input
+            id="model"
+            name="model"
+            defaultValue={product?.model ?? ""}
+            className={inputClass}
+          />
+        </div>
+        <div className="space-y-1">
+          <label htmlFor="mpn" className={labelClass}>
+            MPN (número de parte del fabricante)
+          </label>
+          <input
+            id="mpn"
+            name="mpn"
+            defaultValue={product?.mpn ?? ""}
+            className={inputClass}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-1">
+          <label htmlFor="condition" className={labelClass}>
+            Condición
+          </label>
+          <select
+            id="condition"
+            name="condition"
+            defaultValue={product?.condition ?? "new"}
+            className={`${inputClass} cursor-pointer`}
+          >
+            <option value="new">Nuevo</option>
+            <option value="refurbished">Reacondicionado</option>
+            <option value="used">Usado</option>
+          </select>
+        </div>
+        <div className="space-y-1">
+          <label htmlFor="availability" className={labelClass}>
+            Disponibilidad
+          </label>
+          <select
+            id="availability"
+            name="availability"
+            defaultValue={product?.availability ?? "in_stock"}
+            className={`${inputClass} cursor-pointer`}
+          >
+            <option value="in_stock">En stock</option>
+            <option value="out_of_stock">Sin stock</option>
+            <option value="preorder">A pedido</option>
+            <option value="discontinued">Discontinuado</option>
+          </select>
+        </div>
       </div>
 
       <div className="space-y-1">

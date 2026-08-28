@@ -29,6 +29,9 @@ function parseProductForm(formData: FormData) {
     brandId: formData.get("brandId") || undefined,
     categoryId: formData.get("categoryId") || undefined,
     model: formData.get("model") || undefined,
+    mpn: formData.get("mpn") || undefined,
+    condition: formData.get("condition") || "new",
+    availability: formData.get("availability") || "in_stock",
     shortDescription: formData.get("shortDescription") || undefined,
     description: formData.get("description") || undefined,
     status: formData.get("status"),
@@ -291,7 +294,7 @@ export async function deleteDocumentAction(docId: number, productId: number) {
 export async function addRelatedProductAction(
   productId: number,
   relatedProductId: number,
-  type: "related" | "accessory"
+  type: "related" | "accessory" | "compatible"
 ) {
   await requireAdminSession();
 

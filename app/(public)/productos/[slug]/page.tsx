@@ -62,6 +62,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
     name: product.name,
     description: product.shortDescription ?? undefined,
     brand: product.brand ? { "@type": "Brand", name: product.brand.name } : undefined,
+    model: product.model ?? undefined,
+    mpn: product.mpn ?? undefined,
     image: product.images.map((img) => img.url),
     url: `${siteConfig.url}/productos/${product.slug}`,
   };
@@ -124,8 +126,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <h1 className="mt-1 text-3xl font-semibold tracking-tight text-primary">
             {product.name}
           </h1>
-          {product.model && (
-            <p className="mt-1 text-sm text-secondary">Modelo: {product.model}</p>
+          {(product.model || product.mpn) && (
+            <p className="mt-1 text-sm text-secondary">
+              {product.model && <>Modelo: {product.model}</>}
+              {product.model && product.mpn && " · "}
+              {product.mpn && <>MPN: {product.mpn}</>}
+            </p>
           )}
           {product.shortDescription && (
             <p className="mt-4 text-secondary">{product.shortDescription}</p>

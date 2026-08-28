@@ -9,7 +9,7 @@ import { inputClass, primaryButtonClass } from "./form-styles";
 
 type RelationRow = {
   id: number;
-  type: "related" | "accessory";
+  type: "related" | "accessory" | "compatible";
   relatedProduct: { id: number; name: string };
 };
 
@@ -18,6 +18,7 @@ type ProductOption = { id: number; name: string };
 const TYPE_LABELS: Record<string, string> = {
   related: "Relacionado",
   accessory: "Accesorio",
+  compatible: "Compatible (insumo/repuesto)",
 };
 
 export function ProductRelationsManager({
@@ -68,7 +69,7 @@ export function ProductRelationsManager({
           e.preventDefault();
           const formData = new FormData(e.currentTarget);
           const relatedProductId = Number(formData.get("relatedProductId"));
-          const type = formData.get("type") as "related" | "accessory";
+          const type = formData.get("type") as "related" | "accessory" | "compatible";
           if (!relatedProductId) return;
           startTransition(() => addRelatedProductAction(productId, relatedProductId, type));
           e.currentTarget.reset();
@@ -99,6 +100,7 @@ export function ProductRelationsManager({
           <select id="type" name="type" defaultValue="related" className={`${inputClass} cursor-pointer`}>
             <option value="related">Relacionado</option>
             <option value="accessory">Accesorio</option>
+            <option value="compatible">Compatible (insumo/repuesto)</option>
           </select>
         </div>
         <button type="submit" disabled={isPending} className={primaryButtonClass}>
