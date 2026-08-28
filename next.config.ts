@@ -17,6 +17,13 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "*.blob.vercel-storage.com" },
     ],
+    // Logos de marca se suben como SVG. Next.js bloquea SVG remoto por
+    // defecto (riesgo de script embebido); se habilita solo con la CSP
+    // recomendada por Next para el optimizador de imagenes, que evita que
+    // un SVG malicioso pueda ejecutar script incluso si lo tuviera.
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "attachment",
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   async headers() {
     return [

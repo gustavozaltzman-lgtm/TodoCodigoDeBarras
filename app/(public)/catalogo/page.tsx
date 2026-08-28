@@ -94,6 +94,7 @@ export default async function CatalogoPage({ searchParams }: CatalogoPageProps) 
               brandName={product.brandName}
               imageUrl={product.image?.url}
               imageAlt={product.image?.alt}
+              availability={product.availability}
               priority={index === 0}
             />
           ))}

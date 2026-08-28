@@ -95,6 +95,7 @@ export async function getCatalogProducts(filters: CatalogFilters) {
         name: products.name,
         slug: products.slug,
         shortDescription: products.shortDescription,
+        availability: products.availability,
         brandName: brands.name,
         categoryName: categories.name,
       })

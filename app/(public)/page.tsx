@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getPublishedTopCategories } from "@/features/categories/queries";
 import { getPublishedBrands } from "@/features/brands/queries";
@@ -128,6 +129,7 @@ export default async function Home() {
                   brandName={product.brand?.name}
                   imageUrl={product.images[0]?.url}
                   imageAlt={product.images[0]?.alt}
+                  availability={product.availability}
                   priority={index === 0}
                 />
               ))}
@@ -145,9 +147,21 @@ export default async function Home() {
               <Link
                 key={brand.id}
                 href={`/marcas/${brand.slug}`}
-                className="cursor-pointer rounded-lg border border-border bg-white px-6 py-4 text-lg font-semibold text-secondary transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/40 hover:text-primary hover:shadow-md"
+                className="group flex cursor-pointer items-center justify-center rounded-lg border border-border bg-white px-8 py-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-md"
               >
-                {brand.name}
+                {brand.logoUrl ? (
+                  <Image
+                    src={brand.logoUrl}
+                    alt={brand.name}
+                    width={120}
+                    height={40}
+                    className="h-8 w-auto object-contain grayscale transition-all duration-200 group-hover:grayscale-0"
+                  />
+                ) : (
+                  <span className="text-lg font-semibold text-secondary transition-colors hover:text-primary">
+                    {brand.name}
+                  </span>
+                )}
               </Link>
             ))}
           </div>

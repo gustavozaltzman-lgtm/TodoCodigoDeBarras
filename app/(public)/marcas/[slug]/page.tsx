@@ -55,6 +55,7 @@ export default async function BrandPage({ params }: BrandPageProps) {
               brandName={product.brandName}
               imageUrl={product.image?.url}
               imageAlt={product.image?.alt}
+              availability={product.availability}
               priority={index === 0}
             />
           ))}

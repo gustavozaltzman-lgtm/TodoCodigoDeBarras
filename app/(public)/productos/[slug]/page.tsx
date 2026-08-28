@@ -9,6 +9,7 @@ import { ProductGallery } from "@/components/catalog/product-gallery";
 import { ProductSpecifications } from "@/components/catalog/product-specifications";
 import { ProductDocuments } from "@/components/catalog/product-documents";
 import { ProductCard } from "@/components/catalog/product-card";
+import { AvailabilityBadge } from "@/components/catalog/availability-badge";
 import { InquiryForm } from "@/components/forms/inquiry-form";
 import {
   buildWhatsAppUrl,
@@ -126,6 +127,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <h1 className="mt-1 text-3xl font-semibold tracking-tight text-primary">
             {product.name}
           </h1>
+          <div className="mt-2">
+            <AvailabilityBadge availability={product.availability} />
+          </div>
           {(product.model || product.mpn) && (
             <p className="font-mono-data mt-2 text-xs text-secondary">
               {product.model && (

@@ -149,6 +149,7 @@ export default async function CategoryPage({
               brandName={product.brandName}
               imageUrl={product.image?.url}
               imageAlt={product.image?.alt}
+              availability={product.availability}
               priority={index === 0}
             />
           ))}
