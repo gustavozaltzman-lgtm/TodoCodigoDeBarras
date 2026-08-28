@@ -54,6 +54,23 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    // Categorias renombradas en el sprint de reestructuracion B2B (ver
+    // docs/ROADMAP.md) -- slugs viejos deben apuntar a los nuevos, tanto
+    // para no romper links ya compartidos como para SEO (evitar URLs
+    // duplicadas/competidoras).
+    const renamedCategorySlugs: [string, string][] = [
+      ["impresoras", "impresion"],
+      ["computadoras-moviles", "movilidad"],
+      ["escaneres-codigos-de-barras", "captura-de-datos"],
+      ["insumos-y-consumibles", "consumibles"],
+    ];
+    return renamedCategorySlugs.map(([from, to]) => ({
+      source: `/catalogo/${from}`,
+      destination: `/catalogo/${to}`,
+      permanent: true,
+    }));
+  },
 };
 
 export default nextConfig;
