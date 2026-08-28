@@ -9,7 +9,7 @@ export function Footer() {
           © {new Date().getFullYear()} {siteConfig.name}. Todos los derechos
           reservados.
         </p>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-x-4 gap-y-2">
           <Link
             href="/recursos"
             className="cursor-pointer transition-colors hover:text-white"

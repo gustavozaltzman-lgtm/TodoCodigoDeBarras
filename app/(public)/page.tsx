@@ -63,23 +63,23 @@ export default async function Home() {
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-current" />
             Hardware AIDC &amp; RFID
           </span>
-          <h1 className="mx-auto mt-4 max-w-3xl text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="mx-auto mt-4 max-w-3xl text-balance text-3xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
             Tecnología que impulsa tu operación
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-balance text-lg text-slate-300 sm:text-xl">
+          <p className="mx-auto mt-4 max-w-xl text-balance text-base text-slate-300 sm:text-xl">
             Equipos y soluciones para identificar, capturar, imprimir y
             controlar.
           </p>
-          <div className="mt-8 flex justify-center gap-4">
+          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
             <Link
               href="/catalogo"
-              className="cursor-pointer rounded-md bg-accent px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/20 transition-colors hover:bg-orange-600"
+              className="w-full cursor-pointer rounded-md bg-accent px-6 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-accent/20 transition-colors hover:bg-orange-600 sm:w-auto"
             >
               Ver catálogo
             </Link>
             <Link
               href="/contacto"
-              className="cursor-pointer rounded-md border border-white/20 bg-white/5 px-6 py-3 text-sm font-medium text-white backdrop-blur transition-colors hover:bg-white/10"
+              className="w-full cursor-pointer rounded-md border border-white/20 bg-white/5 px-6 py-3 text-center text-sm font-medium text-white backdrop-blur transition-colors hover:bg-white/10 sm:w-auto"
             >
               Solicitar información
             </Link>
