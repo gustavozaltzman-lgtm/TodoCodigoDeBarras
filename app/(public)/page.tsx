@@ -4,6 +4,7 @@ import { getPublishedBrands } from "@/features/brands/queries";
 import { getFeaturedProducts } from "@/features/products/queries";
 import { ProductCard } from "@/components/catalog/product-card";
 import { TrustBadges } from "@/components/layout/trust-badges";
+import { CategoryIcon } from "@/components/layout/category-icon";
 import { siteConfig } from "@/lib/config/site";
 
 export const revalidate = 3600;
@@ -56,9 +57,13 @@ export default async function Home() {
               <Link
                 key={category.id}
                 href={`/catalogo/${category.slug}`}
-                className="cursor-pointer rounded-lg border border-border p-5 transition-colors hover:border-accent hover:shadow-sm"
+                className="cursor-pointer rounded-lg border border-border p-5 text-center transition-colors hover:border-accent hover:shadow-sm"
               >
-                <span className="font-medium text-primary">
+                <CategoryIcon
+                  slug={category.slug}
+                  className="mx-auto h-8 w-8 text-accent"
+                />
+                <span className="mt-3 block font-medium text-primary">
                   {category.name}
                 </span>
               </Link>
