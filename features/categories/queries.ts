@@ -26,3 +26,10 @@ export async function getPublishedSubcategories(parentId: number) {
     .where(and(eq(categories.status, "published"), eq(categories.parentId, parentId)))
     .orderBy(asc(categories.sortOrder));
 }
+
+export async function getAllPublishedCategorySlugs() {
+  return db
+    .select({ slug: categories.slug, updatedAt: categories.updatedAt })
+    .from(categories)
+    .where(eq(categories.status, "published"));
+}

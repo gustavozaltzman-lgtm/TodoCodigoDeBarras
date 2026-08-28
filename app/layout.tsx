@@ -14,11 +14,15 @@ const sourceSans = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: {
     default: siteConfig.name,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

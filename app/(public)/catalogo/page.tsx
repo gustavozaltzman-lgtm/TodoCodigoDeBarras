@@ -10,6 +10,9 @@ import { Pagination } from "@/components/catalog/pagination";
 export const metadata: Metadata = {
   title: "Catálogo",
   description: "Explorá nuestro catálogo completo de productos.",
+  alternates: {
+    canonical: "/catalogo",
+  },
 };
 
 const VALID_SORTS: CatalogSort[] = ["relevance", "name-asc", "newest"];

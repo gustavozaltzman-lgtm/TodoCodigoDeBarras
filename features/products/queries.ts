@@ -144,6 +144,13 @@ export async function getProductBySlug(slug: string) {
   });
 }
 
+export async function getAllPublishedProductSlugs() {
+  return db
+    .select({ slug: products.slug, updatedAt: products.updatedAt })
+    .from(products)
+    .where(eq(products.status, "published"));
+}
+
 export async function getRelatedProducts(productId: number) {
   const relations = await db
     .select({ relatedProductId: productRelationships.relatedProductId })

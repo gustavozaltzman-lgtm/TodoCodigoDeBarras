@@ -14,7 +14,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const brand = await getBrandBySlug(slug);
   if (!brand) return {};
-  return { title: brand.name, description: brand.description ?? undefined };
+  return {
+    title: brand.name,
+    description: brand.description ?? undefined,
+    alternates: {
+      canonical: `/marcas/${brand.slug}`,
+    },
+  };
 }
 
 export default async function BrandPage({ params }: BrandPageProps) {

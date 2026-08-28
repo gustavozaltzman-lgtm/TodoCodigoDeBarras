@@ -1,8 +1,16 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { logoutAction } from "@/lib/auth/actions";
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 const NAV_LINKS = [
   { href: "/admin", label: "Dashboard" },

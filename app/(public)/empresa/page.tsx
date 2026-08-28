@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Empresa",
   description:
     "Conocé nuestra trayectoria, los productos que comercializamos y los sectores a los que atendemos.",
+  alternates: {
+    canonical: "/empresa",
+  },
 };
 
 // TODO: reemplazar por copy institucional real del cliente
