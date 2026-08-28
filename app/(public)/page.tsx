@@ -9,6 +9,13 @@ import { siteConfig } from "@/lib/config/site";
 
 export const revalidate = 3600;
 
+// Anchos pseudo-aleatorios para la franja decorativa tipo codigo de barras del hero
+const BARCODE_WIDTHS = [
+  2, 1, 4, 1, 2, 3, 1, 5, 2, 1, 3, 1, 1, 4, 2, 1, 3, 2, 1, 5, 1, 2, 4, 1, 2, 1,
+  3, 1, 2, 5, 1, 1, 3, 2, 1, 4, 2, 1, 2, 3, 1, 1, 5, 2, 1, 3, 1, 2, 4, 1, 1, 2,
+  3, 1, 5, 2, 1, 1, 4, 2,
+];
+
 export default async function Home() {
   const [categories, brands, featuredProducts] = await Promise.all([
     getPublishedTopCategories(),
@@ -24,19 +31,42 @@ export default async function Home() {
           aria-hidden="true"
           className="absolute inset-0 opacity-[0.15] [background-image:linear-gradient(rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.6)_1px,transparent_1px)] [background-size:40px_40px] [mask-image:radial-gradient(ellipse_70%_70%_at_50%_0%,black_30%,transparent_100%)]"
         />
-        <div className="relative mx-auto max-w-6xl px-4 py-24 text-center">
+
+        {/* Barras decorativas tipo codigo de barras */}
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 400 60"
+          preserveAspectRatio="none"
+          className="pointer-events-none absolute inset-x-0 top-0 h-14 w-full opacity-40 sm:h-20"
+        >
+          {BARCODE_WIDTHS.map((w, i) => (
+            <rect
+              key={i}
+              x={BARCODE_WIDTHS.slice(0, i).reduce((a, b) => a + b + 1.4, 0)}
+              y="0"
+              width={w}
+              height="60"
+              fill="white"
+            />
+          ))}
+        </svg>
+
+        {/* Linea de escaneo animada */}
+        <div
+          aria-hidden="true"
+          className="animate-scan pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-400 to-transparent shadow-[0_0_12px_2px_rgba(251,146,60,0.6)]"
+        />
+
+        <div className="relative mx-auto max-w-6xl px-4 pt-28 pb-24 text-center">
           <span className="eyebrow inline-flex items-center gap-2 text-orange-400">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-current" />
             Hardware AIDC &amp; RFID
           </span>
-          <h1 className="mx-auto mt-4 max-w-2xl text-balance text-4xl font-semibold tracking-tight text-white sm:text-6xl">
-            {/* TODO: propuesta de valor real del cliente */}
-            Soluciones de código de barras para tu operación
+          <h1 className="mx-auto mt-4 max-w-3xl text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">
+            Soluciones de código de barras, RFID, movilidad, biometría,
+            identificación y captura de datos para mejorar la eficiencia,
+            trazabilidad y control de tu negocio.
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-slate-300">
-            Productos y tecnología de identificación y captura de datos, con
-            asesoramiento técnico especializado.
-          </p>
           <div className="mt-8 flex justify-center gap-4">
             <Link
               href="/catalogo"
