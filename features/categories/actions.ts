@@ -40,6 +40,7 @@ export async function createCategoryAction(
     parentId: parsed.data.parentId ?? null,
   });
   revalidatePath("/admin/categorias");
+  revalidatePath("/");
   redirect("/admin/categorias");
 }
 
@@ -65,6 +66,7 @@ export async function updateCategoryAction(
     .where(eq(categories.id, id));
 
   revalidatePath("/admin/categorias");
+  revalidatePath("/");
   redirect("/admin/categorias");
 }
 
@@ -72,6 +74,7 @@ export async function deleteCategoryAction(id: number) {
   await requireAdminSession();
   await db.delete(categories).where(eq(categories.id, id));
   revalidatePath("/admin/categorias");
+  revalidatePath("/");
 }
 
 export async function setCategoryStatusAction(
@@ -84,4 +87,5 @@ export async function setCategoryStatusAction(
     .set({ status, updatedAt: new Date() })
     .where(eq(categories.id, id));
   revalidatePath("/admin/categorias");
+  revalidatePath("/");
 }

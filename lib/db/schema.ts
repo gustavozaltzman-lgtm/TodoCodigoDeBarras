@@ -204,10 +204,14 @@ export const inquiries = pgTable(
     country: varchar("country", { length: 100 }),
     message: text("message").notNull(),
     sourceUrl: text("source_url"),
+    ipAddress: varchar("ip_address", { length: 64 }),
     status: inquiryStatus("status").notNull().default("new"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
-  (table) => [index("inquiries_status_idx").on(table.status)]
+  (table) => [
+    index("inquiries_status_idx").on(table.status),
+    index("inquiries_ip_created_idx").on(table.ipAddress, table.createdAt),
+  ]
 );
 
 // ---------- relations ----------

@@ -6,6 +6,8 @@ import { ProductCard } from "@/components/catalog/product-card";
 import { TrustBadges } from "@/components/layout/trust-badges";
 import { siteConfig } from "@/lib/config/site";
 
+export const revalidate = 3600;
+
 export default async function Home() {
   const [categories, brands, featuredProducts] = await Promise.all([
     getPublishedTopCategories(),
@@ -73,7 +75,7 @@ export default async function Home() {
               Productos destacados
             </h2>
             <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {featuredProducts.map((product) => (
+              {featuredProducts.map((product, index) => (
                 <ProductCard
                   key={product.id}
                   slug={product.slug}
@@ -81,6 +83,7 @@ export default async function Home() {
                   brandName={product.brand?.name}
                   imageUrl={product.images[0]?.url}
                   imageAlt={product.images[0]?.alt}
+                  priority={index === 0}
                 />
               ))}
             </div>

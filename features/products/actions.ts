@@ -61,6 +61,7 @@ export async function createProductAction(
     .returning();
 
   revalidatePath("/admin/productos");
+  revalidatePath("/");
   redirect(`/admin/productos/${created.id}`);
 }
 
@@ -88,6 +89,7 @@ export async function updateProductAction(
 
   revalidatePath("/admin/productos");
   revalidatePath(`/admin/productos/${id}`);
+  revalidatePath("/");
   redirect(`/admin/productos/${id}`);
 }
 
@@ -95,6 +97,7 @@ export async function deleteProductAction(id: number) {
   await requireAdminSession();
   await db.delete(products).where(eq(products.id, id));
   revalidatePath("/admin/productos");
+  revalidatePath("/");
 }
 
 export async function setProductStatusAction(id: number, status: PublicationStatus) {
@@ -108,6 +111,7 @@ export async function setProductStatusAction(id: number, status: PublicationStat
     })
     .where(eq(products.id, id));
   revalidatePath("/admin/productos");
+  revalidatePath("/");
 }
 
 export async function bulkSetProductStatusAction(
@@ -126,6 +130,7 @@ export async function bulkSetProductStatusAction(
       .where(eq(products.id, id));
   }
   revalidatePath("/admin/productos");
+  revalidatePath("/");
 }
 
 // ---------- imagenes ----------

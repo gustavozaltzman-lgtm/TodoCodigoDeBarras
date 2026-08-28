@@ -17,6 +17,8 @@ import {
 } from "@/lib/config/site";
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
 
+export const revalidate = 300;
+
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
 };

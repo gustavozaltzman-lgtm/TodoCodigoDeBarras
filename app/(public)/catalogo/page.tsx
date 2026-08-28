@@ -86,7 +86,7 @@ export default async function CatalogoPage({ searchParams }: CatalogoPageProps) 
 
       {items.length > 0 ? (
         <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((product) => (
+          {items.map((product, index) => (
             <ProductCard
               key={product.id}
               slug={product.slug}
@@ -94,6 +94,7 @@ export default async function CatalogoPage({ searchParams }: CatalogoPageProps) 
               brandName={product.brandName}
               imageUrl={product.image?.url}
               imageAlt={product.image?.alt}
+              priority={index === 0}
             />
           ))}
         </div>

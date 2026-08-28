@@ -4,6 +4,8 @@ import { getBrandBySlug } from "@/features/brands/queries";
 import { getCatalogProducts } from "@/features/products/queries";
 import { ProductCard } from "@/components/catalog/product-card";
 
+export const revalidate = 300;
+
 type BrandPageProps = {
   params: Promise<{ slug: string }>;
 };
@@ -45,7 +47,7 @@ export default async function BrandPage({ params }: BrandPageProps) {
 
       {items.length > 0 ? (
         <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((product) => (
+          {items.map((product, index) => (
             <ProductCard
               key={product.id}
               slug={product.slug}
@@ -53,6 +55,7 @@ export default async function BrandPage({ params }: BrandPageProps) {
               brandName={product.brandName}
               imageUrl={product.image?.url}
               imageAlt={product.image?.alt}
+              priority={index === 0}
             />
           ))}
         </div>

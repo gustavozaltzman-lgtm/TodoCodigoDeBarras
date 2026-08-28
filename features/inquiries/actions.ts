@@ -1,12 +1,23 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { and, eq, gt, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { db } from "@/lib/db/client";
 import { inquiries } from "@/lib/db/schema";
 import { inquirySchema } from "@/lib/validation/inquiry";
 import { requireAdminSession } from "@/lib/auth/session";
 import { notifyNewLead } from "@/lib/integrations/leads";
+
+const RATE_LIMIT_WINDOW_MINUTES = 10;
+const RATE_LIMIT_MAX_SUBMISSIONS = 3;
+
+async function getClientIp(): Promise<string | null> {
+  const headersList = await headers();
+  const forwardedFor = headersList.get("x-forwarded-for");
+  if (forwardedFor) return forwardedFor.split(",")[0]!.trim();
+  return headersList.get("x-real-ip");
+}
 
 export type InquiryFormState = {
   status: "idle" | "success" | "error";
@@ -43,6 +54,23 @@ export async function submitInquiryAction(
     return { status: "success" };
   }
 
+  const ipAddress = await getClientIp();
+
+  if (ipAddress) {
+    const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MINUTES * 60_000);
+    const [{ count }] = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(inquiries)
+      .where(and(eq(inquiries.ipAddress, ipAddress), gt(inquiries.createdAt, windowStart)));
+
+    if (count >= RATE_LIMIT_MAX_SUBMISSIONS) {
+      return {
+        status: "error",
+        message: "Ya recibimos varias consultas tuyas. Probá de nuevo en unos minutos.",
+      };
+    }
+  }
+
   const data = parsed.data;
 
   const [inquiry] = await db
@@ -57,6 +85,7 @@ export async function submitInquiryAction(
       country: data.country ?? null,
       message: data.message,
       sourceUrl: data.sourceUrl ?? null,
+      ipAddress,
     })
     .returning();
 

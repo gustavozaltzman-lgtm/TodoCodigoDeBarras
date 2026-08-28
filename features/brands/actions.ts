@@ -34,6 +34,7 @@ export async function createBrandAction(
 
   await db.insert(brands).values(parsed.data);
   revalidatePath("/admin/marcas");
+  revalidatePath("/");
   redirect("/admin/marcas");
 }
 
@@ -55,6 +56,7 @@ export async function updateBrandAction(
     .where(eq(brands.id, id));
 
   revalidatePath("/admin/marcas");
+  revalidatePath("/");
   redirect("/admin/marcas");
 }
 
@@ -62,6 +64,7 @@ export async function deleteBrandAction(id: number) {
   await requireAdminSession();
   await db.delete(brands).where(eq(brands.id, id));
   revalidatePath("/admin/marcas");
+  revalidatePath("/");
 }
 
 export async function setBrandStatusAction(
@@ -74,4 +77,5 @@ export async function setBrandStatusAction(
     .set({ status, updatedAt: new Date() })
     .where(eq(brands.id, id));
   revalidatePath("/admin/marcas");
+  revalidatePath("/");
 }
