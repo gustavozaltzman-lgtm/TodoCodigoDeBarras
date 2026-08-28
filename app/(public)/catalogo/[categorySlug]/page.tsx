@@ -10,6 +10,7 @@ import { getPublishedBrands } from "@/features/brands/queries";
 import { ProductCard } from "@/components/catalog/product-card";
 import { CatalogFilters } from "@/components/catalog/catalog-filters";
 import { Pagination } from "@/components/catalog/pagination";
+import { buildWhatsAppUrl, siteConfig, whatsappMessages } from "@/lib/config/site";
 
 const VALID_SORTS: CatalogSort[] = ["relevance", "name-asc", "newest"];
 
@@ -81,6 +82,17 @@ export default async function CategoryPage({
       </h1>
       {category.description && (
         <p className="mt-2 max-w-2xl text-secondary">{category.description}</p>
+      )}
+
+      {siteConfig.whatsappNumber && (
+        <a
+          href={buildWhatsAppUrl(whatsappMessages.category(category.name))}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-md bg-green-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600"
+        >
+          Consultar por WhatsApp
+        </a>
       )}
 
       {subcategories.length > 0 && (

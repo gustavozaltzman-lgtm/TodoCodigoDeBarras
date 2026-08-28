@@ -6,6 +6,7 @@ import { db } from "@/lib/db/client";
 import { inquiries } from "@/lib/db/schema";
 import { inquirySchema } from "@/lib/validation/inquiry";
 import { requireAdminSession } from "@/lib/auth/session";
+import { notifyNewLead } from "@/lib/integrations/leads";
 
 export type InquiryFormState = {
   status: "idle" | "success" | "error";
@@ -44,16 +45,31 @@ export async function submitInquiryAction(
 
   const data = parsed.data;
 
-  await db.insert(inquiries).values({
-    type: data.type,
-    productId: data.productId ?? null,
-    name: data.name,
-    company: data.company ?? null,
-    email: data.email,
-    phone: data.phone ?? null,
-    country: data.country ?? null,
-    message: data.message,
-    sourceUrl: data.sourceUrl ?? null,
+  const [inquiry] = await db
+    .insert(inquiries)
+    .values({
+      type: data.type,
+      productId: data.productId ?? null,
+      name: data.name,
+      company: data.company ?? null,
+      email: data.email,
+      phone: data.phone ?? null,
+      country: data.country ?? null,
+      message: data.message,
+      sourceUrl: data.sourceUrl ?? null,
+    })
+    .returning();
+
+  await notifyNewLead({
+    id: inquiry.id,
+    type: inquiry.type,
+    name: inquiry.name,
+    company: inquiry.company,
+    email: inquiry.email,
+    phone: inquiry.phone,
+    country: inquiry.country,
+    message: inquiry.message,
+    sourceUrl: inquiry.sourceUrl,
   });
 
   return { status: "success" };
