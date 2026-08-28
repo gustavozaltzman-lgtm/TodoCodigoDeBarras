@@ -1,8 +1,11 @@
 "use server";
 
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db/client";
 import { inquiries } from "@/lib/db/schema";
 import { inquirySchema } from "@/lib/validation/inquiry";
+import { requireAdminSession } from "@/lib/auth/session";
 
 export type InquiryFormState = {
   status: "idle" | "success" | "error";
@@ -54,4 +57,19 @@ export async function submitInquiryAction(
   });
 
   return { status: "success" };
+}
+
+export async function setInquiryStatusAction(
+  id: number,
+  status: "new" | "contacted" | "closed"
+) {
+  await requireAdminSession();
+  await db.update(inquiries).set({ status }).where(eq(inquiries.id, id));
+  revalidatePath("/admin/consultas");
+}
+
+export async function deleteInquiryAction(id: number) {
+  await requireAdminSession();
+  await db.delete(inquiries).where(eq(inquiries.id, id));
+  revalidatePath("/admin/consultas");
 }
