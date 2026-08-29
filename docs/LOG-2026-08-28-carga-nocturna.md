@@ -111,3 +111,55 @@ convención de esos títulos, pero no los verifiqué producto por producto.
 2. Los que ya se vean bien (nombre correcto, precio correcto) los podés
    publicar tal cual sin foto — o esperar a tener fotos.
 3. Contame las respuestas a los puntos 1-6 de arriba y los ajusto.
+
+---
+
+## Actualización — investigación de fotos/fichas técnicas (28 SKUs)
+
+Pediste que busque fotos y fichas técnicas para el listado de SKUs que me
+pasaste (impresoras, lectores, RFID). Se investigó cada uno contra fuente
+oficial (igual nivel de rigor que el piloto original), se verificó cada
+URL con HTTP antes de usarla, y se cargaron **27 fotos reales** y **17
+fichas técnicas** en Vercel Blob, más las specs correspondientes. Todo
+sigue en **Borrador** — no se publicó nada.
+
+**3 productos sin foto** (no inventé ninguna imagen genérica):
+- **1169** (Etiqueta RFID Z-Perform 2000D) — es una línea real de Zebra,
+  pero no hay foto específica del SKU exacto (47x32mm/3500) verificable.
+- **4099** (Impresora Honeywell PC42e-T) y **4100** (Tablet Honeywell
+  EDA10) — no se encontró foto oficial de Honeywell verificable en esta
+  sesión, solo la ficha técnica.
+
+**Cosas puntuales para tu revisión:**
+
+- **SKU 4100 "Tablet Honeywell EDA10"** — no existe un modelo "EDA10"
+  independiente en la documentación de Honeywell, solo **"ScanPal
+  EDA10A"**. Es casi seguro que sea el mismo producto con el nombre
+  abreviado en tu excel. **No renombré el producto** — dejé una nota en
+  sus specs ("Modelo real (a confirmar): Honeywell ScanPal EDA10A") para
+  que decidas vos si corresponde corregir el nombre.
+- **SKU 4034 (Zebra DS7708) y 4061 (Zebra TC26)** — están **discontinuados
+  por Zebra** (última venta sep. 2024 y feb. 2025 respectivamente, aunque
+  con soporte hasta 2028-2029). Siguen siendo productos reales y
+  vendibles como stock remanente, pero quizás no quieras presentarlos
+  como "nuevo" sin aclarar. La foto del TC26 además es de baja resolución
+  (300x300, la única oficial que encontré).
+- **SKU 4003 "Uniform ST8310"** — confirmé que "Uniform" es una marca real
+  (UIC - Uniform Industrial Corporation, línea Scanteam), así que quedó
+  con marca asignada. No se encontró ficha técnica oficial descargable.
+- **SKU 4038 "MJ 6709"** — se remonta a Alacrity/Symcode (fabricante OEM
+  chino); "MJ" en sí no es una marca independiente confirmada, parece ser
+  una designación de reventa. Dejé la foto (del sitio del fabricante real,
+  Alacrity) pero sin asignar marca en la base.
+- **SKUs 4077/4078 y 4083** (Kit RFID / RFD40 Standard / RFD40 Premium) —
+  comparten la misma foto porque Zebra no publica fotografías distintas
+  para las variantes Standard vs Premium del mismo mango RFID.
+- **SKUs 4090 (ZD220t) y 4060 (ZD230t)** — comparten foto por ser la misma
+  familia/carcasa Zebra.
+- **SKUs 4101 y 4106** (Zebra ZD421 USB vs USB+Ethernet) — comparten foto
+  por el mismo motivo.
+- **SKU 4082 (TSC RFID T820)** — la foto es genérica de la serie T800
+  (compartida con el T830), no específica del T820.
+
+Nada de esto está publicado — queda todo en Borrador para tu revisión
+final antes de que se vea en el sitio.
