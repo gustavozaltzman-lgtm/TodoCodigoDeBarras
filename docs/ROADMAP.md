@@ -93,8 +93,9 @@ categoría/general), notificaciones de leads nuevos, honeypot anti-spam.
   enlazadas desde el footer). Contenido redactado a medida para este negocio
   (sin venta online, formulario de consultas, WhatsApp) siguiendo la
   estructura habitual de este tipo de páginas en Argentina (Ley 25.326).
-  Quedan placeholders `[Completar: ...]` para razón social, CUIT, domicilio y
-  jurisdicción — dato de negocio que falta.
+  Razón social, CUIT y domicilio ya cargados (ver "Datos de la empresa" en
+  Fase 1H); la jurisdicción quedó como "tribunales ordinarios competentes"
+  sin especificar plaza, decisión que conviene validar con un abogado.
 
 - **Headers de seguridad:** CSP estricta con nonce dinámico por request
   (`proxy.ts` — necesario porque Next.js inyecta scripts inline para
@@ -264,10 +265,7 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
     (`inquiries.interest`, `inquiries.sector`). Se ven en el admin
     (`/admin/consultas`, como badges) y en el email de notificación de
     lead nuevo.
-  - **Pendiente — bloqueado, necesita dato real del usuario:** los
-    placeholders `[Completar: razón social, CUIT y domicilio legal]` en
-    `/privacidad` y `/terminos` siguen sin reemplazar — no se puede
-    inventar razón social/CUIT/domicilio.
+  - ~~Placeholders legales~~ — resueltos, ver "Datos de la empresa".
 
 - **Contraste con el prompt de auditoría SEO/AEO de 20 fases** (enfoque
   100% hardware AIDC, sin software ni servicios operativos):
@@ -281,12 +279,13 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
     todos los productos publicados, descripción y SEO description en todas
     las categorías.
   - *Bloqueado, falta dato real del cliente* (no se inventa; marcar
-    `[INFORMACIÓN A SOLICITAR AL CLIENTE]`): `LocalBusiness`/NAP y Google
-    Business Profile; página y schema `Service` de Servicio Técnico (qué
-    servicios ofrece de verdad, taller propio, repuestos oficiales);
-    certificaciones o partnerships con fabricantes; `Offer` (política de
-    precios); razón social/CUIT en legales; logo para `Organization`;
-    dominio definitivo (`NEXT_PUBLIC_SITE_URL`).
+    `[INFORMACIÓN A SOLICITAR AL CLIENTE]`): teléfono y horario (para
+    `LocalBusiness` y Google Business Profile); detalle del servicio técnico
+    (marcas que atiende, tipos de reparación, plazos); certificaciones o
+    partnerships con fabricantes (el cliente confirmó que no hay);
+    `Offer` (política de precios: la respuesta fue ambigua, "mostrar o
+    consultar", falta definirla); logo para `Organization`; dominio
+    definitivo (`NEXT_PUBLIC_SITE_URL`).
   - *No hecho todavía (contenido o research externo):* guías
     `TechArticle`/`HowTo`, buscador de compatibilidad insumo↔impresora,
     comparador, análisis de competencia, medición real de Core Web Vitals
@@ -363,6 +362,21 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
     cada producto dentro del pedido usa `NEXT_PUBLIC_SITE_URL`: hasta
     definir el dominio apunta a la dirección provisoria.
 
+- **Datos de la empresa (nov. 2026):** SNET SA, CUIT 30-70760662-9,
+  Pizarro 5201, CABA (CP 1440), cargados en `companyInfo`
+  (`lib/config/site.ts`), que es la fuente única para legales, footer,
+  contacto y datos estructurados. `Organization` suma `legalName`,
+  `taxID`, `address` y un `contactPoint` con el WhatsApp comercial (único
+  teléfono publicado); se dejó `Organization` y no `LocalBusiness` porque
+  no está confirmado que haya atención al público ni se tiene el horario.
+  Legales actualizados (responsable del tratamiento, datos que recopila el
+  formulario con rubro/sector y lista de cotización, fecha). Nueva página
+  `/servicio-tecnico` (servicio técnico propio, con `Service` JSON-LD,
+  formulario con interés "Servicio técnico", enlace a repuestos y
+  accesorios), en el header, footer y sitemap. El menú de escritorio pasa
+  a mostrarse desde 1024 px (antes 768 px) porque con un enlace más y los
+  íconos de búsqueda y lista no entraba en tablet vertical.
+
 **Pendiente — P0:**
 - ~~Reemplazar el copy placeholder de Home y Empresa~~ — **hecho
   parcialmente**: el usuario confirmó que la empresa opera desde 1992, así
@@ -370,9 +384,9 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
   "Trayectoria comprobada") ya menciona ese dato real en vez del genérico
   anterior. Sigue sin certificaciones ni diferenciales adicionales
   verificables — el usuario confirmó que por ahora no hay más para agregar.
-- Definir NAP real (dirección, teléfono, horario) y agregar `LocalBusiness`
-  junto al `Organization` existente — hoy no hay ningún dato de contacto
-  físico en el sitio.
+- NAP: dirección y razón social ya cargadas (ver "Datos de la empresa").
+  Faltan teléfono y horario para poder agregar `LocalBusiness` y dar de
+  alta Google Business Profile.
 - Seguir completando el catálogo. **Estado actual (nov. 2026): 151
   productos en la base, 63 publicados y 88 en borrador.** Las 157 filas de
   `tcb-280826.xlsx` ya están cargadas (excluidas: estanterías, notebooks,
@@ -399,10 +413,9 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
   consultoría. Reencuadrarlas como casos de éxito/uso concretos (ej. "así
   resolvimos trazabilidad de depósito con RFID", con el hardware real
   involucrado), no como propuesta de solución abstracta.
-- Ruta "Servicio Técnico" — sigue sin existir ni como página ni como
-  categoría especial (a diferencia de "Soluciones por Industria", esto
-  todavía requiere confirmar qué servicio técnico ofrece realmente el
-  negocio).
+- Ampliar `/servicio-tecnico`: hoy solo afirma lo confirmado (servicio
+  técnico propio). Falta el dato real de qué marcas y equipos atiende, qué
+  reparaciones hace y en qué plazos, para poder publicarlo sin inventar.
 
 **P2/P3:** guías técnicas (TechArticle/HowTo), página de aterrizaje por
 datasheet (hoy los PDF cuelgan sueltos, link directo al blob — el hub de

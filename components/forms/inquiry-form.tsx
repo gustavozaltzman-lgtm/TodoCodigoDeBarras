@@ -18,12 +18,14 @@ type InquiryFormProps = {
   type?: "general" | "quote" | "product";
   productId?: number;
   productName?: string;
+  defaultInterest?: string;
 };
 
 export function InquiryForm({
   type = "general",
   productId,
   productName,
+  defaultInterest,
 }: InquiryFormProps) {
   const [state, formAction, pending] = useActionState(
     submitInquiryAction,
@@ -112,7 +114,7 @@ export function InquiryForm({
           <label htmlFor="interest" className={labelClass}>
             ¿Qué estás buscando?
           </label>
-          <select id="interest" name="interest" defaultValue="" className={selectClass}>
+          <select id="interest" name="interest" defaultValue={defaultInterest ?? ""} className={selectClass}>
             <option value="">Elegí una opción</option>
             {INTEREST_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>

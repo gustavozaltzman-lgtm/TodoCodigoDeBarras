@@ -7,6 +7,7 @@ export const INTEREST_OPTIONS = [
   { value: "computo_movil", label: "Computadoras Móviles" },
   { value: "rfid", label: "RFID" },
   { value: "etiquetas_ribbons", label: "Etiquetas/Ribbons" },
+  { value: "servicio_tecnico", label: "Servicio técnico" },
   { value: "asesoramiento_general", label: "Asesoramiento General" },
 ] as const;
 

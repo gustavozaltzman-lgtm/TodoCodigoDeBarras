@@ -10,6 +10,7 @@ import { QuoteButton } from "@/components/quote/quote-button";
 
 const NAV_LINKS = [
   { href: "/catalogo", label: "Catálogo" },
+  { href: "/servicio-tecnico", label: "Servicio técnico" },
   { href: "/empresa", label: "Empresa" },
   { href: "/contacto", label: "Contacto" },
 ];
@@ -33,7 +34,7 @@ export function Header() {
         </Link>
 
         {/* Nav de escritorio */}
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-6 lg:flex">
           <Link
             href="/catalogo"
             className="text-sm font-medium text-secondary transition-colors hover:text-primary"
@@ -73,6 +74,12 @@ export function Header() {
             )}
           </div>
 
+          <Link
+            href="/servicio-tecnico"
+            className="text-sm font-medium text-secondary transition-colors hover:text-primary"
+          >
+            Servicio técnico
+          </Link>
           <Link
             href="/empresa"
             className="text-sm font-medium text-secondary transition-colors hover:text-primary"
@@ -122,7 +129,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
-            className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-md text-primary md:hidden"
+            className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-md text-primary lg:hidden"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-6 w-6">
               {open ? (
@@ -141,7 +148,7 @@ export function Header() {
       {open && (
         <nav
           id="mobile-menu"
-          className="border-t border-border bg-white px-4 py-3 md:hidden"
+          className="border-t border-border bg-white px-4 py-3 lg:hidden"
         >
           <ul className="flex flex-col gap-1">
             {NAV_LINKS.map((link) => (

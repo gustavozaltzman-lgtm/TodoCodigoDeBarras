@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { siteConfig } from "@/lib/config/site";
+import { companyAddressLine, companyInfo, siteConfig } from "@/lib/config/site";
 
 export const metadata: Metadata = {
   title: "Términos y Condiciones",
@@ -17,7 +17,7 @@ export default function TerminosPage() {
         Términos y Condiciones
       </h1>
       <p className="mt-2 text-sm text-secondary">
-        Última actualización: 27 de agosto de 2026
+        Última actualización: 25 de noviembre de 2026
       </p>
 
       <div className="prose-legal mt-10 space-y-8 text-secondary [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-primary [&_h2]:mb-2 [&_p]:mt-2 [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mt-1">
@@ -27,6 +27,10 @@ export default function TerminosPage() {
             El acceso y uso de este sitio web atribuye la condición de
             usuario e implica la aceptación de estos términos y condiciones.
             Si no estás de acuerdo, te pedimos que no utilices el sitio.
+          </p>
+          <p>
+            Este sitio es operado por {companyInfo.legalName}, CUIT{" "}
+            {companyInfo.cuit}, con domicilio en {companyAddressLine}.
           </p>
         </section>
 
@@ -95,8 +99,7 @@ export default function TerminosPage() {
           <p>
             Estos términos se rigen por las leyes de la República Argentina.
             Ante cualquier controversia, las partes se someten a los
-            tribunales ordinarios competentes [Completar: jurisdicción
-            específica].
+            tribunales ordinarios competentes.
           </p>
         </section>
 

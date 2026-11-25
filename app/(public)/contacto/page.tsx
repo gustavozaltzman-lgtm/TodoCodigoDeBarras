@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { InquiryForm } from "@/components/forms/inquiry-form";
-import { buildWhatsAppUrl, siteConfig, whatsappMessages } from "@/lib/config/site";
+import {
+  buildWhatsAppUrl,
+  companyAddressLine,
+  companyInfo,
+  siteConfig,
+  whatsappMessages,
+} from "@/lib/config/site";
 
 export const metadata: Metadata = {
   title: "Contacto",
@@ -52,6 +58,14 @@ export default function ContactoPage() {
           </div>
         )}
       </div>
+
+      <section className="mt-10 rounded-lg border border-border bg-white p-5 text-sm text-secondary">
+        <h2 className="text-base font-semibold text-primary">Datos de la empresa</h2>
+        <p className="mt-2">
+          {companyInfo.legalName} · CUIT {companyInfo.cuit}
+        </p>
+        <p>{companyAddressLine}</p>
+      </section>
     </main>
   );
 }

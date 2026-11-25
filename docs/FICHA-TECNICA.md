@@ -38,6 +38,10 @@ necesidad técnica todavía — ver `ROADMAP.md`).
   categoría que cambiaron de nombre — necesario cada vez que se renombra
   una categoría existente, para no romper links compartidos ni duplicar
   URLs indexadas.
+- **Datos de la empresa** en `companyInfo` (`lib/config/site.ts`): razón
+  social, CUIT y domicilio. Es la fuente única que leen las páginas legales,
+  el footer, la página de contacto y el JSON-LD `Organization`. Para cambiar
+  un dato legal se edita ahí, no en cada página.
 - **Búsqueda instantánea** (`components/layout/search-panel.tsx` +
   `features/products/search-actions.ts`): es una Server Action de solo
   lectura, no una ruta de API. Largo de término y resultados acotados (máx.

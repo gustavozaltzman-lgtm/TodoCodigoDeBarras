@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { siteConfig, buildWhatsAppUrl, whatsappMessages } from "@/lib/config/site";
+import {
+  siteConfig,
+  buildWhatsAppUrl,
+  whatsappMessages,
+  companyAddressLine,
+  companyInfo,
+} from "@/lib/config/site";
 import { getPublishedTopCategories } from "@/features/categories/queries";
 import { LogoMark } from "./logo-mark";
 
@@ -63,6 +69,11 @@ export async function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/servicio-tecnico" className="cursor-pointer text-sm text-slate-400 transition-colors hover:text-white">
+                  Servicio técnico
+                </Link>
+              </li>
+              <li>
                 <Link href="/contacto" className="cursor-pointer text-sm text-slate-400 transition-colors hover:text-white">
                   Contacto
                 </Link>
@@ -98,8 +109,13 @@ export async function Footer() {
         </div>
 
         <div className="mt-12 border-t border-white/10 pt-6 text-sm text-slate-500">
-          © {new Date().getFullYear()} {siteConfig.name}. Todos los derechos
-          reservados.
+          <p>
+            {companyInfo.legalName} · CUIT {companyInfo.cuit} · {companyAddressLine}
+          </p>
+          <p className="mt-1">
+            © {new Date().getFullYear()} {siteConfig.name}. Todos los derechos
+            reservados.
+          </p>
         </div>
       </div>
     </footer>

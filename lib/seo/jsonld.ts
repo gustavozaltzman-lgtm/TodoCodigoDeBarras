@@ -1,4 +1,4 @@
-import { siteConfig } from "@/lib/config/site";
+import { companyInfo, siteConfig } from "@/lib/config/site";
 
 // Serializa un objeto para inyectarlo en <script type="application/ld+json">.
 // Escapa "<" para que un valor con "</script>" (ej. nombre o descripcion de
@@ -12,7 +12,27 @@ export function organizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: siteConfig.name,
+    legalName: companyInfo.legalName,
+    taxID: companyInfo.cuit,
     url: siteConfig.url,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: companyInfo.address.street,
+      addressLocality: companyInfo.address.locality,
+      postalCode: companyInfo.address.postalCode,
+      addressCountry: companyInfo.address.country,
+    },
+    // El telefono publicado del sitio es el WhatsApp comercial.
+    contactPoint: siteConfig.whatsappNumber
+      ? [
+          {
+            "@type": "ContactPoint",
+            contactType: "sales",
+            telephone: `+${siteConfig.whatsappNumber}`,
+            availableLanguage: "es",
+          },
+        ]
+      : undefined,
     // TODO: agregar logo (URL absoluta) cuando el cliente provea el asset real
   };
 }

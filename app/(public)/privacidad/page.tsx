@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { siteConfig } from "@/lib/config/site";
+import { companyAddressLine, companyInfo, siteConfig } from "@/lib/config/site";
 
 export const metadata: Metadata = {
   title: "Política de Privacidad",
@@ -17,16 +17,18 @@ export default function PrivacidadPage() {
         Política de Privacidad
       </h1>
       <p className="mt-2 text-sm text-secondary">
-        Última actualización: 27 de agosto de 2026
+        Última actualización: 25 de noviembre de 2026
       </p>
 
       <div className="prose-legal mt-10 space-y-8 text-secondary [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-primary [&_h2]:mb-2 [&_p]:mt-2 [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mt-1">
         <section>
           <h2>1. Responsable del tratamiento</h2>
           <p>
-            {siteConfig.name} [Completar: razón social, CUIT y domicilio
-            legal] es responsable del tratamiento de los datos personales que
-            se recopilan a través de este sitio web. Ante cualquier consulta
+            {siteConfig.name} es operado por {companyInfo.legalName}, CUIT{" "}
+            {companyInfo.cuit}, con domicilio en {companyAddressLine}.{" "}
+            {companyInfo.legalName} es responsable del tratamiento de los
+            datos personales que se recopilan a través de este sitio web.
+            Ante cualquier consulta
             sobre esta política podés escribirnos a través del{" "}
             <a href="/contacto" className="text-accent hover:underline">
               formulario de contacto
@@ -40,8 +42,9 @@ export default function PrivacidadPage() {
           <p>
             Recopilamos únicamente los datos que completás voluntariamente en
             nuestros formularios de consulta y cotización: nombre, empresa,
-            email, teléfono, país y el mensaje o producto por el que
-            consultás. No pedimos ni almacenamos datos de pago ni información
+            email, teléfono, país, el sector o aplicación y el tipo de
+            equipo que buscás, el mensaje, y los productos y cantidades de tu
+            lista de cotización. No pedimos ni almacenamos datos de pago ni información
             financiera en este sitio.
           </p>
         </section>
