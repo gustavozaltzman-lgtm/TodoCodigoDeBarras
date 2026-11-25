@@ -109,6 +109,13 @@ secciones extra:
   específica — usalo solo cuando la compatibilidad sea real, no como
   relación genérica).
 
+**Dónde se ven las relaciones en la ficha del producto:** las de tipo
+Accesorio y Compatible aparecen como "Complementá tu solución" en el equipo,
+y al revés como "Compatible con" en el accesorio. Las de tipo Relacionado
+aparecen como "Productos relacionados". "También puede interesarte" se arma
+solo con otros equipos publicados de la misma categoría. Un producto
+vinculado que sigue en Borrador no se muestra hasta que lo publiques.
+
 ### Listado y acciones masivas
 
 En `/admin/productos` podés tildar varios productos y cambiarles el estado

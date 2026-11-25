@@ -189,17 +189,10 @@ export async function getAllPublishedProductSlugs() {
     .where(eq(products.status, "published"));
 }
 
-export async function getRelatedProducts(productId: number) {
-  const relations = await db
-    .select({ relatedProductId: productRelationships.relatedProductId })
-    .from(productRelationships)
-    .where(eq(productRelationships.productId, productId));
-
-  const relatedIds = relations.map((r) => r.relatedProductId);
-  if (relatedIds.length === 0) return [];
-
+async function findPublishedCards(ids: number[]) {
+  if (ids.length === 0) return [];
   return db.query.products.findMany({
-    where: and(inArray(products.id, relatedIds), eq(products.status, "published")),
+    where: and(inArray(products.id, ids), eq(products.status, "published")),
     with: {
       brand: true,
       images: {
@@ -208,4 +201,70 @@ export async function getRelatedProducts(productId: number) {
       },
     },
   });
+}
+
+// Relaciones de una ficha, en tres grupos segun lo que necesita el comprador:
+//  - complements: insumos/accesorios de ESTE equipo (relacion "compatible" o
+//    "accessory" cargada desde este producto).
+//  - fitsWith: equipos con los que se usa ESTE producto, cuando este producto
+//    es el insumo/accesorio (la misma relacion leida al reves).
+//  - alternatives: otros equipos publicados de la misma categoria, siempre
+//    datos reales, nunca inventados.
+export async function getProductRelationGroups(
+  productId: number,
+  categoryId: number | null
+) {
+  const [forward, reverse] = await Promise.all([
+    db
+      .select({
+        id: productRelationships.relatedProductId,
+        type: productRelationships.type,
+      })
+      .from(productRelationships)
+      .where(eq(productRelationships.productId, productId)),
+    db
+      .select({
+        id: productRelationships.productId,
+        type: productRelationships.type,
+      })
+      .from(productRelationships)
+      .where(eq(productRelationships.relatedProductId, productId)),
+  ]);
+
+  const supply = (type: string) => type === "compatible" || type === "accessory";
+  const complementIds = forward.filter((r) => supply(r.type)).map((r) => r.id);
+  const fitsWithIds = reverse.filter((r) => supply(r.type)).map((r) => r.id);
+  const relatedIds = forward.filter((r) => r.type === "related").map((r) => r.id);
+
+  const [complements, fitsWith, related] = await Promise.all([
+    findPublishedCards(complementIds),
+    findPublishedCards(fitsWithIds),
+    findPublishedCards(relatedIds),
+  ]);
+
+  const taken = new Set([
+    productId,
+    ...complements.map((p) => p.id),
+    ...fitsWith.map((p) => p.id),
+    ...related.map((p) => p.id),
+  ]);
+
+  let alternatives: Awaited<ReturnType<typeof findPublishedCards>> = [];
+  if (categoryId !== null) {
+    const sameCategory = await db
+      .select({ id: products.id })
+      .from(products)
+      .where(
+        and(eq(products.status, "published"), eq(products.categoryId, categoryId))
+      )
+      .orderBy(asc(products.sortOrder), asc(products.name))
+      .limit(8);
+    alternatives = (
+      await findPublishedCards(
+        sameCategory.map((p) => p.id).filter((id) => !taken.has(id))
+      )
+    ).slice(0, 4);
+  }
+
+  return { complements, fitsWith, related, alternatives };
 }

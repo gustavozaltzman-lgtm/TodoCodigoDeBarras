@@ -117,7 +117,7 @@ export default async function CategoryPage({
             <Link
               key={sub.id}
               href={`/catalogo/${sub.slug}`}
-              className="cursor-pointer rounded-full border border-border px-4 py-1.5 text-sm text-secondary transition-colors hover:border-accent hover:text-primary"
+              className="cursor-pointer rounded-full border border-border px-4 py-2 text-sm text-secondary transition-colors hover:border-accent hover:text-primary"
             >
               {sub.name}
             </Link>

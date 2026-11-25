@@ -31,7 +31,7 @@ export function CatalogFilters({
           type="search"
           defaultValue={search}
           placeholder="Nombre del producto..."
-          className="w-full rounded-md border border-border px-3 py-2 text-sm outline-none transition-colors focus:border-accent"
+          className="w-full rounded-md border border-border px-3 py-2.5 text-sm outline-none transition-colors focus:border-accent"
         />
       </div>
 
@@ -44,7 +44,7 @@ export function CatalogFilters({
             id="brand"
             name="brand"
             defaultValue={brandSlug ?? ""}
-            className="w-full cursor-pointer rounded-md border border-border px-3 py-2 text-sm outline-none transition-colors focus:border-accent"
+            className="w-full cursor-pointer rounded-md border border-border px-3 py-2.5 text-sm outline-none transition-colors focus:border-accent"
           >
             <option value="">Todas</option>
             {brands.map((brand) => (
@@ -64,7 +64,7 @@ export function CatalogFilters({
           id="sort"
           name="sort"
           defaultValue={sort ?? "relevance"}
-          className="w-full cursor-pointer rounded-md border border-border px-3 py-2 text-sm outline-none transition-colors focus:border-accent"
+          className="w-full cursor-pointer rounded-md border border-border px-3 py-2.5 text-sm outline-none transition-colors focus:border-accent"
         >
           <option value="relevance">Relevancia</option>
           <option value="name-asc">Nombre (A-Z)</option>
@@ -74,7 +74,7 @@ export function CatalogFilters({
 
       <button
         type="submit"
-        className="cursor-pointer rounded-md bg-accent px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-primary"
+        className="cursor-pointer rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary"
       >
         Filtrar
       </button>

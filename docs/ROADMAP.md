@@ -292,6 +292,25 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
     comparador, análisis de competencia, medición real de Core Web Vitals
     sobre el dominio en producción, casos de éxito por industria.
 
+- **Auditoría UI/UX (etapas 1 y 2 de 4):**
+  - *Etapa 1 — base visual y móvil:* tablas de specs con scroll horizontal
+    propio, botón de WhatsApp con safe-area (y oculto en la ficha de
+    producto en mobile, donde la barra de cotización fija ya lo incluye),
+    paginación y filtros con objetivos táctiles de 44 px, `loading.tsx`
+    (esqueletos) en catálogo y ficha.
+  - *Etapa 2 — ficha moderna:* menú de secciones fijo (anclas, no pestañas
+    que ocultan contenido, para no perder texto indexable), "Complementá
+    tu solución" / "Compatible con" desde `product_relationships`,
+    "También puede interesarte" (misma categoría), barra de cotización fija
+    en mobile/tablet. 24 relaciones accesorio/compatible cargadas en Neon
+    a partir de los títulos del Excel (fundas, grips, baterías, cabezales,
+    soporte RFD40); no se ven hasta publicar esos productos (hoy en
+    borrador).
+  - *Pendiente (etapas 3 y 4):* buscador instantáneo, filtros por
+    categoría sin recarga (requiere normalizar etiquetas de specs),
+    comparador, selector de insumos por impresora, lista de cotización
+    multi-producto.
+
 **Pendiente — P0:**
 - ~~Reemplazar el copy placeholder de Home y Empresa~~ — **hecho
   parcialmente**: el usuario confirmó que la empresa opera desde 1992, así

@@ -6,30 +6,27 @@ type PaginationProps = {
   buildHref: (page: number) => string;
 };
 
+const linkClass =
+  "inline-flex min-h-11 cursor-pointer items-center rounded-md border border-border bg-white px-4 text-sm font-medium text-secondary transition-colors hover:border-accent hover:text-primary";
+
 export function Pagination({ page, totalPages, buildHref }: PaginationProps) {
   if (totalPages <= 1) return null;
 
   return (
     <nav
       aria-label="Paginación"
-      className="mt-8 flex items-center justify-center gap-2"
+      className="mt-8 flex flex-wrap items-center justify-center gap-3"
     >
       {page > 1 && (
-        <Link
-          href={buildHref(page - 1)}
-          className="cursor-pointer rounded-md border border-border px-3 py-2 text-sm text-secondary transition-colors hover:border-accent hover:text-primary"
-        >
+        <Link href={buildHref(page - 1)} className={linkClass}>
           Anterior
         </Link>
       )}
-      <span className="text-sm text-secondary">
-        Página {page} de {totalPages}
+      <span className="font-mono-data text-sm text-secondary">
+        {page} / {totalPages}
       </span>
       {page < totalPages && (
-        <Link
-          href={buildHref(page + 1)}
-          className="cursor-pointer rounded-md border border-border px-3 py-2 text-sm text-secondary transition-colors hover:border-accent hover:text-primary"
-        >
+        <Link href={buildHref(page + 1)} className={linkClass}>
           Siguiente
         </Link>
       )}

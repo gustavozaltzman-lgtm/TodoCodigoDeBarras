@@ -62,7 +62,7 @@ export default async function CatalogoPage({ searchParams }: CatalogoPageProps) 
             <Link
               key={category.id}
               href={`/catalogo/${category.slug}`}
-              className="cursor-pointer rounded-full border border-border px-4 py-1.5 text-sm text-secondary transition-colors hover:border-accent hover:text-primary"
+              className="cursor-pointer rounded-full border border-border px-4 py-2 text-sm text-secondary transition-colors hover:border-accent hover:text-primary"
             >
               {category.name}
             </Link>

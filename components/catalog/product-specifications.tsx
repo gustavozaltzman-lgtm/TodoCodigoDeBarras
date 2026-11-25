@@ -25,7 +25,8 @@ export function ProductSpecifications({ specifications }: { specifications: Spec
             {groups.size > 1 && (
               <h3 className="eyebrow mb-2">{groupName}</h3>
             )}
-            <div className="overflow-hidden rounded-lg border border-border">
+            {/* En pantallas angostas la tabla scrollea sola en horizontal en vez de empujar la pagina */}
+            <div className="overflow-x-auto rounded-lg border border-border">
               <table className="w-full text-sm">
                 <tbody>
                   {specs.map((spec, index) => (
@@ -35,11 +36,11 @@ export function ProductSpecifications({ specifications }: { specifications: Spec
                     >
                       <th
                         scope="row"
-                        className="w-1/3 px-4 py-2 text-left font-medium text-secondary"
+                        className="w-2/5 min-w-[8rem] px-3 py-2.5 text-left align-top font-medium text-secondary sm:w-1/3 sm:px-4"
                       >
                         {spec.label}
                       </th>
-                      <td className="font-mono-data px-4 py-2 text-primary">
+                      <td className="font-mono-data break-words px-3 py-2.5 align-top text-primary sm:px-4">
                         {spec.value}
                       </td>
                     </tr>

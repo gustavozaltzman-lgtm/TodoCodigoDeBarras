@@ -1,7 +1,16 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { buildWhatsAppUrl, siteConfig, whatsappMessages } from "@/lib/config/site";
 
 export function WhatsAppButton() {
+  const pathname = usePathname();
   if (!siteConfig.whatsappNumber) return null;
+
+  // En la ficha de producto la barra de cotizacion fija (solo mobile) ya
+  // trae su propio acceso a WhatsApp, asi que el boton flotante se oculta
+  // ahi para no tapar contenido ni duplicar el acceso.
+  const onProductPage = pathname.startsWith("/productos/");
 
   return (
     <a
@@ -9,7 +18,9 @@ export function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Contactar por WhatsApp"
-      className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-lg transition-all hover:bg-green-600 active:scale-95"
+      className={`fixed right-4 z-50 h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-lg transition-all [bottom:calc(1.25rem+env(safe-area-inset-bottom,0px))] hover:bg-green-600 active:scale-95 sm:right-5 ${
+        onProductPage ? "hidden lg:flex" : "flex"
+      }`}
     >
       <svg
         viewBox="0 0 24 24"

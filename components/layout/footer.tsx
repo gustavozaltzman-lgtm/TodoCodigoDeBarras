@@ -8,7 +8,7 @@ export async function Footer() {
 
   return (
     <footer className="border-t border-white/10 bg-primary">
-      <div className="mx-auto max-w-6xl px-4 py-14">
+      <div className="mx-auto max-w-6xl px-4 pt-14 pb-28 lg:pb-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
             <Link

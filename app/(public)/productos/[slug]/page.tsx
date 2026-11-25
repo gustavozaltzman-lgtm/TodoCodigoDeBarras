@@ -3,8 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   getProductBySlug,
-  getRelatedProducts,
+  getProductRelationGroups,
 } from "@/features/products/queries";
+import { SectionTabs } from "@/components/catalog/section-tabs";
 import { ProductGallery } from "@/components/catalog/product-gallery";
 import { ProductSpecifications } from "@/components/catalog/product-specifications";
 import { ProductDocuments } from "@/components/catalog/product-documents";
@@ -55,7 +56,32 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const relatedProducts = await getRelatedProducts(product.id);
+  const { complements, fitsWith, related, alternatives } =
+    await getProductRelationGroups(product.id, product.categoryId);
+
+  const hasCompat = complements.length > 0 || fitsWith.length > 0;
+  const tabs = [
+    ...(product.description ? [{ id: "descripcion", label: "Descripción" }] : []),
+    ...(product.specifications.length
+      ? [{ id: "especificaciones", label: "Especificaciones" }]
+      : []),
+    ...(hasCompat ? [{ id: "compatibilidad", label: "Compatibilidad" }] : []),
+    ...(product.documents.length ? [{ id: "descargas", label: "Descargas" }] : []),
+    { id: "consulta", label: "Cotizar" },
+  ];
+
+  const cards = (items: typeof alternatives) =>
+    items.map((item) => (
+      <ProductCard
+        key={item.id}
+        slug={item.slug}
+        name={item.name}
+        brandName={item.brand?.name}
+        imageUrl={item.images[0]?.url}
+        imageAlt={item.images[0]?.alt}
+        availability={item.availability}
+      />
+    ));
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -186,8 +212,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       </div>
 
+      <SectionTabs tabs={tabs} />
+
       {product.description && (
-        <section className="mt-14">
+        <section id="descripcion" className="mt-10 scroll-mt-32">
           <h2 className="text-xl font-semibold text-primary">Descripción</h2>
           <div className="mt-4 max-w-3xl text-secondary whitespace-pre-line">
             {product.description}
@@ -195,18 +223,59 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </section>
       )}
 
-      <div className="mt-14">
-        <ProductSpecifications specifications={product.specifications} />
-      </div>
+      {product.specifications.length > 0 && (
+        <div id="especificaciones" className="mt-12 scroll-mt-32">
+          <ProductSpecifications specifications={product.specifications} />
+        </div>
+      )}
 
-      <div className="mt-14">
-        <ProductDocuments documents={product.documents} />
-      </div>
+      {hasCompat && (
+        <section id="compatibilidad" className="mt-12 scroll-mt-32">
+          {complements.length > 0 && (
+            <>
+              <h2 className="text-xl font-semibold text-primary">
+                Complementá tu solución
+              </h2>
+              <p className="mt-1 text-sm text-secondary">
+                Insumos y accesorios compatibles con este equipo.
+              </p>
+              <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {cards(complements)}
+              </div>
+            </>
+          )}
+          {fitsWith.length > 0 && (
+            <div className={complements.length > 0 ? "mt-10" : undefined}>
+              <h2 className="text-xl font-semibold text-primary">
+                Compatible con
+              </h2>
+              <p className="mt-1 text-sm text-secondary">
+                Equipos con los que se usa este producto.
+              </p>
+              <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {cards(fitsWith)}
+              </div>
+            </div>
+          )}
+        </section>
+      )}
 
-      <section id="consulta" className="mt-14 scroll-mt-20 rounded-lg border border-border bg-muted p-6">
+      {product.documents.length > 0 && (
+        <div id="descargas" className="mt-12 scroll-mt-32">
+          <ProductDocuments documents={product.documents} />
+        </div>
+      )}
+
+      <section
+        id="consulta"
+        className="mt-12 scroll-mt-32 rounded-lg border border-border bg-muted p-5 sm:p-6"
+      >
         <h2 className="text-xl font-semibold text-primary">
-          Solicitar información sobre {product.name}
+          Cotizar {product.name}
         </h2>
+        <p className="mt-1 text-sm text-secondary">
+          Indicá la cantidad y te respondemos con disponibilidad y precio por volumen.
+        </p>
         <div className="mt-4">
           <InquiryForm
             type="product"
@@ -216,25 +285,50 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       </section>
 
-      {relatedProducts.length > 0 && (
-        <section className="mt-14">
+      {related.length > 0 && (
+        <section className="mt-12">
           <h2 className="text-xl font-semibold text-primary">
             Productos relacionados
           </h2>
           <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {relatedProducts.map((related) => (
-              <ProductCard
-                key={related.id}
-                slug={related.slug}
-                name={related.name}
-                brandName={related.brand?.name}
-                imageUrl={related.images[0]?.url}
-                imageAlt={related.images[0]?.alt}
-              />
-            ))}
+            {cards(related)}
           </div>
         </section>
       )}
+
+      {alternatives.length > 0 && (
+        <section className="mt-12">
+          <h2 className="text-xl font-semibold text-primary">
+            También puede interesarte
+          </h2>
+          <p className="mt-1 text-sm text-secondary">
+            Otros equipos de la misma categoría.
+          </p>
+          <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {cards(alternatives)}
+          </div>
+        </section>
+      )}
+
+      {/* Barra de cotizacion fija, solo mobile/tablet: el boton principal siempre a mano */}
+      <div className="fixed inset-x-0 bottom-0 z-40 flex gap-2 border-t border-border bg-white/95 px-4 pt-3 shadow-[0_-4px_12px_rgba(0,0,0,0.06)] backdrop-blur [padding-bottom:calc(0.75rem+env(safe-area-inset-bottom,0px))] lg:hidden">
+        <a
+          href="#consulta"
+          className="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-md bg-accent px-4 text-sm font-semibold text-white transition-colors hover:bg-orange-600"
+        >
+          Pedí tu cotización
+        </a>
+        {siteConfig.whatsappNumber && (
+          <a
+            href={buildWhatsAppUrl(whatsappMessages.product(product.name))}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex min-h-11 cursor-pointer items-center justify-center rounded-md bg-green-500 px-4 text-sm font-semibold text-white transition-colors hover:bg-green-600"
+          >
+            WhatsApp
+          </a>
+        )}
+      </div>
     </main>
   );
 }
