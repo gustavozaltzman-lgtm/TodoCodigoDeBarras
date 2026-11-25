@@ -84,5 +84,51 @@ export const CATEGORY_FAQ: Record<string, FaqItem[]> = {
       answer:
         "Es el estándar internacional (ISO 18000-63) que define cómo los lectores UHF se comunican con los tags RFID pasivos. Es el protocolo que usa la gran mayoría del hardware RFID comercial actual, lo que garantiza compatibilidad entre lectores y tags de distintos fabricantes que cumplen el estándar.",
     },
+    {
+      question: "¿Qué es una etiqueta RFID on-metal?",
+      answer:
+        "Es un tag diseñado para funcionar pegado sobre superficies metálicas, que normalmente interfieren con la lectura RFID. Incorpora un material separador entre la antena y el metal. Se usa para identificar herramientas, contenedores metálicos, racks y otros activos.",
+    },
+  ],
+  consumibles: [
+    {
+      question: "¿Cuándo conviene usar un ribbon de cera, mixto o resina?",
+      answer:
+        "El ribbon de cera es el más económico y sirve para etiquetas de papel de uso interno y corta duración. El mixto (cera-resina) mejora la resistencia al roce y se usa con etiquetas de papel couché o sintéticas. El de resina es el más resistente a químicos, calor y abrasión y se usa con materiales sintéticos en entornos exigentes.",
+    },
+    {
+      question: "¿Qué diferencia hay entre etiquetas térmicas directas y de transferencia térmica?",
+      answer:
+        "Las etiquetas térmicas directas se imprimen sin ribbon porque el papel se oscurece con el calor del cabezal, pero se degradan con la luz y el calor con el tiempo. Las de transferencia térmica necesitan ribbon y dan una impresión más durable.",
+    },
+    {
+      question: "¿Cómo leo las medidas de un rollo de etiquetas?",
+      answer:
+        "Se indica ancho por alto en milímetros, la cantidad de etiquetas por rollo y el diámetro del núcleo (core). Por ejemplo, 100x150 mm x300 con core de 40 mm es un rollo de 300 etiquetas de 100 mm de ancho por 150 mm de alto sobre un núcleo de 40 mm. Antes de comprar hay que verificar que el ancho y el core coincidan con los de la impresora.",
+    },
+  ],
+  ribbons: [
+    {
+      question: "¿Qué significa que un ribbon sea OUT o IN?",
+      answer:
+        "Indica de qué lado del rollo queda la tinta. OUT (tinta hacia afuera) e IN (tinta hacia adentro) dependen del modelo de impresora, y usar el equivocado impide imprimir. La especificación correcta figura en el manual del equipo.",
+    },
+    {
+      question: "¿El ribbon tiene que ser más ancho que la etiqueta?",
+      answer:
+        "Sí. Para proteger el cabezal de impresión, el ribbon debe cubrir todo el ancho de la etiqueta y ser levemente más ancho.",
+    },
+  ],
+  etiquetas: [
+    {
+      question: "¿Qué es una etiqueta de polipropileno (OPP)?",
+      answer:
+        "Es una etiqueta sintética de film de polipropileno. Resiste la humedad, el roce y los cambios de temperatura mejor que el papel, y se imprime con ribbon de resina o cera-resina por transferencia térmica.",
+    },
+    {
+      question: "¿Cómo sé si mi impresora usa etiquetas térmicas directas o de transferencia?",
+      answer:
+        "Si la impresora no usa ribbon, imprime en térmica directa. Si tiene ribbon, imprime por transferencia térmica, aunque muchos modelos admiten ambos métodos. El manual del equipo indica cuál corresponde.",
+    },
   ],
 };

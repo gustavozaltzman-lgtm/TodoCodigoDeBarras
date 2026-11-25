@@ -65,6 +65,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
     brand: product.brand ? { "@type": "Brand", name: product.brand.name } : undefined,
     model: product.model ?? undefined,
     mpn: product.mpn ?? undefined,
+    sku: product.sku ?? undefined,
+    category: product.category?.name ?? undefined,
+    // Specs reales de la ficha como propiedades estructuradas: da a buscadores
+    // y a las IA datos tecnicos citables sin inventar nada.
+    additionalProperty: product.specifications.length
+      ? product.specifications.map((spec) => ({
+          "@type": "PropertyValue",
+          name: spec.label,
+          value: spec.value,
+        }))
+      : undefined,
     image: product.images.map((img) => img.url),
     url: `${siteConfig.url}/productos/${product.slug}`,
   };

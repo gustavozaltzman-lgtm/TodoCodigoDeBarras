@@ -269,6 +269,29 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
     `/privacidad` y `/terminos` siguen sin reemplazar — no se puede
     inventar razón social/CUIT/domicilio.
 
+- **Contraste con el prompt de auditoría SEO/AEO de 20 fases** (enfoque
+  100% hardware AIDC, sin software ni servicios operativos):
+  - *Ya cubierto:* sitemap/robots/canonical/noindex de admin, JSON-LD
+    `Organization`, `Product` (ahora con `sku`, `category` y las specs
+    reales como `additionalProperty`), `BreadcrumbList` y `FAQPage` (ahora
+    también en Consumibles, Ribbons y Etiquetas), hub `/recursos` con
+    datasheets, ISR y `priority` en imágenes (LCP), categorías vacías
+    ocultas, redirects de slugs viejos, ALT descriptivo en todas las
+    imágenes de producto, nombres/specs con acentos, descripción corta en
+    todos los productos publicados, descripción y SEO description en todas
+    las categorías.
+  - *Bloqueado, falta dato real del cliente* (no se inventa; marcar
+    `[INFORMACIÓN A SOLICITAR AL CLIENTE]`): `LocalBusiness`/NAP y Google
+    Business Profile; página y schema `Service` de Servicio Técnico (qué
+    servicios ofrece de verdad, taller propio, repuestos oficiales);
+    certificaciones o partnerships con fabricantes; `Offer` (política de
+    precios); razón social/CUIT en legales; logo para `Organization`;
+    dominio definitivo (`NEXT_PUBLIC_SITE_URL`).
+  - *No hecho todavía (contenido o research externo):* guías
+    `TechArticle`/`HowTo`, buscador de compatibilidad insumo↔impresora,
+    comparador, análisis de competencia, medición real de Core Web Vitals
+    sobre el dominio en producción, casos de éxito por industria.
+
 **Pendiente — P0:**
 - ~~Reemplazar el copy placeholder de Home y Empresa~~ — **hecho
   parcialmente**: el usuario confirmó que la empresa opera desde 1992, así
