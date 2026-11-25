@@ -339,13 +339,29 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
     formulario de contacto. Alternativa: enviar la misma lista por
     WhatsApp. Sin cambios de esquema. Probado de punta a punta en un
     navegador contra la base real (pedido de prueba borrado después).
-  - *Pendiente:* selector de insumos por impresora (bloqueado: hay que
-    cargar antes las relaciones ribbon/etiqueta ↔ impresora, hoy solo hay
-    accesorios y cabezales); "Agregar a mi lista" directo desde las
-    tarjetas del catálogo (hoy solo en la ficha); filtros de Movilidad y
-    RFID (faltan specs homogéneas). El enlace de cada producto dentro del
-    pedido usa `NEXT_PUBLIC_SITE_URL`: hasta definir el dominio apunta a la
-    dirección provisoria.
+  - *Selector de insumos por impresora* (`/insumos`,
+    `features/supplies/compat.ts`): se elige la impresora y se comparan las
+    medidas que publica SU ficha (ancho de etiqueta, ancho/núcleo/largo de
+    cinta) contra las de cada ribbon y etiqueta publicados. No declara
+    "compatible" por inferencia: muestra qué se verificó (✓), qué no
+    cumple y por qué (✕), y lista aparte lo que no tiene medidas cargadas.
+    Cierra con un recordatorio de lo que hay que confirmar en el manual
+    (lado de tinta OUT/IN, material, diámetro exterior del rollo). No
+    guarda relaciones en la base: se calcula en vivo, así que se actualiza
+    solo al publicar insumos o cargar specs. Entradas: ficha de cada
+    impresora con medidas, categorías de consumibles, footer y sitemap.
+    Depende de la convención de etiquetas de specs (`Ancho de etiqueta`,
+    `Ancho de medio`, `Ancho de ribbon`, `Cinta (ribbon)`, `Largo máximo de
+    ribbon` en impresoras; `Ancho`, `Largo`, `Diámetro de core` en
+    insumos). Hoy solo 5-6 impresoras tienen medidas cargadas y casi todos
+    los insumos siguen en borrador, así que el selector gana valor al
+    publicarlos.
+  - *Pendiente:* publicar los insumos (ribbons y etiquetas, hoy en
+    borrador) y cargar medidas en más impresoras; "Agregar a mi lista"
+    directo desde las tarjetas del catálogo (hoy solo en la ficha);
+    filtros de Movilidad y RFID (faltan specs homogéneas). El enlace de
+    cada producto dentro del pedido usa `NEXT_PUBLIC_SITE_URL`: hasta
+    definir el dominio apunta a la dirección provisoria.
 
 **Pendiente — P0:**
 - ~~Reemplazar el copy placeholder de Home y Empresa~~ — **hecho

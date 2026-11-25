@@ -140,6 +140,16 @@ export default async function CategoryPage({
         </a>
       )}
 
+      {["consumibles", "ribbons", "etiquetas"].includes(category.slug) && (
+        <Link
+          href="/insumos"
+          className="mt-4 flex min-h-11 items-center justify-between gap-3 rounded-lg border border-accent/30 bg-accent-soft px-4 py-3 text-sm font-medium text-primary transition-colors hover:border-accent"
+        >
+          <span>¿Buscás insumos para tu impresora? Elegí tu equipo y mirá cuáles cumplen sus medidas.</span>
+          <span aria-hidden="true" className="text-accent">→</span>
+        </Link>
+      )}
+
       {subcategories.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-2">
           {subcategories.map((sub) => (

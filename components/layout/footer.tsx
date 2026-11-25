@@ -68,6 +68,11 @@ export async function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/insumos" className="cursor-pointer text-sm text-slate-400 transition-colors hover:text-white">
+                  Insumos para tu impresora
+                </Link>
+              </li>
+              <li>
                 <Link href="/recursos" className="cursor-pointer text-sm text-slate-400 transition-colors hover:text-white">
                   Recursos técnicos
                 </Link>

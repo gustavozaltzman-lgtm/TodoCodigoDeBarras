@@ -6,6 +6,7 @@ import {
   getProductRelationGroups,
 } from "@/features/products/queries";
 import { SectionTabs } from "@/components/catalog/section-tabs";
+import { hasUsableData, parseConstraints } from "@/features/supplies/compat";
 import { QuoteAddButton } from "@/components/quote/quote-add-button";
 import { ProductGallery } from "@/components/catalog/product-gallery";
 import { ProductSpecifications } from "@/components/catalog/product-specifications";
@@ -61,6 +62,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
     await getProductRelationGroups(product.id, product.categoryId);
 
   const hasCompat = complements.length > 0 || fitsWith.length > 0;
+  const isPrinter = (product.category?.slug ?? "").startsWith("impresoras-");
+  const showSupplyFinder = isPrinter && hasUsableData(parseConstraints(product.specifications));
   const tabs = [
     ...(product.description ? [{ id: "descripcion", label: "Descripción" }] : []),
     ...(product.specifications.length
@@ -211,6 +214,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </a>
             )}
           </div>
+          {showSupplyFinder && (
+            <Link
+              href={`/insumos?p=${product.slug}#resultado`}
+              className="mt-4 inline-flex min-h-11 items-center text-sm font-medium text-accent hover:underline"
+            >
+              Ver ribbons y etiquetas para este equipo →
+            </Link>
+          )}
         </div>
       </div>
 
