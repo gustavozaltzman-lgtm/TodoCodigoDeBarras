@@ -13,7 +13,7 @@ export const siteConfig = {
 // Datos legales y de contacto de la empresa que opera el sitio. Fuente unica:
 // legales, footer, contacto y datos estructurados leen de aca.
 export const companyInfo = {
-  legalName: "SNET SA",
+  legalName: "SZNET SA",
   cuit: "30-70760662-9",
   address: {
     street: "Pizarro 5201",

@@ -324,10 +324,17 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
       "Comparar" en cada tarjeta, barra flotante, tabla lado a lado con
       las filas que difieren resaltadas. La selección vive en el
       navegador del visitante (localStorage).
-    - Accesorios/repuestos publicados: sin foto porque Zebra y TSC no
-      publican fotos oficiales sueltas (solo revendedores, que no se usan);
-      se les cargó el número de parte oficial y la guía de accesorios
-      oficial de Zebra como documento (en inglés).
+    - Accesorios/repuestos publicados: Zebra y TSC no publican fotos
+      oficiales sueltas (solo revendedores, que no se usan). Se
+      extrajeron de la guía oficial de accesorios TC22/TC27 de Zebra las
+      fotos de 4 piezas (funda, protector de pantalla, pistol grip y el
+      kit grip + funda); las demás (accesorios TC21/TC26, soporte RFD40 y
+      cabezales) siguen sin foto porque las de la guía son de muy baja
+      resolución o la guía no trae fotos. A todos se les cargó el número de
+      parte oficial y la guía de accesorios de Zebra como documento (en
+      inglés). Las fotos faltantes se pueden subir desde el panel
+      (Imágenes del producto) cuando haya material propio o del portal de
+      partners de Zebra.
   - *Etapa 4 — lista de cotización multi-producto:* botón "Agregar a mi
     lista" en la ficha, ícono con contador en el header y panel lateral en
     2 pasos (productos y cantidades, luego datos de contacto). Un solo
@@ -362,7 +369,7 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
     cada producto dentro del pedido usa `NEXT_PUBLIC_SITE_URL`: hasta
     definir el dominio apunta a la dirección provisoria.
 
-- **Datos de la empresa (nov. 2026):** SNET SA, CUIT 30-70760662-9,
+- **Datos de la empresa (nov. 2026):** SZNET SA, CUIT 30-70760662-9,
   Pizarro 5201, CABA (CP 1440), cargados en `companyInfo`
   (`lib/config/site.ts`), que es la fuente única para legales, footer,
   contacto y datos estructurados. `Organization` suma `legalName`,
@@ -395,8 +402,9 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
   ribbons, 5 accesorios/repuestos sin foto oficial, 3 etiquetas RFID y 4
   equipos sueltos (por ejemplo Zebra TC21, que falta investigar). Los
   publicados con foto y ficha técnica verificadas contra fuente oficial son
-  los equipos (impresoras, lectores, colectores, RFID); los 13 accesorios
-  publicados no tienen foto porque no existen fotos oficiales sueltas. 24
+  los equipos (impresoras, lectores, colectores, RFID); de los 13 accesorios
+  publicados, 4 tienen foto (extraída de la guía oficial de Zebra) y 9 siguen
+  sin foto. 24
   relaciones accesorio/compatible cargadas. Pendiente: decidir si se
   publican los insumos en borrador (el selector de `/insumos` gana valor al
   hacerlo), una etiqueta sintética apta para transferencia térmica, y
