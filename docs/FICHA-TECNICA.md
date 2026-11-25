@@ -38,6 +38,34 @@ necesidad técnica todavía — ver `ROADMAP.md`).
   categoría que cambiaron de nombre — necesario cada vez que se renombra
   una categoría existente, para no romper links compartidos ni duplicar
   URLs indexadas.
+- **Búsqueda instantánea** (`components/layout/search-panel.tsx` +
+  `features/products/search-actions.ts`): es una Server Action de solo
+  lectura, no una ruta de API. Largo de término y resultados acotados (máx.
+  6), solo productos publicados, sin precio ni costo. La misma lógica
+  (`searchCondition` en `features/products/queries.ts`) alimenta la búsqueda
+  de `/catalogo`: por palabras, sobre nombre, descripción corta, modelo, MPN
+  y marca.
+- **Filtros técnicos por categoría** (`features/products/facets.ts`):
+  condiciones SQL sobre `product_specifications` y el nombre, con conteo por
+  opción en una sola consulta. Dependen de la convención de etiquetas de
+  specs (ver `MANUAL-USUARIO.md`). Las URLs filtradas mantienen el canonical
+  de la categoría.
+- **Comparador** (`/comparar`, noindex): la selección vive en `localStorage`
+  (`components/catalog/compare-store.ts`); la tabla se arma en el servidor
+  a partir de los slugs de la URL (máx. 3).
+- **Lista de cotización** (`components/quote/*`): estado en `localStorage`,
+  panel lateral en 2 pasos. `submitQuoteAction`
+  (`features/inquiries/actions.ts`) crea UNA consulta `quote`; el navegador
+  solo manda slug y cantidad y los nombres se leen de la base (solo
+  publicados, máx. 20 ítems, validación en `lib/validation/quote.ts`).
+- **Selector de insumos** (`/insumos`, `features/supplies/compat.ts`):
+  compara las medidas publicadas en la ficha de la impresora contra las de
+  cada ribbon/etiqueta. Se calcula en vivo; no guarda compatibilidades.
+  No afirma "compatible", muestra qué verificó y qué no.
+- **Ficha de producto** (`productos/[slug]`): menú de secciones fijo con
+  anclas (todo el contenido queda en el HTML), secciones de compatibilidad
+  desde `product_relationships` (`getProductRelationGroups`) y barra de
+  cotización fija en mobile. `revalidate = 300`.
 
 ## Arquitectura de código
 
@@ -65,8 +93,9 @@ app/admin/        panel de administración (protegido)
 app/sitemap.ts    sitemap dinámico
 app/robots.ts     robots.txt
 app/opengraph-image.tsx   imagen OG de fallback (generada con next/og)
-components/       componentes de UI, separados en catalog/ forms/ layout/ admin/
-features/         lógica de negocio por dominio (ver arriba)
+components/       componentes de UI: catalog/ forms/ layout/ quote/ admin/
+features/         lógica de negocio por dominio (products, categories, brands,
+                  inquiries, supplies)
 lib/auth/         sesión y login del admin
 lib/db/           cliente Drizzle, schema, migraciones (carpeta drizzle/), seed
 lib/seo/          helpers de JSON-LD
@@ -82,14 +111,17 @@ Tablas principales:
 - **`users`** — admins del panel (`email`, `password_hash`, `role`)
 - **`brands`** — marcas (con `status` de publicación)
 - **`categories`** — categorías/subcategorías (auto-referenciada por `parent_id`)
-- **`products`** — productos, con `mpn`, `condition`, `availability`,
-  `status` de publicación, `is_featured`
+- **`products`** — productos, con `sku` (único), `mpn`, `price`, `cost_price`
+  y `currency` (USD; precio y costo son internos, no se muestran en el
+  sitio), `condition`, `availability`, `status` de publicación,
+  `is_featured`
 - **`product_images`**, **`product_specifications`**, **`product_documents`**
   — datos hijos de producto (imágenes, specs técnicas, fichas/manuales)
 - **`product_relationships`** — relación producto↔producto tipada
   (`related`, `accessory`, `compatible`)
-- **`inquiries`** — leads del formulario de contacto (incluye `quantity`
-  para cotizar insumos por caja/rollo, `ip_address` para rate limiting)
+- **`inquiries`** — leads del formulario de contacto y de la lista de
+  cotización (incluye `quantity`, `interest` y `sector` para calificar el
+  lead, `ip_address` para rate limiting)
 - **`login_attempts`** — rate limiting del login de admin
 
 Estado de publicación (`publication_status`): `draft`, `published`, `hidden`,
@@ -117,6 +149,11 @@ a producción** — generar una nueva.
   - Login de admin: bloquea después de 5 intentos fallidos por IP en 15
     min (`login_attempts`).
   - Ambos se suman a un honeypot anti-bot en el formulario de leads.
+- **Acciones públicas de lectura/escritura:** el buscador y la lista de
+  cotización son Server Actions sin sesión. La búsqueda es solo lectura y
+  acotada; la cotización reutiliza honeypot y límite de 3 envíos cada 10
+  min por IP, valida con Zod y no confía en nombres enviados por el
+  navegador.
 - **CSP (Content-Security-Policy):** estática, definida una sola vez en
   `next.config.ts` (misma en toda respuesta). Se probó primero con nonce
   dinámico por request en `proxy.ts`, pero **rompía la hidratación en

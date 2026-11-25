@@ -163,3 +163,25 @@ sigue en **Borrador** — no se publicó nada.
 
 Nada de esto está publicado — queda todo en Borrador para tu revisión
 final antes de que se vea en el sitio.
+
+
+---
+
+## Actualizaciones posteriores (resumen)
+
+Este log describe la carga de esa noche. Después ocurrió lo siguiente:
+
+- Se publicaron los 30 equipos investigados (fotos y fichas oficiales) y 13
+  accesorios/repuestos (sin foto: Zebra y TSC no publican fotos oficiales
+  sueltas y no se usaron imágenes de revendedores). Con eso el catálogo
+  quedó en 63 publicados y 88 en borrador.
+- Se corrigieron acentos en nombres y especificaciones, textos alternativos
+  de imágenes y descripciones cortas de los publicados.
+- Se cargaron 24 relaciones accesorio/compatible y números de parte
+  oficiales de Zebra en 8 accesorios, con la guía de accesorios oficial como
+  documento.
+- Se agregaron el logo de Unitech y el de HID Global (usado para
+  DigitalPersona y Fargo). La marca Uniform sigue sin logo.
+- Siguen abiertos los puntos de arriba sobre las marcas "MJ" y "Uniform",
+  los rollos "POL" y el nombre "EDA10" (probablemente EDA10A).
+- Estado y pendientes vigentes: `docs/ROADMAP.md`.

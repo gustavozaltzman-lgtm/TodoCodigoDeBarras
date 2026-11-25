@@ -147,7 +147,7 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
   5 categorías top-level — **Impresoras** (con subcategorías Escritorio e
   Industriales), **Computadoras móviles**, **Escáneres de códigos de
   barras**, **RFID** e **Insumos y Consumibles** (con subcategorías Ribbons
-  y Etiquetas). **11 productos publicados**, todos con specs técnicas reales
+  y Etiquetas). **11 productos publicados** en esa primera carga (hoy son 63, ver abajo), todos con specs técnicas reales
   de datasheets oficiales y ficha técnica enlazada como documento
   descargable:
   - Zebra: **ZT411** (impresora industrial), **TC22** (cómputo móvil),
@@ -373,12 +373,21 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
 - Definir NAP real (dirección, teléfono, horario) y agregar `LocalBusiness`
   junto al `Organization` existente — hoy no hay ningún dato de contacto
   físico en el sitio.
-- Seguir completando el catálogo: validar el piloto de 14 SKUs con el
-  usuario y, si está bien, seguir con el resto de las ~143 filas restantes
-  de `tcb-280826.xlsx`; cargar productos reales en Identificación/Biometría
-  e Impresoras RFID (hoy vacías), más SKUs por categoría, al menos una
-  etiqueta sintética compatible con transferencia térmica (para poder
-  cargar la relación `compatible` con los ribbons ya cargados).
+- Seguir completando el catálogo. **Estado actual (nov. 2026): 151
+  productos en la base, 63 publicados y 88 en borrador.** Las 157 filas de
+  `tcb-280826.xlsx` ya están cargadas (excluidas: estanterías, notebooks,
+  monitor, teclado y la línea de servicio "impresión de etiquetas"). Quedan
+  en borrador, a la espera de revisión y fotos: 53 rollos de etiquetas, 23
+  ribbons, 5 accesorios/repuestos sin foto oficial, 3 etiquetas RFID y 4
+  equipos sueltos (por ejemplo Zebra TC21, que falta investigar). Los
+  publicados con foto y ficha técnica verificadas contra fuente oficial son
+  los equipos (impresoras, lectores, colectores, RFID); los 13 accesorios
+  publicados no tienen foto porque no existen fotos oficiales sueltas. 24
+  relaciones accesorio/compatible cargadas. Pendiente: decidir si se
+  publican los insumos en borrador (el selector de `/insumos` gana valor al
+  hacerlo), una etiqueta sintética apta para transferencia térmica, y
+  datos de Identificación/Biometría e Impresoras RFID (poco contenido).
+  Registro de decisiones y dudas de la carga: `docs/LOG-2026-08-28-carga-nocturna.md`.
 
 **Pendiente — P1:**
 - `Offer` en el JSON-LD de producto (requiere antes decidir política de

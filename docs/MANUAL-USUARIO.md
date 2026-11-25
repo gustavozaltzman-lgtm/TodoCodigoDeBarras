@@ -116,6 +116,35 @@ aparecen como "Productos relacionados". "También puede interesarte" se arma
 solo con otros equipos publicados de la misma categoría. Un producto
 vinculado que sigue en Borrador no se muestra hasta que lo publiques.
 
+### SKU, precio y stock
+
+El formulario del panel no tiene campos de SKU, precio ni costo. Esos datos
+se cargan desde el Excel de precios (columnas `sku`, `titulo`,
+`precio_valor1` = costo, `precio_valor2` = precio de lista, `cantidad`) y
+quedan guardados en dólares. **Los precios no se muestran en el sitio.** El
+stock sí: cambiá **Disponibilidad** en el producto cuando algo se agota.
+
+### Cómo escribir las especificaciones
+
+Los filtros del catálogo, el comparador y el selector de insumos leen las
+especificaciones, así que conviene usar siempre los mismos nombres de
+característica:
+
+| En | Usá esta etiqueta | Ejemplo de valor |
+|---|---|---|
+| Impresoras | `Método de impresión` | Térmica directa y transferencia térmica |
+| Impresoras | `Resolución` | 203 dpi |
+| Impresoras | `Conectividad` (o `Puertos`, `Interfaz`) | USB 2.0, Ethernet, Bluetooth |
+| Impresoras, para el selector | `Ancho de etiqueta` (o `Ancho de medio`) | 20 a 112 mm |
+| Impresoras, para el selector | `Ancho de ribbon`, `Largo máximo de ribbon` o `Cinta (ribbon)` | 51 mm a 110 mm / 450 m / Hasta 300 m, núcleo 1" |
+| Lectores | `Tipo` | Imager 1D/2D |
+| Ribbons | `Tipo`, `Color`, `Ancho`, `Largo`, `Diámetro de core`, `Enrollado` | Resina Premium / Negro / 110 mm / 74 m / 1" (25.4 mm) / OUT |
+| Etiquetas | `Material`, `Color`, `Ancho`, `Alto`, `Diámetro de core` | OPP (polipropileno) / Blanco / 100 mm / 63 mm / 40 mm |
+
+Si una característica se escribe distinto, el producto no aparece en ese
+filtro y el selector de insumos no lo puede verificar. Escribí las medidas
+en milímetros y con unidad.
+
 ### Listado y acciones masivas
 
 En `/admin/productos` podés tildar varios productos y cambiarles el estado
