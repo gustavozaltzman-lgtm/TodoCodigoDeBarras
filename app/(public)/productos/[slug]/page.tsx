@@ -6,6 +6,7 @@ import {
   getProductRelationGroups,
 } from "@/features/products/queries";
 import { SectionTabs } from "@/components/catalog/section-tabs";
+import { QuoteAddButton } from "@/components/quote/quote-add-button";
 import { ProductGallery } from "@/components/catalog/product-gallery";
 import { ProductSpecifications } from "@/components/catalog/product-specifications";
 import { ProductDocuments } from "@/components/catalog/product-documents";
@@ -192,6 +193,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             >
               Solicitar cotización por volumen
             </a>
+            <QuoteAddButton slug={product.slug} name={product.name} />
             <a
               href="#consulta"
               className="cursor-pointer rounded-md border border-border bg-white px-5 py-2.5 text-sm font-medium text-primary transition-colors hover:border-accent"

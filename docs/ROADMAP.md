@@ -329,10 +329,23 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
       publican fotos oficiales sueltas (solo revendedores, que no se usan);
       se les cargó el número de parte oficial y la guía de accesorios
       oficial de Zebra como documento (en inglés).
-  - *Pendiente (etapas 3b y 4):* selector de insumos por impresora
-    (bloqueado: hay que cargar antes las relaciones ribbon/etiqueta ↔
-    impresora, hoy solo hay accesorios y cabezales) y lista de cotización
-    multi-producto. Filtros de Movilidad y RFID: faltan specs homogéneas.
+  - *Etapa 4 — lista de cotización multi-producto:* botón "Agregar a mi
+    lista" en la ficha, ícono con contador en el header y panel lateral en
+    2 pasos (productos y cantidades, luego datos de contacto). Un solo
+    envío (`submitQuoteAction` en `features/inquiries/actions.ts`) crea UNA
+    consulta de tipo cotización con todos los ítems en el mensaje; los
+    nombres se toman de la base por slug (el navegador solo manda slug y
+    cantidad), máx. 20 productos, mismo honeypot y límite por IP que el
+    formulario de contacto. Alternativa: enviar la misma lista por
+    WhatsApp. Sin cambios de esquema. Probado de punta a punta en un
+    navegador contra la base real (pedido de prueba borrado después).
+  - *Pendiente:* selector de insumos por impresora (bloqueado: hay que
+    cargar antes las relaciones ribbon/etiqueta ↔ impresora, hoy solo hay
+    accesorios y cabezales); "Agregar a mi lista" directo desde las
+    tarjetas del catálogo (hoy solo en la ficha); filtros de Movilidad y
+    RFID (faltan specs homogéneas). El enlace de cada producto dentro del
+    pedido usa `NEXT_PUBLIC_SITE_URL`: hasta definir el dominio apunta a la
+    dirección provisoria.
 
 **Pendiente — P0:**
 - ~~Reemplazar el copy placeholder de Home y Empresa~~ — **hecho

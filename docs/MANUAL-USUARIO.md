@@ -131,6 +131,15 @@ selector de estado (**Nueva** / **Contactado** / **Cerrado**) para hacer
 seguimiento. También llega una notificación por email a la casilla
 configurada apenas entra una consulta nueva.
 
+### Pedidos con varios productos
+
+Cuando un cliente arma su **lista de cotización** en el sitio y la envía,
+llega como **una sola consulta** de tipo Cotización. El detalle va en el
+mensaje, una línea por producto con su cantidad y el link a la ficha
+("3 x Zebra ZT411 (...)"). La cantidad de productos aparece en el campo
+Cantidad. Si el cliente prefirió enviar la lista por WhatsApp, no pasa por
+esta pantalla: te llega directo al WhatsApp.
+
 ## Buenas prácticas
 
 - Cargá un producto como **Borrador** hasta tener al menos una foto real y

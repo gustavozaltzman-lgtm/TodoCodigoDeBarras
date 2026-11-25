@@ -1,11 +1,13 @@
 "use server";
 
-import { and, eq, gt, sql } from "drizzle-orm";
+import { and, eq, gt, inArray, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { db } from "@/lib/db/client";
-import { inquiries } from "@/lib/db/schema";
+import { inquiries, products } from "@/lib/db/schema";
 import { inquirySchema } from "@/lib/validation/inquiry";
+import { quoteSchema } from "@/lib/validation/quote";
+import { siteConfig } from "@/lib/config/site";
 import { requireAdminSession } from "@/lib/auth/session";
 import { notifyNewLead } from "@/lib/integrations/leads";
 
@@ -126,4 +128,116 @@ export async function deleteInquiryAction(id: number) {
   await requireAdminSession();
   await db.delete(inquiries).where(eq(inquiries.id, id));
   revalidatePath("/admin/consultas");
+}
+
+// Pedido de cotizacion con varios productos (lista de cotizacion del sitio).
+// Se guarda como UNA consulta de tipo "quote": el detalle del pedido va en el
+// mensaje, armado aca con los nombres reales de la base (el navegador solo
+// manda slug y cantidad). Mismos controles que el formulario de contacto:
+// honeypot y limite por IP.
+export async function submitQuoteAction(
+  _prevState: InquiryFormState,
+  formData: FormData
+): Promise<InquiryFormState> {
+  let rawItems: unknown = [];
+  try {
+    rawItems = JSON.parse(String(formData.get("items") ?? "[]"));
+  } catch {
+    return { status: "error", message: "No pudimos leer tu lista. Probá de nuevo." };
+  }
+
+  const parsed = quoteSchema.safeParse({
+    name: formData.get("name"),
+    company: formData.get("company") || undefined,
+    email: formData.get("email"),
+    phone: formData.get("phone") || undefined,
+    sector: formData.get("sector") || undefined,
+    notes: formData.get("notes") || undefined,
+    items: rawItems,
+  });
+  if (!parsed.success) {
+    return {
+      status: "error",
+      message: parsed.error.issues[0]?.message ?? "Datos inválidos",
+    };
+  }
+
+  // Honeypot anti-spam
+  if (formData.get("website")) return { status: "success" };
+
+  const ipAddress = await getClientIp();
+  if (ipAddress) {
+    const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MINUTES * 60_000);
+    const [{ count }] = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(inquiries)
+      .where(and(eq(inquiries.ipAddress, ipAddress), gt(inquiries.createdAt, windowStart)));
+    if (count >= RATE_LIMIT_MAX_SUBMISSIONS) {
+      return {
+        status: "error",
+        message: "Ya recibimos varias consultas tuyas. Probá de nuevo en unos minutos.",
+      };
+    }
+  }
+
+  const data = parsed.data;
+  const slugs = data.items.map((i) => i.slug);
+  const found = await db
+    .select({ slug: products.slug, name: products.name })
+    .from(products)
+    .where(and(inArray(products.slug, slugs), eq(products.status, "published")));
+  const nameBySlug = new Map(found.map((p) => [p.slug, p.name]));
+
+  const lines = data.items
+    .filter((item) => nameBySlug.has(item.slug))
+    .map(
+      (item) =>
+        `- ${item.quantity} x ${nameBySlug.get(item.slug)} (${siteConfig.url}/productos/${item.slug})`
+    );
+  if (lines.length === 0) {
+    return {
+      status: "error",
+      message: "Los productos de tu lista ya no están disponibles. Revisá la lista.",
+    };
+  }
+
+  const message = [
+    "Pedido de cotización de varios productos:",
+    ...lines,
+    ...(data.notes ? ["", `Comentarios: ${data.notes}`] : []),
+  ].join("\n");
+
+  const [inquiry] = await db
+    .insert(inquiries)
+    .values({
+      type: "quote",
+      name: data.name,
+      company: data.company ?? null,
+      email: data.email,
+      phone: data.phone ?? null,
+      quantity: `${lines.length} ${lines.length === 1 ? "producto" : "productos"}`,
+      sector: data.sector ?? null,
+      message,
+      sourceUrl: `${siteConfig.url}/#lista-de-cotizacion`,
+      ipAddress,
+    })
+    .returning();
+
+  await notifyNewLead({
+    id: inquiry.id,
+    type: inquiry.type,
+    name: inquiry.name,
+    company: inquiry.company,
+    email: inquiry.email,
+    phone: inquiry.phone,
+    country: inquiry.country,
+    quantity: inquiry.quantity,
+    interest: inquiry.interest,
+    sector: inquiry.sector,
+    message: inquiry.message,
+    sourceUrl: inquiry.sourceUrl,
+  });
+
+  revalidatePath("/admin/consultas");
+  return { status: "success" };
 }

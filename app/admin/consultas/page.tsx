@@ -49,7 +49,7 @@ export default async function AdminInquiriesPage() {
                   <div>{inquiry.email}</div>
                   {inquiry.phone && <div>{inquiry.phone}</div>}
                 </td>
-                <td className="max-w-xs px-4 py-2 text-primary">
+                <td className="max-w-xs whitespace-pre-line break-words px-4 py-2 text-primary">
                   {inquiry.message}
                   {inquiry.quantity && (
                     <div className="mt-1 text-xs text-secondary">

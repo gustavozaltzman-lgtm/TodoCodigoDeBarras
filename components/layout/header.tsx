@@ -6,6 +6,7 @@ import { siteConfig } from "@/lib/config/site";
 import { INDUSTRY_SOLUTIONS } from "@/lib/content/industry-solutions";
 import { LogoMark } from "./logo-mark";
 import { SearchPanel } from "./search-panel";
+import { QuoteButton } from "@/components/quote/quote-button";
 
 const NAV_LINKS = [
   { href: "/catalogo", label: "Catálogo" },
@@ -108,6 +109,8 @@ export function Header() {
               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-4.35-4.35M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z" />
             </svg>
           </button>
+
+          <QuoteButton />
 
           {/* Boton hamburguesa (mobile) */}
           <button
