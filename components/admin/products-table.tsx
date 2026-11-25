@@ -4,6 +4,8 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { DeleteButton } from "./delete-button";
 import { StatusSelectForm } from "./status-select-form";
+import { SortableTh } from "./sortable-th";
+import type { SortDir } from "@/lib/admin-sort";
 import {
   bulkSetProductStatusAction,
   deleteProductAction,
@@ -22,7 +24,18 @@ type ProductRow = {
   categoryName: string | null;
 };
 
-export function ProductsTable({ items }: { items: ProductRow[] }) {
+export type ProductSortLinks = Record<
+  "name" | "brand" | "category" | "status" | "featured",
+  { href: string; direction: SortDir | null }
+>;
+
+export function ProductsTable({
+  items,
+  sortLinks,
+}: {
+  items: ProductRow[];
+  sortLinks: ProductSortLinks;
+}) {
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [bulkStatus, setBulkStatus] = useState<Status>("published");
   const [isPending, startTransition] = useTransition();
@@ -91,11 +104,11 @@ export function ProductsTable({ items }: { items: ProductRow[] }) {
                   aria-label="Seleccionar todos"
                 />
               </th>
-              <th className="px-4 py-2">Nombre</th>
-              <th className="px-4 py-2">Marca</th>
-              <th className="px-4 py-2">Categoría</th>
-              <th className="px-4 py-2">Estado</th>
-              <th className="px-4 py-2">Destacado</th>
+              <SortableTh label="Nombre" {...sortLinks.name} />
+              <SortableTh label="Marca" {...sortLinks.brand} />
+              <SortableTh label="Categoría" {...sortLinks.category} />
+              <SortableTh label="Estado" {...sortLinks.status} />
+              <SortableTh label="Destacado" {...sortLinks.featured} />
               <th className="px-4 py-2 text-right">Acciones</th>
             </tr>
           </thead>

@@ -4,9 +4,33 @@ import { deleteBrandAction, setBrandStatusAction } from "@/features/brands/actio
 import { StatusSelectForm } from "@/components/admin/status-select-form";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { primaryButtonClass } from "@/components/admin/form-styles";
+import { SortableTh } from "@/components/admin/sortable-th";
+import { nextDir, parseSort, sortRows } from "@/lib/admin-sort";
 
-export default async function AdminBrandsPage() {
-  const brands = await getAllBrands();
+const COLUMNS = ["name", "slug", "status", "order"] as const;
+
+export default async function AdminBrandsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ sort?: string; dir?: string }>;
+}) {
+  const sp = await searchParams;
+  const { sort, dir } = parseSort(sp, COLUMNS);
+  const brands = sortRows(
+    await getAllBrands(),
+    {
+      name: (b) => b.name,
+      slug: (b) => b.slug,
+      status: (b) => b.status,
+      order: (b) => b.sortOrder,
+    },
+    sort,
+    dir
+  );
+  const th = (column: (typeof COLUMNS)[number]) => ({
+    href: `/admin/marcas?sort=${column}&dir=${nextDir({ sort, dir }, column)}`,
+    direction: sort === column ? dir : null,
+  });
 
   return (
     <div>
@@ -21,10 +45,10 @@ export default async function AdminBrandsPage() {
         <table className="w-full text-sm">
           <thead className="bg-muted text-left text-secondary">
             <tr>
-              <th className="px-4 py-2">Nombre</th>
-              <th className="px-4 py-2">Slug</th>
-              <th className="px-4 py-2">Estado</th>
-              <th className="px-4 py-2">Orden</th>
+              <SortableTh label="Nombre" {...th("name")} />
+              <SortableTh label="Slug" {...th("slug")} />
+              <SortableTh label="Estado" {...th("status")} />
+              <SortableTh label="Orden" {...th("order")} />
               <th className="px-4 py-2 text-right">Acciones</th>
             </tr>
           </thead>

@@ -7,10 +7,35 @@ import {
 import { StatusSelectForm } from "@/components/admin/status-select-form";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { primaryButtonClass } from "@/components/admin/form-styles";
+import { SortableTh } from "@/components/admin/sortable-th";
+import { nextDir, parseSort, sortRows } from "@/lib/admin-sort";
 
-export default async function AdminCategoriesPage() {
-  const categories = await getAllCategories();
-  const byId = new Map(categories.map((c) => [c.id, c]));
+const COLUMNS = ["name", "parent", "status", "order"] as const;
+
+export default async function AdminCategoriesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ sort?: string; dir?: string }>;
+}) {
+  const sp = await searchParams;
+  const { sort, dir } = parseSort(sp, COLUMNS);
+  const all = await getAllCategories();
+  const byId = new Map(all.map((c) => [c.id, c]));
+  const categories = sortRows(
+    all,
+    {
+      name: (c) => c.name,
+      parent: (c) => (c.parentId ? byId.get(c.parentId)?.name : null),
+      status: (c) => c.status,
+      order: (c) => c.sortOrder,
+    },
+    sort,
+    dir
+  );
+  const th = (column: (typeof COLUMNS)[number]) => ({
+    href: `/admin/categorias?sort=${column}&dir=${nextDir({ sort, dir }, column)}`,
+    direction: sort === column ? dir : null,
+  });
 
   return (
     <div>
@@ -25,10 +50,10 @@ export default async function AdminCategoriesPage() {
         <table className="w-full text-sm">
           <thead className="bg-muted text-left text-secondary">
             <tr>
-              <th className="px-4 py-2">Nombre</th>
-              <th className="px-4 py-2">Categoría padre</th>
-              <th className="px-4 py-2">Estado</th>
-              <th className="px-4 py-2">Orden</th>
+              <SortableTh label="Nombre" {...th("name")} />
+              <SortableTh label="Categoría padre" {...th("parent")} />
+              <SortableTh label="Estado" {...th("status")} />
+              <SortableTh label="Orden" {...th("order")} />
               <th className="px-4 py-2 text-right">Acciones</th>
             </tr>
           </thead>

@@ -384,6 +384,15 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
   a mostrarse desde 1024 px (antes 768 px) porque con un enlace más y los
   íconos de búsqueda y lista no entraba en tablet vertical.
 
+- **Panel de administración — orden por columna:** los títulos de columna
+  de Productos, Marcas, Categorías y Consultas son links que ordenan por
+  `?sort=<columna>&dir=asc|desc` (`lib/admin-sort.ts`,
+  `components/admin/sortable-th.tsx`). Productos ordena en la consulta SQL
+  (la lista está paginada, ordenar solo la página visible sería engañoso),
+  con vacíos al final y desempate estable; el resto ordena en memoria.
+  Las columnas válidas son una lista cerrada, no se usa el valor de la URL
+  en el SQL.
+
 **Pendiente — P0:**
 - ~~Reemplazar el copy placeholder de Home y Empresa~~ — **hecho
   parcialmente**: el usuario confirmó que la empresa opera desde 1992, así

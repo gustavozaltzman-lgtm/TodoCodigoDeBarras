@@ -1,14 +1,35 @@
-import { and, asc, desc, eq, ilike, sql } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, sql, type SQL } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { brands, categories, products } from "@/lib/db/schema";
+import type { SortDir } from "@/lib/admin-sort";
 
 export type AdminProductFilters = {
   search?: string;
   status?: "draft" | "published" | "hidden" | "archived";
   page?: number;
+  sort?: ProductSortColumn;
+  dir?: SortDir;
 };
 
+export const PRODUCT_SORT_COLUMNS = ["name", "brand", "category", "status", "featured"] as const;
+export type ProductSortColumn = (typeof PRODUCT_SORT_COLUMNS)[number];
+
 const PAGE_SIZE = 20;
+
+// Vacios al final y desempate por nombre, para que el orden sea estable
+// entre paginas.
+function orderFor(sort: ProductSortColumn | undefined, dir: SortDir): SQL[] {
+  if (!sort) return [desc(products.createdAt)];
+  const column = {
+    name: products.name,
+    brand: brands.name,
+    category: categories.name,
+    status: products.status,
+    featured: products.isFeatured,
+  }[sort];
+  const direction = dir === "desc" ? sql.raw("desc") : sql.raw("asc");
+  return [sql`${column} ${direction} nulls last`, asc(products.name), asc(products.id)];
+}
 
 export async function getAllProductsAdmin(filters: AdminProductFilters) {
   const page = Math.max(filters.page ?? 1, 1);
@@ -39,7 +60,7 @@ export async function getAllProductsAdmin(filters: AdminProductFilters) {
       .leftJoin(brands, eq(products.brandId, brands.id))
       .leftJoin(categories, eq(products.categoryId, categories.id))
       .where(where)
-      .orderBy(desc(products.createdAt))
+      .orderBy(...orderFor(filters.sort, filters.dir ?? "asc"))
       .limit(PAGE_SIZE)
       .offset((page - 1) * PAGE_SIZE),
     db.select({ count: sql<number>`count(*)::int` }).from(products).where(where),

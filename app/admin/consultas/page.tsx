@@ -3,6 +3,10 @@ import { deleteInquiryAction } from "@/features/inquiries/actions";
 import { InquiryStatusSelect } from "@/components/admin/inquiry-status-select";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { INTEREST_LABELS, SECTOR_LABELS } from "@/lib/content/lead-scoring";
+import { SortableTh } from "@/components/admin/sortable-th";
+import { nextDir, parseSort, sortRows } from "@/lib/admin-sort";
+
+const COLUMNS = ["date", "type", "name", "email", "status"] as const;
 
 const TYPE_LABELS: Record<string, string> = {
   general: "General",
@@ -10,8 +14,30 @@ const TYPE_LABELS: Record<string, string> = {
   product: "Producto",
 };
 
-export default async function AdminInquiriesPage() {
-  const inquiries = await getAllInquiries();
+export default async function AdminInquiriesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ sort?: string; dir?: string }>;
+}) {
+  const sp = await searchParams;
+  const { sort, dir } = parseSort(sp, COLUMNS);
+  const inquiries = sortRows(
+    await getAllInquiries(),
+    {
+      date: (i) => i.createdAt,
+      type: (i) => TYPE_LABELS[i.type],
+      name: (i) => i.name,
+      email: (i) => i.email,
+      status: (i) => i.status,
+    },
+    sort,
+    dir
+  );
+  // La fecha arranca de mas nueva a mas vieja; el resto, de A a Z.
+  const th = (column: (typeof COLUMNS)[number]) => ({
+    href: `/admin/consultas?sort=${column}&dir=${nextDir({ sort, dir }, column, column === "date" ? "desc" : "asc")}`,
+    direction: sort === column ? dir : null,
+  });
 
   return (
     <div>
@@ -21,12 +47,12 @@ export default async function AdminInquiriesPage() {
         <table className="w-full text-sm">
           <thead className="bg-muted text-left text-secondary">
             <tr>
-              <th className="px-4 py-2">Fecha</th>
-              <th className="px-4 py-2">Tipo</th>
-              <th className="px-4 py-2">Nombre</th>
-              <th className="px-4 py-2">Contacto</th>
+              <SortableTh label="Fecha" {...th("date")} />
+              <SortableTh label="Tipo" {...th("type")} />
+              <SortableTh label="Nombre" {...th("name")} />
+              <SortableTh label="Contacto" {...th("email")} />
               <th className="px-4 py-2">Mensaje</th>
-              <th className="px-4 py-2">Estado</th>
+              <SortableTh label="Estado" {...th("status")} />
               <th className="px-4 py-2 text-right">Acciones</th>
             </tr>
           </thead>

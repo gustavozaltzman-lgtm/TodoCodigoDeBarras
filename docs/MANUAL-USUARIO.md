@@ -145,6 +145,17 @@ Si una característica se escribe distinto, el producto no aparece en ese
 filtro y el selector de insumos no lo puede verificar. Escribí las medidas
 en milímetros y con unidad.
 
+### Ordenar las tablas
+
+En Productos, Marcas, Categorías y Consultas podés ordenar haciendo clic en
+el **título de cada columna**. Un clic ordena de menor a mayor (A-Z, o de
+más viejo a más nuevo), otro clic invierte el orden, y una flecha (▲ o ▼)
+marca la columna activa. En Consultas la fecha arranca de más nueva a más
+vieja. Los productos se ordenan sobre **todo** el listado, no solo sobre la
+página que ves, y el orden se mantiene al pasar de página o al filtrar. Los
+campos vacíos (por ejemplo un producto sin marca) quedan siempre al final.
+Para volver al orden original, entrá de nuevo desde el menú.
+
 ### Listado y acciones masivas
 
 En `/admin/productos` podés tildar varios productos y cambiarles el estado
