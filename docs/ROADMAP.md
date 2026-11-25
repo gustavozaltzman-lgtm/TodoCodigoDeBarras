@@ -306,10 +306,33 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
     a partir de los títulos del Excel (fundas, grips, baterías, cabezales,
     soporte RFD40); no se ven hasta publicar esos productos (hoy en
     borrador).
-  - *Pendiente (etapas 3 y 4):* buscador instantáneo, filtros por
-    categoría sin recarga (requiere normalizar etiquetas de specs),
-    comparador, selector de insumos por impresora, lista de cotización
-    multi-producto.
+  - *Etapa 3 — herramientas dinámicas:*
+    - **Buscador instantáneo** en el header (`components/layout/search-panel.tsx`
+      + Server Action de solo lectura `features/products/search-actions.ts`,
+      sin rutas de API nuevas): resultados en vivo con foto y marca,
+      máx. 6, solo productos publicados, nunca precio ni borradores.
+      La búsqueda (también la de `/catalogo`) ahora es por palabras y mira
+      nombre, descripción corta, modelo, MPN y marca.
+    - **Filtros técnicos por categoría** (`features/products/facets.ts`):
+      tecnología, resolución y conectividad en impresoras; 1D/2D y conexión
+      en lectores; tipo y color en ribbons; material en etiquetas. Salen de
+      las specs reales cargadas, con conteo por opción, y solo aparecen las
+      opciones que tienen productos. Los filtros de marca, orden y búsqueda
+      se aplican al cambiar, sin botón. Dependen de que las etiquetas de
+      specs sigan la convención (`Resolución`, `Método de impresión`,
+      `Tipo`, `Material`, `Color`, `Conectividad`/`Puertos`/`Interfaz`).
+    - **Comparador** de hasta 3 equipos (`/comparar`, noindex): botón
+      "Comparar" en cada tarjeta, barra flotante, tabla lado a lado con
+      las filas que difieren resaltadas. La selección vive en el
+      navegador del visitante (localStorage).
+    - Accesorios/repuestos publicados: sin foto porque Zebra y TSC no
+      publican fotos oficiales sueltas (solo revendedores, que no se usan);
+      se les cargó el número de parte oficial y la guía de accesorios
+      oficial de Zebra como documento (en inglés).
+  - *Pendiente (etapas 3b y 4):* selector de insumos por impresora
+    (bloqueado: hay que cargar antes las relaciones ribbon/etiqueta ↔
+    impresora, hoy solo hay accesorios y cabezales) y lista de cotización
+    multi-producto. Filtros de Movilidad y RFID: faltan specs homogéneas.
 
 **Pendiente — P0:**
 - ~~Reemplazar el copy placeholder de Home y Empresa~~ — **hecho

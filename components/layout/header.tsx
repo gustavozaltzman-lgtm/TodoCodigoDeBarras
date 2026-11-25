@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import { siteConfig } from "@/lib/config/site";
 import { INDUSTRY_SOLUTIONS } from "@/lib/content/industry-solutions";
 import { LogoMark } from "./logo-mark";
+import { SearchPanel } from "./search-panel";
 
 const NAV_LINKS = [
   { href: "/catalogo", label: "Catálogo" },
@@ -15,6 +16,8 @@ const NAV_LINKS = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const [solucionesOpen, setSolucionesOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const closeSearch = useCallback(() => setSearchOpen(false), []);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-white/95 shadow-sm backdrop-blur">
@@ -89,24 +92,47 @@ export function Header() {
           </Link>
         </nav>
 
-        {/* Boton hamburguesa (mobile) */}
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? "Cerrar menú" : "Abrir menú"}
-          className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-md text-primary md:hidden"
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-6 w-6">
-            {open ? (
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
-            )}
-          </svg>
-        </button>
+        <div className="flex items-center gap-1">
+          {/* Buscador instantaneo */}
+          <button
+            type="button"
+            onClick={() => {
+              setSearchOpen((v) => !v);
+              setOpen(false);
+            }}
+            aria-expanded={searchOpen}
+            aria-label="Buscar productos"
+            className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-md text-primary transition-colors hover:bg-muted"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-5 w-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-4.35-4.35M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z" />
+            </svg>
+          </button>
+
+          {/* Boton hamburguesa (mobile) */}
+          <button
+            type="button"
+            onClick={() => {
+              setOpen((v) => !v);
+              setSearchOpen(false);
+            }}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+            className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-md text-primary md:hidden"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-6 w-6">
+              {open ? (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+              )}
+            </svg>
+          </button>
+        </div>
       </div>
+
+      <SearchPanel open={searchOpen} onClose={closeSearch} />
 
       {/* Panel mobile */}
       {open && (

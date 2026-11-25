@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, ilike, inArray, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, inArray, or, sql, type SQL } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import {
   brands,
@@ -51,47 +51,69 @@ export type CatalogFilters = {
   sort?: CatalogSort;
   page?: number;
   pageSize?: number;
+  // Condiciones extra ya armadas (filtros tecnicos por categoria, ver facets.ts).
+  extraConditions?: SQL[];
 };
 
 const DEFAULT_PAGE_SIZE = 12;
+
+function escapeLike(value: string) {
+  return value.replace(/[\\%_]/g, (c) => `\\${c}`);
+}
+
+// Busqueda por palabras: cada palabra tiene que aparecer en nombre,
+// descripcion corta, modelo, MPN o marca. Asi "ribbon resina" o "zebra 2d"
+// funcionan aunque las palabras no esten juntas ni en ese orden.
+export function searchCondition(term: string): SQL | undefined {
+  const tokens = term.trim().split(/\s+/).filter(Boolean).slice(0, 6);
+  if (tokens.length === 0) return undefined;
+  return and(
+    ...tokens.map((token) => {
+      const like = `%${escapeLike(token)}%`;
+      return or(
+        ilike(products.name, like),
+        ilike(products.shortDescription, like),
+        ilike(products.model, like),
+        ilike(products.mpn, like),
+        ilike(brands.name, like)
+      )!;
+    })
+  );
+}
+
+// Una categoria top-level (ej. "Impresion") no tiene productos asignados
+// directamente: los productos cuelgan de sus subcategorias (ej.
+// "Industriales"). Devuelve la categoria pedida + sus hijas directas.
+export async function resolveCategoryIds(slug: string): Promise<number[] | null> {
+  const category = await db.query.categories.findFirst({
+    where: eq(categories.slug, slug),
+    columns: { id: true },
+  });
+  if (!category) return null;
+  const children = await db
+    .select({ id: categories.id })
+    .from(categories)
+    .where(eq(categories.parentId, category.id));
+  return [category.id, ...children.map((c) => c.id)];
+}
 
 export async function getCatalogProducts(filters: CatalogFilters) {
   const page = Math.max(filters.page ?? 1, 1);
   const pageSize = filters.pageSize ?? DEFAULT_PAGE_SIZE;
 
-  const conditions = [eq(products.status, "published")];
+  const conditions: SQL[] = [eq(products.status, "published")];
 
   if (filters.search) {
-    const term = `%${filters.search}%`;
-    conditions.push(
-      or(
-        ilike(products.name, term),
-        ilike(products.shortDescription, term)
-      )!
-    );
+    const search = searchCondition(filters.search);
+    if (search) conditions.push(search);
   }
 
   if (filters.categorySlug) {
-    // Una categoria top-level (ej. "Impresoras") no tiene productos
-    // asignados directamente -- los productos cuelgan de sus subcategorias
-    // (ej. "Industriales"). Filtrar solo por igualdad de slug deja afuera
-    // todo lo que esta en una subcategoria. Incluimos la categoria pedida
-    // + sus hijas directas.
-    const category = await db.query.categories.findFirst({
-      where: eq(categories.slug, filters.categorySlug),
-      columns: { id: true },
-    });
-    if (!category) {
-      conditions.push(sql`false`);
-    } else {
-      const children = await db
-        .select({ id: categories.id })
-        .from(categories)
-        .where(eq(categories.parentId, category.id));
-      const categoryIds = [category.id, ...children.map((c) => c.id)];
-      conditions.push(inArray(products.categoryId, categoryIds));
-    }
+    const categoryIds = await resolveCategoryIds(filters.categorySlug);
+    conditions.push(categoryIds ? inArray(products.categoryId, categoryIds) : sql`false`);
   }
+
+  if (filters.extraConditions) conditions.push(...filters.extraConditions);
 
   if (filters.brandSlug) {
     conditions.push(eq(brands.slug, filters.brandSlug));

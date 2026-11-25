@@ -52,7 +52,9 @@ Feature-based. Cada dominio de negocio vive en `features/<dominio>/`:
 Validación de inputs centralizada en `lib/validation/<dominio>.ts` (Zod).
 
 No hay rutas de API custom (`app/**/route.ts`) — todas las mutaciones pasan
-por Server Actions, lo que reduce la superficie de ataque (no hay endpoints
+por Server Actions (el buscador instantáneo también: es una Server Action de
+solo lectura, `features/products/search-actions.ts`, con largo de búsqueda y
+resultados acotados), lo que reduce la superficie de ataque (no hay endpoints
 HTTP adicionales que proteger/documentar aparte de las páginas).
 
 ### Estructura de carpetas relevante

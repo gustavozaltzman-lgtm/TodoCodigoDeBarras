@@ -1,6 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/layout/whatsapp-button";
+import { CompareBar } from "@/components/catalog/compare-bar";
 
 export default function PublicLayout({
   children,
@@ -13,6 +14,7 @@ export default function PublicLayout({
       <div className="flex-1">{children}</div>
       <Footer />
       <WhatsAppButton />
+      <CompareBar />
     </>
   );
 }

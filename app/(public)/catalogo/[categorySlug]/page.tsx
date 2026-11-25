@@ -6,6 +6,12 @@ import {
   getPublishedSubcategories,
 } from "@/features/categories/queries";
 import { getCatalogProducts, type CatalogSort } from "@/features/products/queries";
+import {
+  buildFacetConditions,
+  getFacetDefinitions,
+  getFacetsWithCounts,
+} from "@/features/products/facets";
+import { CatalogFacets } from "@/components/catalog/catalog-facets";
 import { getPublishedBrands } from "@/features/brands/queries";
 import { ProductCard } from "@/components/catalog/product-card";
 import { CatalogFilters } from "@/components/catalog/catalog-filters";
@@ -19,7 +25,7 @@ const VALID_SORTS: CatalogSort[] = ["relevance", "name-asc", "newest"];
 
 type CategoryPageProps = {
   params: Promise<{ categorySlug: string }>;
-  searchParams: Promise<{ q?: string; brand?: string; sort?: string; page?: string }>;
+  searchParams: Promise<Record<string, string | undefined>>;
 };
 
 export async function generateMetadata({
@@ -51,7 +57,14 @@ export default async function CategoryPage({
     : "relevance";
   const page = Number(sp.page) > 0 ? Number(sp.page) : 1;
 
-  const [subcategories, { items, page: currentPage, totalPages, total }, brands] =
+  // Filtros tecnicos elegidos (solo los validos para esta categoria).
+  const facetKeys = getFacetDefinitions(categorySlug).map((f) => f.key);
+  const selectedFacets: Record<string, string> = {};
+  for (const key of facetKeys) {
+    if (sp[key]) selectedFacets[key] = sp[key]!;
+  }
+
+  const [subcategories, { items, page: currentPage, totalPages, total }, brands, facets] =
     await Promise.all([
       getPublishedSubcategories(category.id),
       getCatalogProducts({
@@ -60,18 +73,34 @@ export default async function CategoryPage({
         brandSlug: sp.brand,
         sort,
         page,
+        extraConditions: buildFacetConditions(categorySlug, selectedFacets),
       }),
       getPublishedBrands(),
+      getFacetsWithCounts(categorySlug),
     ]);
 
-  const buildHref = (nextPage: number) => {
+  const baseParams = (facetOverrides: Record<string, string | null> = {}) => {
     const qs = new URLSearchParams();
     if (sp.q) qs.set("q", sp.q);
     if (sp.brand) qs.set("brand", sp.brand);
     if (sort !== "relevance") qs.set("sort", sort);
-    if (nextPage > 1) qs.set("page", String(nextPage));
+    const merged: Record<string, string | null | undefined> = {
+      ...selectedFacets,
+      ...facetOverrides,
+    };
+    for (const [key, value] of Object.entries(merged)) {
+      if (value) qs.set(key, value);
+    }
+    return qs;
+  };
+  const withQuery = (qs: URLSearchParams) => {
     const query = qs.toString();
     return `/catalogo/${categorySlug}${query ? `?${query}` : ""}`;
+  };
+  const buildHref = (nextPage: number) => {
+    const qs = baseParams();
+    if (nextPage > 1) qs.set("page", String(nextPage));
+    return withQuery(qs);
   };
 
   const breadcrumb = breadcrumbJsonLd([
@@ -132,6 +161,21 @@ export default async function CategoryPage({
           brandSlug={sp.brand}
           sort={sort}
           brands={brands}
+          facetParams={selectedFacets}
+        />
+        <CatalogFacets
+          facets={facets}
+          selected={selectedFacets}
+          hrefFor={(key, value) => withQuery(baseParams({ [key]: value }))}
+          clearHref={withQuery(
+            (() => {
+              const qs = new URLSearchParams();
+              if (sp.q) qs.set("q", sp.q);
+              if (sp.brand) qs.set("brand", sp.brand);
+              if (sort !== "relevance") qs.set("sort", sort);
+              return qs;
+            })()
+          )}
         />
       </div>
 
