@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { and, asc, desc, eq, ilike, inArray, or, sql, type SQL } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import {
@@ -187,7 +188,7 @@ export async function getCatalogProducts(filters: CatalogFilters) {
   };
 }
 
-export async function getProductBySlug(slug: string) {
+async function getProductBySlugUncached(slug: string) {
   return db.query.products.findFirst({
     where: and(eq(products.slug, slug), eq(products.status, "published")),
     with: {
@@ -290,3 +291,6 @@ export async function getProductRelationGroups(
 
   return { complements, fitsWith, related, alternatives };
 }
+
+// Memoizada por request: generateMetadata y la pagina comparten el resultado.
+export const getProductBySlug = cache(getProductBySlugUncached);

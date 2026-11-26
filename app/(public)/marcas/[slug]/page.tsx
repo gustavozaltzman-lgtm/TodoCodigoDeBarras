@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getBrandBySlug } from "@/features/brands/queries";
+import { getAllPublishedBrandSlugs, getBrandBySlug } from "@/features/brands/queries";
 import { getCatalogProducts } from "@/features/products/queries";
 import { ProductCard } from "@/components/catalog/product-card";
 
 export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const rows = await getAllPublishedBrandSlugs();
+  return rows.map(({ slug }) => ({ slug }));
+}
 
 type BrandPageProps = {
   params: Promise<{ slug: string }>;

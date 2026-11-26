@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
+  getAllPublishedProductSlugs,
   getProductBySlug,
   getProductRelationGroups,
 } from "@/features/products/queries";
@@ -22,6 +23,15 @@ import {
 import { breadcrumbJsonLd, jsonLdToScript } from "@/lib/seo/jsonld";
 
 export const revalidate = 300;
+
+// Sin generateStaticParams Next 16 renderiza la ficha en cada visita (ƒ) y
+// `revalidate` no aplica. Con la lista de slugs publicados se prerenderiza en
+// el build y se regenera cada 5 min; los slugs nuevos se generan al primer
+// pedido (dynamicParams) y quedan en cache.
+export async function generateStaticParams() {
+  const rows = await getAllPublishedProductSlugs();
+  return rows.map(({ slug }) => ({ slug }));
+}
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>;

@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { and, asc, eq, inArray, isNull } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { categories, products } from "@/lib/db/schema";
@@ -20,7 +21,7 @@ async function getCategoryIdsWithPublishedProducts(categoryIds: number[]) {
   return new Set(rows.map((r) => r.categoryId).filter((id): id is number => id !== null));
 }
 
-export async function getPublishedTopCategories() {
+async function getPublishedTopCategoriesUncached() {
   const top = await db
     .select()
     .from(categories)
@@ -51,7 +52,7 @@ export async function getPublishedTopCategories() {
   );
 }
 
-export async function getCategoryBySlug(slug: string) {
+async function getCategoryBySlugUncached(slug: string) {
   const [category] = await db
     .select()
     .from(categories)
@@ -102,3 +103,9 @@ export async function getAllPublishedCategorySlugs() {
       (childIdsByParent.get(category.id) ?? []).some((id) => withProducts.has(id))
   );
 }
+
+// Memoizada por request: generateMetadata y la pagina comparten el resultado.
+export const getPublishedTopCategories = cache(getPublishedTopCategoriesUncached);
+
+// Memoizada por request: generateMetadata y la pagina comparten el resultado.
+export const getCategoryBySlug = cache(getCategoryBySlugUncached);
