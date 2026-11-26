@@ -2,7 +2,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/layout/whatsapp-button";
 import { CompareBar } from "@/components/catalog/compare-bar";
-import { QuoteDrawer } from "@/components/quote/quote-drawer";
+import { QuoteDrawerLazy } from "@/components/quote/quote-drawer-lazy";
 
 export default function PublicLayout({
   children,
@@ -16,7 +16,7 @@ export default function PublicLayout({
       <Footer />
       <WhatsAppButton />
       <CompareBar />
-      <QuoteDrawer />
+      <QuoteDrawerLazy />
     </>
   );
 }

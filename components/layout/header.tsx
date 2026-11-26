@@ -2,9 +2,13 @@
 
 import { useCallback, useState } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { siteConfig } from "@/lib/config/site";
 import { INDUSTRY_SOLUTIONS } from "@/lib/content/industry-solutions";
-import { SearchPanel } from "./search-panel";
+// Buscador en vivo: se descarga al primer clic en la lupa.
+const SearchPanel = dynamic(() => import("./search-panel").then((m) => m.SearchPanel), {
+  ssr: false,
+});
 import { QuoteButton } from "@/components/quote/quote-button";
 
 const NAV_LINKS = [
@@ -18,6 +22,8 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [solucionesOpen, setSolucionesOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchMounted, setSearchMounted] = useState(false);
+  if (searchOpen && !searchMounted) setSearchMounted(true);
   const closeSearch = useCallback(() => setSearchOpen(false), []);
 
   return (
@@ -148,7 +154,7 @@ export function Header() {
         </div>
       </div>
 
-      <SearchPanel open={searchOpen} onClose={closeSearch} />
+      {searchMounted && <SearchPanel open={searchOpen} onClose={closeSearch} />}
 
       {/* Panel mobile */}
       {open && (
