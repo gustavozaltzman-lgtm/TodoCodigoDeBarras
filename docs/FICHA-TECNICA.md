@@ -97,6 +97,8 @@ app/admin/        panel de administración (protegido)
 app/sitemap.ts    sitemap dinámico
 app/robots.ts     robots.txt
 app/opengraph-image.tsx   imagen OG de fallback (generada con next/og)
+app/icon.svg|png, favicon.ico   favicon (ícono del logo)
+public/brand/     logos corporativos en SVG (header, sub, full, icon + -light)
 components/       componentes de UI: catalog/ forms/ layout/ quote/ admin/
 features/         lógica de negocio por dominio (products, categories, brands,
                   inquiries, supplies)

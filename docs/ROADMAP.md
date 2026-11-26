@@ -478,6 +478,12 @@ Roadmap conceptual (clientes, variantes, precios, stock, carrito, checkout,
 pagos, pedidos, envíos, promociones). El modelo de datos actual ya está
 preparado para esto; no crear tablas ni pantallas de esta fase todavía.
 
+El diagnóstico y la propuesta de arquitectura (Mercado Pago Checkout Pro,
+modelo híbrido venta online / cotización, facturación A/B, moneda USD→ARS)
+están en [PLAN-ECOMMERCE.md](PLAN-ECOMMERCE.md). Es solo diseño: faltan las
+respuestas del negocio (IVA, stock, facturación, categorías a vender online)
+antes de empezar.
+
 ## Cómo seguir si una sesión se corta
 
 1. Leer este archivo — dice qué fase está en curso y qué está hecho/pendiente

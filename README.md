@@ -15,6 +15,8 @@ arquitectura están preparados para evolucionar a e-commerce en Fase 2.
 - **[docs/MANUAL-USUARIO.md](docs/MANUAL-USUARIO.md)** — cómo usar el panel
   de administración (`/admin`) para cargar productos, categorías, marcas y
   gestionar consultas, sin tocar código.
+- **[docs/PLAN-ECOMMERCE.md](docs/PLAN-ECOMMERCE.md)** — diseño del
+  e-commerce (Fase 2) con Mercado Pago. Solo propuesta, nada implementado.
 - **[docs/LOG-2026-08-28-carga-nocturna.md](docs/LOG-2026-08-28-carga-nocturna.md)**
   — registro histórico de la carga masiva del catálogo desde el Excel y de
   las decisiones tomadas.
