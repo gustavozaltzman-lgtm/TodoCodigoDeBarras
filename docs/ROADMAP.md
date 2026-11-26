@@ -393,6 +393,16 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
   Las columnas válidas son una lista cerrada, no se usa el valor de la URL
   en el SQL.
 
+- **Marcas (nov. 2026):** DigitalPersona y Fargo se unificaron en una sola
+  marca, **HID Global** (`/marcas/hid-global`), porque ambas usaban el logo
+  de HID y aparecían duplicadas en la Home; los slugs viejos redirigen
+  (`next.config.ts`). Logo de Unitech reemplazado por el oficial (SVG de
+  ute.com) y logo de Bluebird recortado (tenía mucho margen transparente).
+  Siguen sin logo: **Uniform**. Los logos de marca se cargan en Vercel Blob
+  y se guardan en `brands.logo_url`; si se cambian directo en la base, la
+  Home tarda hasta 1 h en mostrarlos (revalidate); guardar la marca desde
+  el panel refresca la Home al instante.
+
 **Pendiente — P0:**
 - ~~Reemplazar el copy placeholder de Home y Empresa~~ — **hecho
   parcialmente**: el usuario confirmó que la empresa opera desde 1992, así

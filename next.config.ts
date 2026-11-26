@@ -65,11 +65,24 @@ const nextConfig: NextConfig = {
       ["escaneres-codigos-de-barras", "captura-de-datos"],
       ["insumos-y-consumibles", "consumibles"],
     ];
-    return renamedCategorySlugs.map(([from, to]) => ({
-      source: `/catalogo/${from}`,
-      destination: `/catalogo/${to}`,
-      permanent: true,
-    }));
+    // Marcas unificadas: DigitalPersona y Fargo pasaron a ser una sola marca,
+    // HID Global (su dueno). Las direcciones viejas apuntan a la nueva.
+    const mergedBrandSlugs: [string, string][] = [
+      ["digitalpersona", "hid-global"],
+      ["fargo", "hid-global"],
+    ];
+    return [
+      ...renamedCategorySlugs.map(([from, to]) => ({
+        source: `/catalogo/${from}`,
+        destination: `/catalogo/${to}`,
+        permanent: true,
+      })),
+      ...mergedBrandSlugs.map(([from, to]) => ({
+        source: `/marcas/${from}`,
+        destination: `/marcas/${to}`,
+        permanent: true,
+      })),
+    ];
   },
 };
 
