@@ -73,7 +73,9 @@ categoría/general), notificaciones de leads nuevos, honeypot anti-spam.
 - JSON-LD `Organization` global y `BreadcrumbList` en producto/categoría, vía
   `lib/seo/jsonld.ts`. `Organization` con logo (`/brand/logo-512.png`).
 - **ISR/`revalidate`:** Home `revalidate = 3600` (antes era 100% estático sin
-  refrescar nunca); producto y marca `revalidate = 300` (ISR on-demand, sin
+  refrescar nunca); producto y marca `revalidate = 300` (⚠️ en realidad NO
+  funcionaba sin `generateStaticParams`: Next 16 las renderizaba en cada
+  visita, corregido en la auditoría de performance, ver abajo; antes: ISR on-demand, sin
   `generateStaticParams` — cachean tras el primer request). Catálogo y
   categoría se quedan dinámicos (`ƒ`) porque usan `searchParams` para
   filtros/orden — Next los fuerza a dynamic rendering, `revalidate` no aplica
@@ -392,6 +394,31 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
   con vacíos al final y desempate estable; el resto ordena en memoria.
   Las columnas válidas son una lista cerrada, no se usa el valor de la URL
   en el SQL.
+
+- **Auditoría de performance (nov. 2026, rama `perf/optimizacion`):**
+  - *Hallazgo:* `/productos/[slug]` y `/marcas/[slug]` eran dinámicas (ƒ,
+    `Cache-Control: no-store`): sin `generateStaticParams` Next 16 no hace
+    ISR y el `revalidate` no aplicaba; cada visita ejecutaba 3-5 consultas.
+  - *Bloque 1:* `generateStaticParams` en producto y marca (ahora ●, cache
+    de 5 min; TTFB local ~550 ms → ~4 ms); `cache()` de React en
+    `getProductBySlug`, `getCategoryBySlug`, `getBrandBySlug`,
+    `getPublishedTopCategories`, `getPublishedBrands` (antes
+    `generateMetadata` y la página repetían la consulta); `formats` AVIF +
+    WebP y `minimumCacheTTL` de 30 días en `next/image`; `Cache-Control`
+    inmutable en `/brand/*`; borrado `public/brand/tcb-hero.png` (sin uso).
+  - *Bloque 2:* panel de cotización (`quote-drawer-lazy.tsx`) y buscador
+    del header se descargan al primer uso (`next/dynamic`, `ssr: false`);
+    se quitó `loading.tsx` de la ficha de producto, que hacía que un slug
+    inexistente respondiera 200 (soft 404): ahora responde 404 real.
+  - *Bloque 3:* navegación (categorías y marcas) cacheada entre requests
+    con `unstable_cache` (5 min, tag `catalog-nav`); las acciones del admin
+    de productos, categorías y marcas la invalidan con `updateTag`. La
+    consulta de "misma categoría" de la ficha corre en paralelo con las
+    relaciones.
+  - *Pendiente:* `/insumos` sigue en ~0,7 s (varias consultas en cadena,
+    dinámica por `searchParams`); medir Lighthouse/Core Web Vitals sobre el
+    sitio desplegado; redimensionar las fotos al subirlas (hay originales de
+    hasta 490 KB); confirmar que Vercel y Neon estén en la misma región.
 
 - **Logo corporativo (nov. 2026):** nuevo logo provisto por el cliente,
   rehecho en SVG con texto a curvas y fondo transparente en

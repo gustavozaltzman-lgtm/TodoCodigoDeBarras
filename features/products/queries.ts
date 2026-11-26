@@ -237,6 +237,18 @@ export async function getProductRelationGroups(
   productId: number,
   categoryId: number | null
 ) {
+  // La consulta de "misma categoria" no depende de las relaciones: se lanza
+  // junto con ellas para no sumar una ida y vuelta a la base.
+  const sameCategoryPromise =
+    categoryId !== null
+      ? db
+          .select({ id: products.id })
+          .from(products)
+          .where(and(eq(products.status, "published"), eq(products.categoryId, categoryId)))
+          .orderBy(asc(products.sortOrder), asc(products.name))
+          .limit(8)
+      : Promise.resolve([] as { id: number }[]);
+
   const [forward, reverse] = await Promise.all([
     db
       .select({
@@ -272,22 +284,15 @@ export async function getProductRelationGroups(
     ...related.map((p) => p.id),
   ]);
 
-  let alternatives: Awaited<ReturnType<typeof findPublishedCards>> = [];
-  if (categoryId !== null) {
-    const sameCategory = await db
-      .select({ id: products.id })
-      .from(products)
-      .where(
-        and(eq(products.status, "published"), eq(products.categoryId, categoryId))
-      )
-      .orderBy(asc(products.sortOrder), asc(products.name))
-      .limit(8);
-    alternatives = (
-      await findPublishedCards(
-        sameCategory.map((p) => p.id).filter((id) => !taken.has(id))
-      )
-    ).slice(0, 4);
-  }
+  const sameCategory = await sameCategoryPromise;
+  const alternatives =
+    sameCategory.length > 0
+      ? (
+          await findPublishedCards(
+            sameCategory.map((p) => p.id).filter((id) => !taken.has(id))
+          )
+        ).slice(0, 4)
+      : [];
 
   return { complements, fitsWith, related, alternatives };
 }

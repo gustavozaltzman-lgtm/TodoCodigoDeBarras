@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { and, asc, eq, inArray, isNull } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { categories, products } from "@/lib/db/schema";
@@ -105,7 +106,15 @@ export async function getAllPublishedCategorySlugs() {
 }
 
 // Memoizada por request: generateMetadata y la pagina comparten el resultado.
-export const getPublishedTopCategories = cache(getPublishedTopCategoriesUncached);
+// Navegacion (footer, Home, filtros): se repite en cada pagina dinamica y cambia
+// poco. Cache entre requests 5 min; el admin la invalida al guardar
+// (updateTag "catalog-nav").
+export const getPublishedTopCategories = cache(
+  unstable_cache(getPublishedTopCategoriesUncached, ["top-categories"], {
+    revalidate: 300,
+    tags: ["catalog-nav"],
+  })
+);
 
 // Memoizada por request: generateMetadata y la pagina comparten el resultado.
 export const getCategoryBySlug = cache(getCategoryBySlugUncached);

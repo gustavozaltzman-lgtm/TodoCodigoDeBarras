@@ -1,7 +1,7 @@
 "use server";
 
 import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db/client";
 import { brands } from "@/lib/db/schema";
@@ -35,6 +35,7 @@ export async function createBrandAction(
   await db.insert(brands).values(parsed.data);
   revalidatePath("/admin/marcas");
   revalidatePath("/");
+  updateTag("catalog-nav");
   redirect("/admin/marcas");
 }
 
@@ -57,6 +58,7 @@ export async function updateBrandAction(
 
   revalidatePath("/admin/marcas");
   revalidatePath("/");
+  updateTag("catalog-nav");
   redirect("/admin/marcas");
 }
 
@@ -65,6 +67,7 @@ export async function deleteBrandAction(id: number) {
   await db.delete(brands).where(eq(brands.id, id));
   revalidatePath("/admin/marcas");
   revalidatePath("/");
+  updateTag("catalog-nav");
 }
 
 export async function setBrandStatusAction(
@@ -78,4 +81,5 @@ export async function setBrandStatusAction(
     .where(eq(brands.id, id));
   revalidatePath("/admin/marcas");
   revalidatePath("/");
+  updateTag("catalog-nav");
 }

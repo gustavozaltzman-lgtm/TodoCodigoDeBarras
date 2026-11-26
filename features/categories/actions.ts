@@ -1,7 +1,7 @@
 "use server";
 
 import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db/client";
 import { categories } from "@/lib/db/schema";
@@ -41,6 +41,7 @@ export async function createCategoryAction(
   });
   revalidatePath("/admin/categorias");
   revalidatePath("/");
+  updateTag("catalog-nav");
   redirect("/admin/categorias");
 }
 
@@ -67,6 +68,7 @@ export async function updateCategoryAction(
 
   revalidatePath("/admin/categorias");
   revalidatePath("/");
+  updateTag("catalog-nav");
   redirect("/admin/categorias");
 }
 
@@ -75,6 +77,7 @@ export async function deleteCategoryAction(id: number) {
   await db.delete(categories).where(eq(categories.id, id));
   revalidatePath("/admin/categorias");
   revalidatePath("/");
+  updateTag("catalog-nav");
 }
 
 export async function setCategoryStatusAction(
@@ -88,4 +91,5 @@ export async function setCategoryStatusAction(
     .where(eq(categories.id, id));
   revalidatePath("/admin/categorias");
   revalidatePath("/");
+  updateTag("catalog-nav");
 }

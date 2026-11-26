@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { and, asc, eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { brands } from "@/lib/db/schema";
@@ -21,7 +22,12 @@ async function getBrandBySlugUncached(slug: string) {
 }
 
 // Memoizada por request: generateMetadata y la pagina comparten el resultado.
-export const getPublishedBrands = cache(getPublishedBrandsUncached);
+export const getPublishedBrands = cache(
+  unstable_cache(getPublishedBrandsUncached, ["published-brands"], {
+    revalidate: 300,
+    tags: ["catalog-nav"],
+  })
+);
 
 // Memoizada por request: generateMetadata y la pagina comparten el resultado.
 export const getBrandBySlug = cache(getBrandBySlugUncached);

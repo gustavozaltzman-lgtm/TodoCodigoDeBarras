@@ -1,7 +1,7 @@
 "use server";
 
 import { and, eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db/client";
 import {
@@ -65,6 +65,7 @@ export async function createProductAction(
 
   revalidatePath("/admin/productos");
   revalidatePath("/");
+  updateTag("catalog-nav");
   redirect(`/admin/productos/${created.id}`);
 }
 
@@ -93,6 +94,7 @@ export async function updateProductAction(
   revalidatePath("/admin/productos");
   revalidatePath(`/admin/productos/${id}`);
   revalidatePath("/");
+  updateTag("catalog-nav");
   redirect(`/admin/productos/${id}`);
 }
 
@@ -101,6 +103,7 @@ export async function deleteProductAction(id: number) {
   await db.delete(products).where(eq(products.id, id));
   revalidatePath("/admin/productos");
   revalidatePath("/");
+  updateTag("catalog-nav");
 }
 
 export async function setProductStatusAction(id: number, status: PublicationStatus) {
@@ -115,6 +118,7 @@ export async function setProductStatusAction(id: number, status: PublicationStat
     .where(eq(products.id, id));
   revalidatePath("/admin/productos");
   revalidatePath("/");
+  updateTag("catalog-nav");
 }
 
 export async function bulkSetProductStatusAction(
@@ -134,6 +138,7 @@ export async function bulkSetProductStatusAction(
   }
   revalidatePath("/admin/productos");
   revalidatePath("/");
+  updateTag("catalog-nav");
 }
 
 // ---------- imagenes ----------
