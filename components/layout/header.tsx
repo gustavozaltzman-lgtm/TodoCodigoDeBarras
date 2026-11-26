@@ -4,7 +4,6 @@ import { useCallback, useState } from "react";
 import Link from "next/link";
 import { siteConfig } from "@/lib/config/site";
 import { INDUSTRY_SOLUTIONS } from "@/lib/content/industry-solutions";
-import { LogoMark } from "./logo-mark";
 import { SearchPanel } from "./search-panel";
 import { QuoteButton } from "@/components/quote/quote-button";
 
@@ -27,10 +26,17 @@ export function Header() {
         <Link
           href="/"
           onClick={() => setOpen(false)}
-          className="flex items-center gap-2 font-[family-name:var(--font-heading)] text-base font-semibold text-primary transition-colors hover:text-accent sm:text-lg"
+          className="flex shrink-0 items-center"
         >
-          <LogoMark className="h-8 w-8 shrink-0" />
-          <span className="truncate">{siteConfig.name}</span>
+          {/* SVG estatico: no necesita el optimizador de next/image */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/logo-header.svg"
+            alt={siteConfig.name}
+            width={135}
+            height={40}
+            className="h-9 w-auto sm:h-10"
+          />
         </Link>
 
         {/* Nav de escritorio */}

@@ -71,7 +71,7 @@ categoría/general), notificaciones de leads nuevos, honeypot anti-spam.
 - `canonical` en todas las páginas públicas (incluye `/privacidad` y `/terminos`).
 - `noindex, nofollow` en todo `/admin` (`app/admin/layout.tsx`).
 - JSON-LD `Organization` global y `BreadcrumbList` en producto/categoría, vía
-  `lib/seo/jsonld.ts`. `Organization` sin logo todavía (falta asset real).
+  `lib/seo/jsonld.ts`. `Organization` con logo (`/brand/logo-512.png`).
 - **ISR/`revalidate`:** Home `revalidate = 3600` (antes era 100% estático sin
   refrescar nunca); producto y marca `revalidate = 300` (ISR on-demand, sin
   `generateStaticParams` — cachean tras el primer request). Catálogo y
@@ -392,6 +392,16 @@ vive en el informe; acá el resumen para no tener que reabrirlo:
   con vacíos al final y desempate estable; el resto ordena en memoria.
   Las columnas válidas son una lista cerrada, no se usa el valor de la URL
   en el SQL.
+
+- **Logo corporativo (nov. 2026):** nuevo logo provisto por el cliente,
+  rehecho en SVG con texto a curvas y fondo transparente en
+  `public/brand/` (`logo-header`, `logo-sub`, `logo-full`, `icon`, cada uno
+  con versión `-light` para fondos oscuros). Header y footer usan
+  `logo-header(-light).svg`; el favicon es `app/icon.svg` + `app/icon.png` +
+  `app/favicon.ico`; `Organization` JSON-LD usa `logo-512.png`. Se reemplazó
+  el monograma anterior (`logo-mark.tsx`). La tipografía es Lexend (la del
+  sitio), aproximada a la del original. Quedan sin usar `logo-sub` y
+  `logo-full` (previstos para Empresa y la imagen para redes).
 
 - **Marcas (nov. 2026):** DigitalPersona y Fargo se unificaron en una sola
   marca, **HID Global** (`/marcas/hid-global`), porque ambas usaban el logo

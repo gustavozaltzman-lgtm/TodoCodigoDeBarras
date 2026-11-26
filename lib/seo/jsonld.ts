@@ -15,6 +15,7 @@ export function organizationJsonLd() {
     legalName: companyInfo.legalName,
     taxID: companyInfo.cuit,
     url: siteConfig.url,
+    logo: `${siteConfig.url}/brand/logo-512.png`,
     address: {
       "@type": "PostalAddress",
       streetAddress: companyInfo.address.street,
@@ -33,7 +34,6 @@ export function organizationJsonLd() {
           },
         ]
       : undefined,
-    // TODO: agregar logo (URL absoluta) cuando el cliente provea el asset real
   };
 }
 

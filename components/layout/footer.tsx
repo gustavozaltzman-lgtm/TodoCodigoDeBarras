@@ -7,7 +7,6 @@ import {
   companyInfo,
 } from "@/lib/config/site";
 import { getPublishedTopCategories } from "@/features/categories/queries";
-import { LogoMark } from "./logo-mark";
 
 export async function Footer() {
   const categories = await getPublishedTopCategories();
@@ -19,10 +18,16 @@ export async function Footer() {
           <div className="lg:col-span-1">
             <Link
               href="/"
-              className="flex items-center gap-2 font-[family-name:var(--font-heading)] text-base font-semibold text-white"
+              className="inline-flex items-center"
             >
-              <LogoMark className="h-8 w-8 shrink-0" />
-              {siteConfig.name}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/brand/logo-header-light.svg"
+                alt={siteConfig.name}
+                width={148}
+                height={44}
+                className="h-11 w-auto"
+              />
             </Link>
             <p className="mt-3 max-w-xs text-sm text-slate-400">
               {siteConfig.description}

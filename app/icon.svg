@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 355 318" role="img" aria-label="TodoCódigoDeBarras - ícono">
+<title>TodoCódigoDeBarras - ícono</title>
+<mask id="m8gabh" maskUnits="userSpaceOnUse" x="0" y="0" width="355" height="318">
+<rect width="355" height="318" fill="#fff"/>
+<g fill="none" stroke="#000" stroke-linecap="round"><path d="M95.71,61.43A126,126 0 0 1 294.29,61.43" stroke-width="44"/><path d="M122.04,91.62A87,87 0 0 1 267.96,91.62" stroke-width="42"/><path d="M150.43,112.22A52,52 0 0 1 239.57,112.22" stroke-width="40"/></g>
+<circle cx="195" cy="139" r="33.5" fill="#000"/>
+</mask>
+<g mask="url(#m8gabh)" fill="#0A2348">
+<path d="M86,49.5H61A45,45 0 0 0 15.5,94.5V256.5A45,45 0 0 0 60.5,301.5H99" fill="none" stroke="#0A2348" stroke-width="31" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M269,49.5H294A45,45 0 0 1 339.5,94.5V256.5A45,45 0 0 1 294.5,301.5H256" fill="none" stroke="#0A2348" stroke-width="31" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="50" y="147.5" width="18.5" height="123.5"/><rect x="82.5" y="147.5" width="18.5" height="123.5"/><rect x="114.5" y="147.5" width="20.5" height="123.5"/><rect x="146" y="147.5" width="11.5" height="123.5"/><rect x="170" y="147.5" width="12.5" height="123.5"/><rect x="191" y="147.5" width="10" height="123.5"/><rect x="212" y="147.5" width="21.5" height="123.5"/><rect x="251" y="147.5" width="18.5" height="123.5"/><rect x="282.5" y="147.5" width="21" height="123.5"/>
+</g>
+<g fill="none" stroke="#FF7A00" stroke-linecap="round"><path d="M95.71,61.43A126,126 0 0 1 294.29,61.43" stroke-width="26"/><path d="M122.04,91.62A87,87 0 0 1 267.96,91.62" stroke-width="24"/><path d="M150.43,112.22A52,52 0 0 1 239.57,112.22" stroke-width="22"/></g>
+<circle cx="195" cy="139" r="24.5" fill="#FF7A00"/>
+</svg>
