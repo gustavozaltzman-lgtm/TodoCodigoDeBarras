@@ -36,6 +36,13 @@ genera solo a partir del nombre, pero podés editarlo a mano. Evitá cambiar
 el slug de algo ya publicado — rompe el link si alguien lo tenía guardado
 o compartido.
 
+> ℹ️ **Cuánto tardan los cambios en verse:** al guardar un producto,
+> categoría o marca desde el panel, la Home, el menú y el footer se
+> actualizan al instante. La ficha del producto y la página de la marca
+> pueden tardar hasta 5 minutos en reflejar el cambio (se regeneran solas).
+> Si cambiás algo directo en la base de datos, sin pasar por el panel, la
+> Home puede tardar hasta 1 hora.
+
 ## Marcas
 
 `/admin/marcas` → **+ Nueva marca**

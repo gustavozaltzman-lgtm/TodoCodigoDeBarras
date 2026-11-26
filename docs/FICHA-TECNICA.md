@@ -69,7 +69,32 @@ necesidad técnica todavía — ver `ROADMAP.md`).
 - **Ficha de producto** (`productos/[slug]`): menú de secciones fijo con
   anclas (todo el contenido queda en el HTML), secciones de compatibilidad
   desde `product_relationships` (`getProductRelationGroups`) y barra de
-  cotización fija en mobile. `revalidate = 300`.
+  cotización fija en mobile. `revalidate = 300` más `generateStaticParams`
+  (sin esto Next 16 la renderiza en cada visita y el `revalidate` no aplica).
+  No lleva `loading.tsx`: con streaming, un slug inexistente respondía 200.
+
+### Caché y rendimiento
+
+- **ISR real** en Home (1 h), `/recursos` (1 h), `/productos/[slug]` y
+  `/marcas/[slug]` (5 min, con `generateStaticParams`; los slugs nuevos se
+  generan al primer pedido). Catálogo, categoría, `/insumos` y `/comparar`
+  son dinámicas porque leen `searchParams`.
+- **Consultas memoizadas por request** con `cache()` de React
+  (`getProductBySlug`, `getCategoryBySlug`, `getBrandBySlug`,
+  `getPublishedTopCategories`, `getPublishedBrands`): `generateMetadata` y
+  la página no repiten la consulta.
+- **Navegación cacheada entre requests**: categorías top y marcas con
+  `unstable_cache` (5 min, tag `catalog-nav`). Las acciones del admin de
+  productos, categorías y marcas llaman `updateTag("catalog-nav")` junto a
+  `revalidatePath("/")`. Si se agrega otra acción que cambie esos datos,
+  debe invalidar el mismo tag.
+- **Imágenes**: `next/image` con AVIF y WebP, `minimumCacheTTL` de 30 días.
+  `/brand/*` sale con `Cache-Control` inmutable: si cambia un archivo, hay
+  que cambiarle el nombre.
+- **JS diferido**: el panel de cotización (`quote-drawer-lazy.tsx`) y el
+  buscador del header se cargan con `next/dynamic` al primer uso.
+- **Pendiente**: `/insumos` (~0,7 s, consultas en cadena), medir Core Web
+  Vitals sobre el sitio desplegado y redimensionar fotos al subirlas.
 
 ## Arquitectura de código
 
